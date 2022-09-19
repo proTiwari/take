@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:take/Widgets/cards.dart';
 import 'package:take/Widgets/search_BAR.dart';
+import 'Widgets/google_map_circle.dart';
 import 'Widgets/list_view_filter.dart';
 import 'globar_variables/globals.dart' as globals;
 import 'Widgets/filter_card.dart';
@@ -135,13 +136,6 @@ class _SearchState extends State<Search> {
                         ],
                       ),
 
-                      Positioned(
-
-                        top: MediaQuery.of(context).size.height - MediaQuery.of(context).size.height*0.250,
-                        left: MediaQuery.of(context).size.width - MediaQuery.of(context).size.width*0.20,
-                        child:
-                        const Icon(Icons.gps_fixed_rounded, color: Color(0xFFEF9A9A)),
-                      )
                     ],
                   ),
                 ),
@@ -149,7 +143,7 @@ class _SearchState extends State<Search> {
             ),
           ],
         ),
-        floatingActionButton: Image.asset("assets/map.png", width: 100, height: 100,),
+        floatingActionButton: const GoogleMapCircle()
       ),
     );
   }

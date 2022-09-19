@@ -34,7 +34,7 @@ class _LoadedImageState extends State<LoadedImage> {
         borderRadius: BorderRadius.circular(570),
       ),
       child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               widget.e == null
