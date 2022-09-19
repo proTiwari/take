@@ -1,6 +1,7 @@
 import 'package:country_state_city_picker/country_state_city_picker.dart';
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:take/Widgets/cards.dart';
 import 'package:take/Widgets/csc.dart';
 import 'package:take/Widgets/detail_card.dart';
@@ -29,7 +30,6 @@ class _ListPropertyState extends State<ListProperty> {
   String bodyTemp = "";
   var measure;
 
-
   var placetext = "";
   var place = [
     'Hostel',
@@ -37,7 +37,6 @@ class _ListPropertyState extends State<ListProperty> {
     'PG',
     'Home',
   ];
-
 
   var servicetype = "";
   var serviceType = [
@@ -59,7 +58,17 @@ class _ListPropertyState extends State<ListProperty> {
     '1 Room',
     '2 Room',
     '3 Room',
-    'Many Room',
+    '4 Room',
+    '5 Room',
+    '6 Room',
+    '7 Room',
+    '8 Room',
+    '9 Room',
+    '10 Room',
+    '11 Room',
+    '12 Room',
+
+    '> 12 Room',
   ];
 
   var toiletjoinedtext = "";
@@ -105,37 +114,37 @@ class _ListPropertyState extends State<ListProperty> {
 
   Widget bottomSheet() {
     return Container(
-      height: 100.0,
+      height: 70.0,
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
+        horizontal: 10,
+        vertical: 10,
       ),
       child: Column(
         children: <Widget>[
-          const Text(
-            "Choose Profile photo",
-            style: TextStyle(
-              fontSize: 20.0,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
+
           Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
             TextButton.icon(
-              icon: const Icon(Icons.camera),
+              icon: const Icon(Icons.camera, size: 50,),
               onPressed: () {
+                Navigator.pop(context);
                 takePhoto(ImageSource.camera);
+                // Navigator.pop(context);
               },
               label: const Text("Camera"),
+            ),
+             SizedBox(
+              width: MediaQuery.of(context).size.width*0.3,
             ),
             TextButton.icon(
               icon: const Icon(
                 Icons.image,
+                size: 50,
               ),
               onPressed: () {
+                Navigator.pop(context);
                 takePhoto(ImageSource.gallery);
+                // Navigator.pop(context);
               },
               label: const Text("Gallery"),
             ),
@@ -148,18 +157,20 @@ class _ListPropertyState extends State<ListProperty> {
   bool heightimage = false;
 
   void takePhoto(ImageSource source) async {
+
     // final XFile? image = await _picker.pickImage(source: source);
     final pickedFile = await _picker.pickImage(
       source: source,
     );
     setState(() {
+
       _imageFile = pickedFile;
       if (pickedFile != null) {
         heightimage = true;
       }
 
       listImage.add(pickedFile);
-      for(var i in listImage){
+      for (var i in listImage) {
         listImage.remove(null);
       }
       print(pickedFile);
@@ -227,15 +238,19 @@ class _ListPropertyState extends State<ListProperty> {
 
                               ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
                               dropdownDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
                                   color: Colors.white,
-                                  border: Border.all(color: Colors.grey.shade300, width: 1)),
+                                  border: Border.all(
+                                      color: Colors.grey.shade300, width: 1)),
 
                               ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
                               disabledDropdownDecoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
                                   color: Colors.grey.shade300,
-                                  border: Border.all(color: Colors.grey.shade300, width: 1)),
+                                  border: Border.all(
+                                      color: Colors.grey.shade300, width: 1)),
 
                               ///placeholders for dropdown search field
                               countrySearchPlaceholder: "Country",
@@ -304,7 +319,6 @@ class _ListPropertyState extends State<ListProperty> {
                           ],
                         ),
                       ),
-
                       SizedBox(
                         height: 43,
                         child: DecoratedBox(
@@ -433,7 +447,7 @@ class _ListPropertyState extends State<ListProperty> {
                               // Down Arrow Icon
                               icon: const Icon(Icons.keyboard_arrow_down),
                               isExpanded:
-                              true, //make true to take width of parent widget
+                                  true, //make true to take width of parent widget
                               underline: Container(), //empty line
                               style: const TextStyle(
                                   fontSize: 18, color: Colors.black),
@@ -506,7 +520,6 @@ class _ListPropertyState extends State<ListProperty> {
                           ),
                         ),
                       ),
-
                       const SizedBox(
                         height: 10,
                       ),
@@ -709,7 +722,7 @@ class _ListPropertyState extends State<ListProperty> {
                         children: [
                           SizedBox(
                             height: 43,
-                            width: MediaQuery.of(context).size.width * 0.305,
+                            width: MediaQuery.of(context).size.width * 0.31,
                             child: DecoratedBox(
                               decoration: const BoxDecoration(
                                   color: Colors.white,
@@ -726,6 +739,9 @@ class _ListPropertyState extends State<ListProperty> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(13),
+                                  ],
                                   keyboardType: TextInputType.number,
                                   decoration: const InputDecoration(
                                     hintText: "Amount",
@@ -764,7 +780,7 @@ class _ListPropertyState extends State<ListProperty> {
                           ),
                           SizedBox(
                             height: 43,
-                            width: MediaQuery.of(context).size.width * 0.305,
+                            width: MediaQuery.of(context).size.width * 0.30,
                             child: DecoratedBox(
                               decoration: const BoxDecoration(
                                   color: Colors.white,
@@ -783,7 +799,10 @@ class _ListPropertyState extends State<ListProperty> {
                                 child: DropdownButton(
                                   // Initial Value
                                   hint: tenortext == ''
-                                      ? const Text("Payment Duration",style: TextStyle(fontSize: 15),)
+                                      ? const Text(
+                                          "Payment Duration",
+                                          style: TextStyle(fontSize: 15),
+                                        )
                                       : Text(tenortext),
 
                                   // Down Arrow Icon
@@ -792,7 +811,7 @@ class _ListPropertyState extends State<ListProperty> {
                                       true, //make true to take width of parent widget
                                   underline: Container(), //empty line
                                   style: const TextStyle(
-                                      fontSize: 18, color: Colors.black),
+                                      fontSize: 15, color: Colors.black),
                                   dropdownColor: Colors.white,
                                   iconEnabledColor: Colors.black,
                                   // Array list of items
@@ -815,7 +834,7 @@ class _ListPropertyState extends State<ListProperty> {
                           ),
                           SizedBox(
                             height: 43,
-                            width: MediaQuery.of(context).size.width * 0.305,
+                            width: MediaQuery.of(context).size.width * 0.30,
                             child: DecoratedBox(
                               decoration: BoxDecoration(
                                   color: Colors.white,
@@ -834,16 +853,19 @@ class _ListPropertyState extends State<ListProperty> {
                                 child: DropdownButton(
                                   // Initial Value
                                   hint: roomstext == ''
-                                      ? const Text("Number of rooms",style: TextStyle(fontSize: 15),)
+                                      ? const Text(
+                                          "Number of rooms",
+                                          style: TextStyle(fontSize: 15),
+                                        )
                                       : Text(roomstext),
 
                                   // Down Arrow Icon
                                   icon: const Icon(Icons.keyboard_arrow_down),
                                   isExpanded:
-                                  true, //make true to take width of parent widget
+                                      true, //make true to take width of parent widget
                                   underline: Container(), //empty line
                                   style: const TextStyle(
-                                      fontSize: 18, color: Colors.black),
+                                      fontSize: 15, color: Colors.black),
                                   dropdownColor: Colors.white,
                                   iconEnabledColor: Colors.black,
                                   // Array list of items
@@ -906,7 +928,7 @@ class _ListPropertyState extends State<ListProperty> {
                               },
                               validator: (value) {
                                 return null;
-                              
+
                                 // if (value == null ||
                                 //     value.isEmpty ||
                                 //     value.length < 3) {
@@ -992,6 +1014,7 @@ class _ListPropertyState extends State<ListProperty> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: TextFormField(
+                              keyboardType: TextInputType.number,
                               decoration: const InputDecoration(
                                 hintText: "Number of floors",
                                 // enabledBorder: OutlineInputBorder(
@@ -1029,9 +1052,237 @@ class _ListPropertyState extends State<ListProperty> {
                           ),
                         ),
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 43,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: const <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.black, //shadow for button
+                                    blurRadius: 0.1) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              keyboardType: TextInputType.text,
+                              decoration: const InputDecoration(
+                                hintText: "Owner's Name",
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderRadius:
+                                //       BorderRadius.all(Radius.circular(20.0)),
+                                //   borderSide: BorderSide(
+                                //       color: Colors.grey.shade500, width: 0.0),
+                                // ),
+                                border: InputBorder.none,
+                              ),
+                              onFieldSubmitted: (value) {
+                                setState(() {
+                                  firstName = value.capitalize();
+                                  // firstNameList.add(firstName);
+                                });
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  firstName = value.capitalize();
+                                });
+                              },
+                              validator: (value) {
+                                return null;
+
+                                // if (value == null ||
+                                //     value.isEmpty ||
+                                //     value.length < 3) {
+                                //   return 'First Name must contain at least 3 characters';
+                                // } else if (value
+                                //     .contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                                //   return 'First Name cannot contain special characters';
+                                // }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 43,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: const <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.black, //shadow for button
+                                    blurRadius: 0.1) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                hintText: "Mobile Number",
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderRadius:
+                                //       BorderRadius.all(Radius.circular(20.0)),
+                                //   borderSide: BorderSide(
+                                //       color: Colors.grey.shade500, width: 0.0),
+                                // ),
+                                border: InputBorder.none,
+                              ),
+                              onFieldSubmitted: (value) {
+                                setState(() {
+
+                                  // firstNameList.add(firstName);
+                                });
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  firstName = value.capitalize();
+                                });
+                              },
+                              validator: (value) {
+                                return null;
+
+                                // if (value == null ||
+                                //     value.isEmpty ||
+                                //     value.length < 3) {
+                                //   return 'First Name must contain at least 3 characters';
+                                // } else if (value
+                                //     .contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                                //   return 'First Name cannot contain special characters';
+                                // }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 43,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: const <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.black, //shadow for button
+                                    blurRadius: 0.1) //blur radius of shadow
+                              ]),
+
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              decoration: const InputDecoration(
+                                hintText: "What's app Number",
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderRadius:
+                                //       BorderRadius.all(Radius.circular(20.0)),
+                                //   borderSide: BorderSide(
+                                //       color: Colors.grey.shade500, width: 0.0),
+                                // ),
+                                border: InputBorder.none,
+                              ),
+                              onFieldSubmitted: (value) {
+                                setState(() {
+
+                                  // firstNameList.add(firstName);
+                                });
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  // firstName = value.capitalize();
+                                });
+                              },
+                              validator: (value) {
+                                return null;
+
+                                // if (value == null ||
+                                //     value.isEmpty ||
+                                //     value.length < 3) {
+                                //   return 'First Name must contain at least 3 characters';
+                                // } else if (value
+                                //     .contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                                //   return 'First Name cannot contain special characters';
+                                // }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      SizedBox(
+                        height: 43,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: const <BoxShadow>[
+                                BoxShadow(
+                                    color: Colors.black, //shadow for button
+                                    blurRadius: 0.1) //blur radius of shadow
+                              ]),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                hintText: "Email",
+                                // enabledBorder: OutlineInputBorder(
+                                //   borderRadius:
+                                //       BorderRadius.all(Radius.circular(20.0)),
+                                //   borderSide: BorderSide(
+                                //       color: Colors.grey.shade500, width: 0.0),
+                                // ),
+                                border: InputBorder.none,
+                              ),
+                              onFieldSubmitted: (value) {
+                                setState(() {
+                                  firstName = value.capitalize();
+                                  // firstNameList.add(firstName);
+                                });
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  firstName = value.capitalize();
+                                });
+                              },
+                              validator: (value) {
+                                return null;
+
+                                // if (value == null ||
+                                //     value.isEmpty ||
+                                //     value.length < 3) {
+                                //   return 'First Name must contain at least 3 characters';
+                                // } else if (value
+                                //     .contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                                //   return 'First Name cannot contain special characters';
+                                // }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Upload property Image",),
+                      ),
                       heightimage
                           ? SizedBox(
-                              height: 180.0,
+                              height: 136.0,
                               child: ListView(
                                 shrinkWrap: true,
                                 scrollDirection: Axis.horizontal,
