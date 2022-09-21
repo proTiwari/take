@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:take/list_property.dart';
 import 'package:take/search.dart';
 
-import 'me.dart';
+import 'profile_page.dart';
 
 
 class CustomBottomNavigation extends StatefulWidget {
@@ -17,7 +17,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   final pages = [
     const Search(),
     const ListProperty(),
-    const Me()
+    const ProfilePage()
   ];
 
   @override
