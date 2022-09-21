@@ -31,7 +31,7 @@ class DetailButton extends StatelessWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.w800,
                   ),
-                  text: "I am interested in your service",
+                  text: "I'm interested, can we chat?",
                 ),
               ),
             ),

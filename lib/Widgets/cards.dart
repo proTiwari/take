@@ -35,11 +35,11 @@ class CardsWidget extends StatelessWidget {
             children: <Widget>[
               ClipRRect(
                 borderRadius: const BorderRadius.only(topLeft: Radius.circular(18),topRight: Radius.circular(18), bottomLeft: Radius.circular(0), bottomRight: Radius.circular(0)),
-                child: Image.asset(
-                    'assets/home.jpg',
+                child: Image.network(
+                    'https://images.unsplash.com/photo-1599202937077-3f7cdc53f2e1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzJ8fGJlZHJvb218ZW58MHx8MHx8&w=1000&q=80',
                     // width: 300,
-                    height: globals.height*0.34,
-                    fit:BoxFit.fill
+                    height: globals.height*0.39,
+                    fit: BoxFit.cover,
                 ),
               ),
              Padding(
@@ -77,34 +77,34 @@ class CardsWidget extends StatelessWidget {
                  ],
                ),
              ),
-              Divider(
-                color: Colors.grey.shade500,
-                indent: 10,
-                endIndent: 10,
-              ),
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(9, 6, 9, 15),
-                child: Row(
-                  children: [
-                    SizedBox(width: globals.width*0.87,
-                        child: Text("Feedback 0"),
-                    ),
-                RichText(
-                  text: TextSpan(
-                    text: "0",
-                  style: TextStyle(
-                  color: Colors.black45,
-                      fontSize: 17
-                  ),),),
-                    Icon(
-                      Icons.star,
-                      color: Colors.yellow,
-                      size: 20.0,
-                    ),
-                  ],
-                ),
-              )
+              // Divider(
+              //   color: Colors.grey.shade500,
+              //   indent: 10,
+              //   endIndent: 10,
+              // ),
+              //
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(9, 6, 9, 15),
+              //   child: Row(
+              //     children: [
+              //       SizedBox(width: globals.width*0.87,
+              //           child: Text("Feedback 0"),
+              //       ),
+              //   RichText(
+              //     text: TextSpan(
+              //       text: "0",
+              //     style: TextStyle(
+              //     color: Colors.black45,
+              //         fontSize: 17
+              //     ),),),
+              //       Icon(
+              //         Icons.star,
+              //         color: Colors.yellow,
+              //         size: 20.0,
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),

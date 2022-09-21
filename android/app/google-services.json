@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "308914390298",
+    "project_id": "runforrent-5397e",
+    "storage_bucket": "runforrent-5397e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308914390298:android:4ee68b391d0c323a1658a3",
+        "android_client_info": {
+          "package_name": "com.example.take"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308914390298-b4vagugd26c9dnsoa3ct12hvtotsv54p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJLn-K4hIan6vrJWVZmt3ra00kbgE8lyU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308914390298-b4vagugd26c9dnsoa3ct12hvtotsv54p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -14,9 +14,10 @@ class _ImageAnimationState extends State<ImageAnimation> {
   late PageController _pageController;
 
   List<String> images = [
-    "https://images.wallpapersden.com/image/download/purple-sunrise-4k-vaporwave_bGplZmiUmZqaraWkpJRmbmdlrWZlbWU.jpg",
-    "https://wallpaperaccess.com/full/2637581.jpg",
-    "https://uhdwallpapers.org/uploads/converted/20/01/14/the-mandalorian-5k-1920x1080_477555-mm-90.jpg"
+
+    "https://imgcld.yatra.com/ytimages/image/upload/t_hotel_yatra_details_desktop/v1437712731/Domestic%20Hotels/Hotels_Puri/Hotel%20Kasi's%20Castle/Standard_Room.jpg",
+    "https://images.unsplash.com/photo-1599202937077-3f7cdc53f2e1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzJ8fGJlZHJvb218ZW58MHx8MHx8&w=1000&q=80",
+    "https://media-cdn.tripadvisor.com/media/photo-s/07/dc/cf/8c/sapa-local-house.jpg"
   ];
 
   int activePage = 1;

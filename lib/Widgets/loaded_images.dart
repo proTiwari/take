@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../globar_variables/globals.dart' as globals;
 import '../globar_variables/const_values.dart';
+import '../pages/list_property/list_provider.dart';
 
 class LoadedImage extends StatefulWidget {
   dynamic e;
@@ -38,13 +40,37 @@ class _LoadedImageState extends State<LoadedImage> {
           child: Column(
             children: [
               widget.e == null
-                  ? Container(
-
-                    )
-                  : CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: FileImage(File(widget.e.path)),
-                    ),
+                  ? Container()
+                  : Consumer<ListProvider>(builder: (context, provider, child) {
+                      return Stack(children: [
+                        CircleAvatar(
+                          radius: 50.0,
+                          backgroundImage: FileImage(File(widget.e.path)),
+                        ),
+                        const Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Icon(
+                              Icons.circle,
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              size: 43,
+                            )),
+                        Positioned(
+                            bottom: -3,
+                            right: -3,
+                            child: IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                setState(() {
+                                  globals.imageList.remove(widget.e);
+                                  provider.imagelistvalue = globals.imageList;
+                                  provider.changeimagelist();
+                                  // Navigator.pop(context, globals.imageList);
+                                });
+                              },
+                            )),
+                      ]);
+                    }),
             ],
           )),
     );
