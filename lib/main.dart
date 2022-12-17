@@ -49,8 +49,8 @@ class _MyAppState extends State<MyApp> {
           title: '',
           theme: ThemeData(
               //#FC7676
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-             // primaryColor: const Color(0xFFF27121),
+              //visualDensity: VisualDensity.adaptivePlatformDensity,
+             primaryColor: const Color(0xFFF27121),
           ),
           debugShowCheckedModeBanner: false,
         ),
