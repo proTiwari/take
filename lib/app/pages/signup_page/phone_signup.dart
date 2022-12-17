@@ -3,9 +3,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:take/pages/signin_page/phone_login.dart';
-import 'package:take/pages/signin_page/sign_in.provider.dart';
-import 'package:take/pages/signup_page/signup_provider.dart';
+import 'package:take/app/pages/signin_page/phone_login.dart';
+import 'package:take/app/pages/signin_page/sign_in.provider.dart';
+import 'package:take/app/pages/signup_page/signup_provider.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key? key}) : super(key: key);

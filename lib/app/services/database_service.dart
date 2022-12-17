@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:take/globar_variables/globals.dart' as globals;
+import 'package:take/app/globar_variables/globals.dart' as globals;
 import '../pages/chat/chat_page.dart';
 
 class DatabaseService extends ChangeNotifier {

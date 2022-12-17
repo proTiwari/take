@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
-import 'package:take/providers/base_providers.dart';
+import 'package:take/app/providers/base_providers.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:take/globar_variables/globals.dart' as globals;
+import 'package:take/app/globar_variables/globals.dart' as globals;
 
 import '../../firebase_functions/firebase_fun.dart';
 

@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:take/Widgets/bottom_nav_bar.dart';
-import 'package:take/globar_variables/globals.dart';
-import 'package:take/pages/signup_page/phone_signup.dart';
-import 'package:take/pages/signin_page/sign_in.provider.dart';
-import 'package:take/pages/signup_page/signup_page.dart';
+import 'package:take/app/Widgets/bottom_nav_bar.dart';
+import 'package:take/app/globar_variables/globals.dart';
+import 'package:take/app/pages/signup_page/phone_signup.dart';
+import 'package:take/app/pages/signin_page/sign_in.provider.dart';
+import 'package:take/app/pages/signup_page/signup_page.dart';
 
 import '../signup_page/signup_provider.dart';
 

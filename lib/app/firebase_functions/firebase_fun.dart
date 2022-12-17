@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/src/foundation/change_notifier.dart';
-import 'package:take/models/property_model.dart';
-import 'package:take/globar_variables/globals.dart' as globals;
+import 'package:take/app/globar_variables/globals.dart' as globals;
+
+import '../models/property_model.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 

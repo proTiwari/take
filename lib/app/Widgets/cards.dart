@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:take/Widgets/smaill_card.dart';
-import 'package:take/globar_variables/globals.dart' as globals;
-import 'package:take/pages/property_detail/property_detail.dart';
+import 'package:take/app/Widgets/smaill_card.dart';
+import 'package:take/app/globar_variables/globals.dart' as globals;
+import 'package:take/app/pages/property_detail/property_detail.dart';
 
 import '../firebase_functions/firebase_fun.dart';
 import 'filter_card.dart';

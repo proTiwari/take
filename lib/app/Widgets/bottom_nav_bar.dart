@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:take/globar_variables/globals.dart';
-import 'package:take/pages/chat/group_list.dart';
-import 'package:take/pages/list_property/list_property.dart';
-import 'package:take/pages/explore_page/search.dart';
+import 'package:take/app/globar_variables/globals.dart';
+import 'package:take/app/pages/chat/group_list.dart';
+import 'package:take/app/pages/list_property/list_property.dart';
+import 'package:take/app/pages/explore_page/search.dart';
 
 import '../pages/chat/group_tile.dart';
 import '../pages/profile_page/profile_page.dart';

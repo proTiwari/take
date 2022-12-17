@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:take/globar_variables/globals.dart' as globals;
+import 'package:take/app/globar_variables/globals.dart' as globals;
 class SearchBar extends StatelessWidget {
   const SearchBar({Key? key}) : super(key: key);
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:take/Widgets/bottom_nav_bar.dart';
-import '../../globar_variables/globals.dart' as globals;
+import 'package:take/app/Widgets/bottom_nav_bar.dart';
+import 'package:take/app/globar_variables/globals.dart' as globals;
 import '../firebase_functions/firebase_fun.dart';
 import '../pages/explore_page/search.dart';
 

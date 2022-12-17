@@ -1,7 +1,7 @@
 library globals;
 
 import 'package:flutter/cupertino.dart';
-import 'package:take/models/property_model.dart';
+import 'package:take/app/models/property_model.dart';
 
 var width;
 var height;
