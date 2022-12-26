@@ -46,7 +46,7 @@ class _ImageAnimationState extends State<ImageAnimation> {
                 bool active = pagePosition == activePage;
                 return FullScreenWidget(
                     child: Container(
-                  margin: const EdgeInsets.all(10),
+                  margin: EdgeInsets.all(10),
                   child: Image.network(
                     widget.detail["propertyimage"][pagePosition],
                     fit: BoxFit.cover,

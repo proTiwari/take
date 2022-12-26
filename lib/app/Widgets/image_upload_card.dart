@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../globar_variables/globals.dart' as globals;
-import '../globar_variables/const_values.dart';
 
 class ImageUploadCard extends StatefulWidget {
   dynamic e;
@@ -17,14 +15,16 @@ class _ImageUploadCardState extends State<ImageUploadCard> {
     print(widget.e);
     print("2");
     return Container(
+      
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
       height: 140,
       width: MediaQuery.of(context).size.width * 0.4,
       decoration: BoxDecoration(
+        
         boxShadow: [
           BoxShadow(
               color: Colors.grey.shade200,
-              offset: Offset(5, 15),
+              offset: const Offset(5, 15),
               blurRadius: 5,
               spreadRadius: 3)
         ],
@@ -33,8 +33,10 @@ class _ImageUploadCardState extends State<ImageUploadCard> {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
-          padding: EdgeInsets.all(8.0),
+        
+          padding: const EdgeInsets.all(8.0),
           child: Column(
+            
             children: [
 
               widget.e == null

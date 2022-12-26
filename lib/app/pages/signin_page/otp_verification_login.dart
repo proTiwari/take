@@ -1,18 +1,9 @@
-// ignore_for_file: deprecated_member_use
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:take/app/Widgets/bottom_nav_bar.dart';
-import 'package:take/app/globar_variables/globals.dart';
 import 'package:take/app/pages/signup_page/phone_signup.dart';
 import 'package:take/app/pages/signin_page/sign_in.provider.dart';
-import 'package:take/app/pages/signup_page/signup_page.dart';
-
-import '../signup_page/signup_provider.dart';
 
 class OtpLoginPage extends StatefulWidget {
   String verificationId;
@@ -23,7 +14,7 @@ class OtpLoginPage extends StatefulWidget {
 }
 
 class _OtpLoginPageState extends State<OtpLoginPage> {
-  final _codeController = TextEditingController();
+  static final _codeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +47,8 @@ class _OtpLoginPageState extends State<OtpLoginPage> {
                     height: 25,
                   ),
                   SizedBox(
-                    height: 180,
-                    width: 450,
+                    height: 80,
+                    width: 350,
                     child: Container(),
                   ),
                   const SizedBox(
@@ -114,8 +105,9 @@ class _OtpLoginPageState extends State<OtpLoginPage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            provider.verify(
-                                _codeController.text, context, widget.verificationId);
+                            FocusScope.of(context).unfocus();
+                            provider.verify(_codeController.text, context,
+                                widget.verificationId);
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -161,19 +153,19 @@ class _OtpLoginPageState extends State<OtpLoginPage> {
                           text: TextSpan(
                             style: defaultStyle,
                             children: <TextSpan>[
-                              const TextSpan(text: "Don't have an account?"),
-                              TextSpan(
-                                  text: 'Sign Up',
-                                  style: linkStyle,
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {
-                                      print("signup");
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SignUpPage()));
-                                    })
+                              // const TextSpan(text: "Don't have an account?"),
+                              // TextSpan(
+                              //     text: 'Sign Up',
+                              //     style: linkStyle,
+                              //     recognizer: TapGestureRecognizer()
+                              //       ..onTap = () {
+                              //         print("signup");
+                              //         Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(
+                              //                 builder: (context) =>
+                              //                     SignUpPage("")));
+                              //       })
                             ],
                           ),
                         ),

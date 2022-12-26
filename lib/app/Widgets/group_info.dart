@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:take/app/Widgets/bottom_nav_bar.dart';
 import 'package:take/app/Widgets/wedigets.dart';
-import 'package:take/app/pages/explore_page/search.dart';
 
 import '../services/database_service.dart';
 

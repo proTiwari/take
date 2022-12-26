@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "308914390298",
-    "project_id": "runforrent-5397e",
-    "storage_bucket": "runforrent-5397e.appspot.com"
+    "project_number": "555235323232",
+    "project_id": "runforrent-72f1d",
+    "storage_bucket": "runforrent-72f1d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:308914390298:android:4ee68b391d0c323a1658a3",
+        "mobilesdk_app_id": "1:555235323232:android:dd60fd0bca44c4b30d4205",
         "android_client_info": {
           "package_name": "com.example.take"
         }
       },
       "oauth_client": [
         {
-          "client_id": "308914390298-b4vagugd26c9dnsoa3ct12hvtotsv54p.apps.googleusercontent.com",
+          "client_id": "555235323232-6sm4v8g1g2hkgnaqqs0hq60u42tfgu75.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDJLn-K4hIan6vrJWVZmt3ra00kbgE8lyU"
+          "current_key": "AIzaSyApTeFd8SqOme6EJe3jGuzEUOKcM4sJXHs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "308914390298-b4vagugd26c9dnsoa3ct12hvtotsv54p.apps.googleusercontent.com",
+              "client_id": "555235323232-6sm4v8g1g2hkgnaqqs0hq60u42tfgu75.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -1,19 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:convert';
-import 'package:snippet_coder_utils/ProgressHUD.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
-// import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:take/app/Widgets/paralleldropdownlist.dart';
+import 'package:take/app/pages/list_property/onmap.dart';
 import '../../Widgets/image_upload_card.dart';
 import '../../Widgets/loaded_images.dart';
+import '../../providers/base_providers.dart';
+import 'agreement_document.dart';
 import 'list_provider.dart';
 
 class ListProperty extends StatefulWidget {
@@ -32,8 +30,15 @@ class _ListPropertyState extends State<ListProperty> {
   String firstName = "";
   String lastName = "";
   String bodyTemp = "";
+  bool agreement = false;
 
   late Timer timer;
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController whatsappController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _loading = false;
   double _progressValue = 0.0;
@@ -46,6 +51,29 @@ class _ListPropertyState extends State<ListProperty> {
   final ImagePicker _picker = ImagePicker();
   dynamic imageFile;
   List listImage = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    addData();
+    try {
+      emailController.text = userProvider.getUser.email!;
+      nameController.text = userProvider.getUser.name!;
+      phoneController.text = userProvider.getUser.phone!;
+      whatsappController.text = userProvider.getUser.phone!;
+    } catch (e) {
+      print("ttttttttttttt${e}");
+    }
+  }
+
+  late BaseProvider userProvider;
+  var location;
+
+  addData() async {
+    userProvider = Provider.of<BaseProvider>(context, listen: false);
+    await userProvider.refreshUser();
+  }
 
   Widget bottomSheet() {
     return Container(
@@ -96,6 +124,10 @@ class _ListPropertyState extends State<ListProperty> {
   void dispose() {
     super.dispose();
     timer.cancel();
+    emailController;
+    nameController;
+    phoneController;
+    whatsappController;
   }
 
   void takePhoto(ImageSource source) async {
@@ -138,21 +170,116 @@ class _ListPropertyState extends State<ListProperty> {
   //   );
   // }
 
+  Widget currentlocation() {
+    return Container(
+        padding: const EdgeInsets.fromLTRB(9, 3, 9, 0),
+        height: 60,
+        width: 60,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.shade100,
+                offset: const Offset(1, 1),
+                blurRadius: 0,
+                spreadRadius: 3)
+          ],
+          color: Colors.white,
+          // color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: const Icon(Icons.gps_fixed));
+  }
+
+  var results;
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    // Navigator.push returns a Future that completes after calling
+    // Navigator.pop on the Selection Screen.
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => OnMap()),
+    );
+
+    // When a BuildContext is used from a StatefulWidget, the mounted property
+    // must be checked after an asynchronous gap.
+    // if (!mounted) return;
+
+    // After the Selection Screen returns a result, hide any previous snackbars
+    // and show the new result.
+    // ScaffoldMessenger.of(context)
+    //   ..removeCurrentSnackBar()
+    //   ..showSnackBar(SnackBar(content: Text('$result')));
+    setState(() {
+      results = result;
+    });
+  }
+
+  late NavigatorState _navigator;
+
+  @override
+  void didChangeDependencies() {
+    _navigator = Navigator.of(context);
+    super.didChangeDependencies();
+  }
+
+  Widget onMap() {
+    return GestureDetector(
+      onTap: (() {
+        _navigateAndDisplaySelection(context);
+        // location = Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (BuildContext context) => OnMap(),
+        //   ),
+        // );
+        // if (!mounted) return;
+
+        // // After the Selection Screen returns a result, hide any previous snackbars
+        // // and show the new result.
+        // ScaffoldMessenger.of(context)
+        //   ..removeCurrentSnackBar()
+        //   ..showSnackBar(SnackBar(content: Text('$location')));
+      }),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(9, 3, 9, 0),
+        height: 60,
+        width: 60,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.shade100,
+                offset: const Offset(1, 3),
+                blurRadius: 2,
+                spreadRadius: 3)
+          ],
+          color: Colors.white,
+          // color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: SizedBox(
+          child: Image.asset(
+            "assets/oop.png",
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(location);
+    final width = MediaQuery.of(context).size.width;
     return ChangeNotifierProvider(
       create: (context) => ListProvider(),
-      child: SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: Container(
+          margin: EdgeInsets.symmetric(
+              vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
+          child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(16.0, 26, 16, 1),
               child: Column(
                 children: <Widget>[
-                  Image.asset("assets/home3.png"),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   Align(
                     alignment: Alignment.topLeft,
                     child: RichText(
@@ -310,16 +437,28 @@ class _ListPropertyState extends State<ListProperty> {
                                   child: Center(
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          14.0, 0, 0, 2.7),
+                                          14.0, 0, 0, 8),
                                       child: Center(
                                         child: TextFormField(
                                           keyboardType: TextInputType.number,
                                           decoration: const InputDecoration(
+                                            fillColor: Colors.black,
                                             hintText: "Pincode",
                                             border: InputBorder.none,
                                           ),
                                           onChanged: (value) {
                                             provider.changePinCode(value);
+                                            provider.changeEmail(
+                                                userProvider.getUser.email);
+                                            provider.changeOwersName(
+                                                userProvider.getUser.name
+                                                    .toString());
+                                            provider.changeWhatsappNumber(
+                                                userProvider.getUser.phone
+                                                    .toString());
+                                            provider.changeMobileNumber(
+                                                userProvider.getUser.phone
+                                                    .toString());
                                           },
                                           validator: (value) {
                                             return null;
@@ -355,12 +494,12 @@ class _ListPropertyState extends State<ListProperty> {
                                   child: Center(
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          14.0, 0, 0, 2.7),
+                                          14.0, 0, 0, 8),
                                       child: Center(
                                         child: TextFormField(
                                           keyboardType: TextInputType.text,
                                           decoration: const InputDecoration(
-                                            hintText: "Street Address",
+                                            hintText: "Complete Address",
                                             border: InputBorder.none,
                                           ),
                                           onChanged: (value) {
@@ -378,8 +517,63 @@ class _ListPropertyState extends State<ListProperty> {
                             );
                           },
                         ),
+
                         const SizedBox(
-                          height: 10,
+                          height: 30,
+                        ),
+
+                        results == null ? const SizedBox() : Text("$results"),
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        // location on map or current coordinate
+                        Padding(
+                          padding: const EdgeInsets.all(18.0),
+                          child: IntrinsicHeight(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    currentlocation(),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    const Text("current location",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w200))
+                                  ],
+                                ),
+                                // const SizedBox(
+                                //   width: 10,
+                                // ),
+                                const VerticalDivider(
+                                  color: Colors.black,
+                                  thickness: 1,
+                                ),
+                                // const SizedBox(
+                                //   width: 10,
+                                // ),
+                                Column(
+                                  children: [
+                                    onMap(),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    const Text(
+                                      "choose on Map",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w200),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(
+                          height: 20,
                         ),
                         Consumer<ListProvider>(
                           builder: (context, provider, child) {
@@ -391,24 +585,41 @@ class _ListPropertyState extends State<ListProperty> {
                                     borderRadius: BorderRadius.circular(20),
                                     boxShadow: const <BoxShadow>[
                                       BoxShadow(
-                                          color:
-                                              Colors.black, //shadow for button
-                                          blurRadius:
-                                              0.1) //blur radius of shadow
+                                          color: Colors.black,
+                                          //shadow for button
+                                          blurRadius: 0.1)
+                                      //blur radius of shadow
                                     ]),
                                 child: Padding(
                                   padding: const EdgeInsets.fromLTRB(
-                                      14.0, 0, 0, 2.7),
+                                      14.0, 5, 0, 2.7),
                                   child: DropdownButton(
                                     hint: provider.wanttotext == ''
-                                        ? const Text("Want to?")
-                                        : Text(provider.wanttotext),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                        ? const Text(
+                                            "Want to sell property or rent it?",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Color.fromARGB(
+                                                  255, 184, 160, 160),
+                                            ),
+                                          )
+                                        : Text(
+                                            provider.wanttotext,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Color.fromARGB(
+                                                  255, 184, 160, 160),
+                                            ),
+                                          ),
+                                    icon: const Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                      child: Icon(Icons.keyboard_arrow_down),
+                                    ),
                                     isExpanded: true,
                                     underline: Container(),
                                     //empty line
                                     style: const TextStyle(
-                                        fontSize: 18, color: Colors.black),
+                                        fontSize: 16, color: Colors.black),
                                     dropdownColor: Colors.white,
                                     iconEnabledColor: Colors.black,
                                     items: provider.wantTo.map((String items) {
@@ -419,7 +630,8 @@ class _ListPropertyState extends State<ListProperty> {
                                     }).toList(),
                                     onChanged: (String? newValue) {
                                       setState(() {
-                                        if (newValue == "Want to?") {
+                                        if (newValue ==
+                                            "How many rooms does your property have?") {
                                           sell = false;
                                           rent = false;
                                         } else if (newValue ==
@@ -464,19 +676,33 @@ class _ListPropertyState extends State<ListProperty> {
                                           ]),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 0),
                                         child: DropdownButton(
                                           hint: provider.servicetypetext == ''
-                                              ? const Text("Service Type?")
-                                              : Text(provider.servicetypetext
-                                                  .toString()),
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
+                                              ? const Text(
+                                                  "Which of the following is your property type?",
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 184, 160, 160)),
+                                                )
+                                              : Text(
+                                                  provider.servicetypetext
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Color.fromARGB(
+                                                          255, 184, 160, 160))),
+                                          icon: const Padding(
+                                            padding:
+                                                EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                            child:
+                                                Icon(Icons.keyboard_arrow_down),
+                                          ),
                                           isExpanded: true,
                                           underline: Container(),
                                           //empty line
                                           style: const TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               color: Colors.black),
                                           dropdownColor: Colors.white,
                                           iconEnabledColor: Colors.black,
@@ -528,20 +754,31 @@ class _ListPropertyState extends State<ListProperty> {
                                           ]),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 0),
                                         child: DropdownButton(
                                           // Initial Value
                                           hint: provider.sharingtext == ''
-                                              ? const Text("Number of sharing?")
-                                              : Text(provider.sharingtext),
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
+                                              ? const Text("Number of sharing?",
+                                                  style: TextStyle(
+                                                      color: Color.fromARGB(
+                                                          255, 184, 160, 160)))
+                                              : Text(provider.sharingtext,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Color.fromARGB(
+                                                          255, 184, 160, 160))),
+                                          icon: const Padding(
+                                            padding:
+                                                EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                            child:
+                                                Icon(Icons.keyboard_arrow_down),
+                                          ),
                                           isExpanded: true,
                                           //make true to take width of parent widget
                                           underline: Container(),
                                           //empty line
                                           style: const TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               color: Colors.black),
                                           dropdownColor: Colors.white,
                                           iconEnabledColor: Colors.black,
@@ -585,19 +822,29 @@ class _ListPropertyState extends State<ListProperty> {
                                               0.1) //blur radius of shadow
                                     ]),
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      14.0, 0, 0, 2.7),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(14.0, 0, 0, 0),
                                   child: DropdownButton(
                                     hint: provider.advanceMoneytext == ''
-                                        ? const Text("Any Advance Money?")
-                                        : Text(provider.advanceMoneytext),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
+                                        ? const Text("Any advance money?",
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 184, 160, 160)))
+                                        : Text(provider.advanceMoneytext,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Color.fromARGB(
+                                                    255, 184, 160, 160))),
+                                    icon: const Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                      child: Icon(Icons.keyboard_arrow_down),
+                                    ),
                                     isExpanded: true,
                                     //make true to take width of parent widget
                                     underline: Container(),
                                     //empty line
                                     style: const TextStyle(
-                                        fontSize: 18, color: Colors.black),
+                                        fontSize: 16, color: Colors.black),
                                     dropdownColor: Colors.white,
                                     iconEnabledColor: Colors.black,
                                     // Array list of items
@@ -644,22 +891,36 @@ class _ListPropertyState extends State<ListProperty> {
                                           ]),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 0),
                                         child: DropdownButton(
                                           // Initial Value
                                           hint: provider.foodtext == ''
-                                              ? const Text("Food Service?")
-                                              : Text(provider.foodtext),
+                                              ? const Text(
+                                                  "Food service?",
+                                                  style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 184, 160, 160),
+                                                  ),
+                                                )
+                                              : Text(provider.foodtext,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Color.fromARGB(
+                                                          255, 184, 160, 160))),
 
                                           // Down Arrow Icon
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
+                                          icon: const Padding(
+                                            padding:
+                                                EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                            child:
+                                                Icon(Icons.keyboard_arrow_down),
+                                          ),
                                           isExpanded: true,
                                           //make true to take width of parent widget
                                           underline: Container(),
                                           //empty line
                                           style: const TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 16,
                                               color: Colors.black),
                                           dropdownColor: Colors.white,
                                           iconEnabledColor: Colors.black,
@@ -710,20 +971,30 @@ class _ListPropertyState extends State<ListProperty> {
                                           ]),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 0),
                                         child: DropdownButton(
                                           // Initial Value
                                           hint: provider.roomstext == ''
                                               ? const Text(
-                                                  "Number of rooms",
-                                                  style:
-                                                      TextStyle(fontSize: 18),
+                                                  "How many rooms does your property have?",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Color.fromARGB(
+                                                          255, 184, 160, 160)),
                                                 )
-                                              : Text(provider.roomstext),
+                                              : Text(provider.roomstext,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Color.fromARGB(
+                                                          255, 184, 160, 160))),
 
                                           // Down Arrow Icon
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
+                                          icon: const Padding(
+                                            padding:
+                                                EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                            child:
+                                                Icon(Icons.keyboard_arrow_down),
+                                          ),
                                           isExpanded: true,
                                           //make true to take width of parent widget
                                           underline: Container(),
@@ -784,7 +1055,7 @@ class _ListPropertyState extends State<ListProperty> {
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 8),
                                         child: TextFormField(
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(
@@ -813,129 +1084,169 @@ class _ListPropertyState extends State<ListProperty> {
                         rent
                             ? Consumer<ListProvider>(
                                 builder: (context, provider, child) {
-                                  return Row(
-                                    mainAxisSize: MainAxisSize.max,
+                                  return Column(
                                     children: [
-                                      SizedBox(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.31,
-                                        child: DecoratedBox(
-                                          decoration: const BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(20),
-                                              topRight: Radius.circular(0),
-                                              bottomLeft: Radius.circular(20),
-                                              bottomRight: Radius.circular(0),
-                                            ),
-                                            boxShadow: <BoxShadow>[
-                                              BoxShadow(
-                                                  color: Colors
-                                                      .black, //shadow for button
-                                                  blurRadius:
-                                                      0.1) //blur radius of shadow
-                                            ],
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                14.0, 0, 0, 2.7),
-                                            child: TextFormField(
-                                              inputFormatters: [
-                                                LengthLimitingTextInputFormatter(
-                                                    13),
-                                              ],
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              decoration: const InputDecoration(
-                                                hintText: "Amount",
-                                                border: InputBorder.none,
-                                              ),
-                                              onChanged: (value) {
-                                                provider.changeAmount(value);
-                                              },
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.30,
-                                        child: DecoratedBox(
-                                          decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(0),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          SizedBox(
+                                            height: 43,
+                                            // margin: EdgeInsets.symmetric(vertical: 0, horizontal: width < 800?10:width*0.24),
+                                            width: width < 800
+                                                ? 200
+                                                : width * 0.22,
+                                            child: DecoratedBox(
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
                                                   topRight: Radius.circular(0),
                                                   bottomLeft:
-                                                      Radius.circular(0),
+                                                      Radius.circular(20),
                                                   bottomRight:
-                                                      Radius.circular(0)),
-                                              boxShadow: <BoxShadow>[
-                                                BoxShadow(
-                                                    color: Colors
-                                                        .black, //shadow for button
-                                                    blurRadius:
-                                                        0.1) //blur radius of shadow
-                                              ]),
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                14.0, 0, 0, 2.7),
-                                            child: DropdownButton(
-                                              // Initial Value
-                                              hint: provider.tenortext == ''
-                                                  ? const Text(
-                                                      "Payment Duration",
-                                                      style: TextStyle(
-                                                          fontSize: 18),
-                                                    )
-                                                  : Text(provider.tenortext),
-
-                                              // Down Arrow Icon
-                                              icon: const Icon(
-                                                  Icons.keyboard_arrow_down),
-                                              isExpanded: true,
-                                              //make true to take width of parent widget
-                                              underline: Container(),
-                                              //empty line
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.black),
-                                              dropdownColor: Colors.white,
-                                              iconEnabledColor: Colors.black,
-                                              // Array list of items
-                                              items: provider.tenor
-                                                  .map((String items) {
-                                                return DropdownMenuItem(
-                                                  value: items,
-                                                  child: Text(items),
-                                                );
-                                              }).toList(),
-                                              onChanged: (String? newValue) {
-                                                provider.tenortext = newValue!;
-                                                provider.changePaymentDuration(
-                                                    newValue);
-                                              },
+                                                      Radius.circular(0),
+                                                ),
+                                                boxShadow: <BoxShadow>[
+                                                  BoxShadow(
+                                                      color: Colors
+                                                          .black, //shadow for button
+                                                      blurRadius:
+                                                          0.1) //blur radius of shadow
+                                                ],
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        14.0, 0, 0, 8),
+                                                child: TextFormField(
+                                                  inputFormatters: [
+                                                    LengthLimitingTextInputFormatter(
+                                                        13),
+                                                  ],
+                                                  keyboardType:
+                                                      TextInputType.number,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    hintText: "Amount",
+                                                    border: InputBorder.none,
+                                                  ),
+                                                  onChanged: (value) {
+                                                    provider
+                                                        .changeAmount(value);
+                                                  },
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                          SizedBox(
+                                            height: 43,
+                                            width: width < 800
+                                                ? 200
+                                                : width * 0.22,
+                                            child: DecoratedBox(
+                                              decoration: const BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topLeft: Radius
+                                                              .circular(0),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20),
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  0),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  20)),
+                                                  boxShadow: <BoxShadow>[
+                                                    BoxShadow(
+                                                        color: Colors
+                                                            .black, //shadow for button
+                                                        blurRadius:
+                                                            0.1) //blur radius of shadow
+                                                  ]),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        14.0, 0, 0, 0),
+                                                child: DropdownButton(
+                                                  // Initial Value
+                                                  hint: provider.tenortext == ''
+                                                      ? const Text(
+                                                          "Payment duration",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      184,
+                                                                      160,
+                                                                      160)),
+                                                        )
+                                                      : Text(provider.tenortext,
+                                                          style: const TextStyle(
+                                                              fontSize: 16,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      184,
+                                                                      160,
+                                                                      160))),
+
+                                                  // Down Arrow Icon
+                                                  icon: const Padding(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            0, 0, 8, 0),
+                                                    child: Icon(Icons
+                                                        .keyboard_arrow_down),
+                                                  ),
+                                                  isExpanded: true,
+                                                  //make true to take width of parent widget
+                                                  underline: Container(),
+                                                  //empty line
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black),
+                                                  dropdownColor: Colors.white,
+                                                  iconEnabledColor:
+                                                      Colors.black,
+                                                  // Array list of items
+                                                  items: provider.tenor
+                                                      .map((String items) {
+                                                    return DropdownMenuItem(
+                                                      value: items,
+                                                      child: Text(items),
+                                                    );
+                                                  }).toList(),
+                                                  onChanged:
+                                                      (String? newValue) {
+                                                    provider.tenortext =
+                                                        newValue!;
+                                                    provider
+                                                        .changePaymentDuration(
+                                                            newValue);
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
                                       ),
                                       SizedBox(
-                                        height: 50,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.30,
+                                        height: 43,
                                         child: DecoratedBox(
                                           decoration: const BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(0),
+                                                  topLeft: Radius.circular(20),
                                                   topRight: Radius.circular(20),
                                                   bottomLeft:
-                                                      Radius.circular(0),
+                                                      Radius.circular(20),
                                                   bottomRight:
                                                       Radius.circular(20)),
                                               boxShadow: <BoxShadow>[
@@ -947,20 +1258,36 @@ class _ListPropertyState extends State<ListProperty> {
                                               ]),
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
-                                                14.0, 0, 0, 2.7),
+                                                14.0, 0, 0, 0),
                                             child: DropdownButton(
                                               // Initial Value
                                               hint: provider.roomstext == ''
                                                   ? const Text(
-                                                      "Number of rooms",
+                                                      "How many rooms does your property have?",
                                                       style: TextStyle(
-                                                          fontSize: 18),
+                                                          fontSize: 16,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              184,
+                                                              160,
+                                                              160)),
                                                     )
-                                                  : Text(provider.roomstext),
+                                                  : Text(provider.roomstext,
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              184,
+                                                              160,
+                                                              160))),
 
                                               // Down Arrow Icon
-                                              icon: const Icon(
-                                                  Icons.keyboard_arrow_down),
+                                              icon: const Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 0, 8, 0),
+                                                child: Icon(
+                                                    Icons.keyboard_arrow_down),
+                                              ),
                                               isExpanded: true,
                                               //make true to take width of parent widget
                                               underline: Container(),
@@ -1018,7 +1345,7 @@ class _ListPropertyState extends State<ListProperty> {
                                           ]),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 8),
                                         child: TextFormField(
                                           decoration: const InputDecoration(
                                             hintText: "Property Name",
@@ -1061,7 +1388,7 @@ class _ListPropertyState extends State<ListProperty> {
                                           ]),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 8),
                                         child: TextFormField(
                                           keyboardType: TextInputType.number,
                                           decoration: const InputDecoration(
@@ -1103,7 +1430,7 @@ class _ListPropertyState extends State<ListProperty> {
                                           ]),
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
-                                            14.0, 0, 0, 2.7),
+                                            14.0, 0, 0, 8),
                                         child: TextFormField(
                                           keyboardType: TextInputType.number,
                                           decoration: const InputDecoration(
@@ -1143,9 +1470,10 @@ class _ListPropertyState extends State<ListProperty> {
                                               0.1) //blur radius of shadow
                                     ]),
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      14.0, 0, 0, 2.7),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(14.0, 0, 0, 8),
                                   child: TextFormField(
+                                    controller: nameController,
                                     keyboardType: TextInputType.text,
                                     decoration: const InputDecoration(
                                       hintText: "Owner's Name",
@@ -1182,10 +1510,11 @@ class _ListPropertyState extends State<ListProperty> {
                                               0.1) //blur radius of shadow
                                     ]),
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      14.0, 0, 0, 2.7),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(14.0, 0, 0, 8),
                                   child: TextFormField(
                                     keyboardType: TextInputType.number,
+                                    controller: phoneController,
                                     decoration: const InputDecoration(
                                       hintText: "Mobile Number",
                                       border: InputBorder.none,
@@ -1221,9 +1550,10 @@ class _ListPropertyState extends State<ListProperty> {
                                               0.1) //blur radius of shadow
                                     ]),
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      14.0, 0, 0, 2.7),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(14.0, 0, 0, 8),
                                   child: TextFormField(
+                                    controller: whatsappController,
                                     keyboardType: TextInputType.number,
                                     decoration: const InputDecoration(
                                       hintText: "WhatsApp Number",
@@ -1260,9 +1590,10 @@ class _ListPropertyState extends State<ListProperty> {
                                               0.1) //blur radius of shadow
                                     ]),
                                 child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      14.0, 0, 0, 2.7),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(14.0, 0, 0, 8),
                                   child: TextFormField(
+                                    controller: emailController,
                                     keyboardType: TextInputType.emailAddress,
                                     decoration: const InputDecoration(
                                       hintText: "Email",
@@ -1310,10 +1641,9 @@ class _ListPropertyState extends State<ListProperty> {
                                             ...listImage.map(
                                               (e) {
                                                 if (kDebugMode) {
-                                                  print("is this your are taking about :$e");
+                                                  // print("is this your are taking about :$e");
                                                 }
                                                 var dsd = LoadedImage(e);
-                                                print(dsd);
                                                 return LoadedImage(e);
                                               },
                                             ),
@@ -1374,12 +1704,58 @@ class _ListPropertyState extends State<ListProperty> {
                         const SizedBox(
                           height: 20,
                         ),
+                        Row(
+                          children: <Widget>[
+                            const SizedBox(
+                              width: 10,
+                            ), //SizedBox
+                            Checkbox(
+                              value: agreement,
+                              onChanged: (value) {
+                                setState(() {
+                                  agreement = value!;
+                                });
+                                print(agreement);
+                              },
+                            ),
+                            const SizedBox(width: 10),
+                            InkWell(
+                                child: const Text(
+                                  'agree to terms and conditions',
+                                  style: TextStyle(
+                                      color: Colors.deepPurpleAccent,
+                                      fontSize: 17.0),
+                                ),
+                                onTap: () => {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              AgreementDocument(),
+                                        ),
+                                      ),
+                                    }),
+                            // Text(
+                            //   'agree to terms and conditions',
+                            //   style: TextStyle(fontSize: 17.0),
+                            // ), //Checkbox
+                          ], //<Widget>[]
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                         Consumer<ListProvider>(
                           builder: (context, provider, child) {
                             return true
                                 ? InkWell(
                                     onTap: () async {
-                                      provider.submit(context);
+                                      if (agreement == true) {
+                                        provider.submit(context);
+                                      } else {
+                                        showToast(
+                                            context: context,
+                                            "Please agree to the terms and conditions");
+                                      }
                                     },
                                     child: Stack(
                                       // mainAxisAlignment:

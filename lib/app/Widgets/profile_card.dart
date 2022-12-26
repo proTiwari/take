@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:take/app/models/user_model.dart';
-import 'package:take/app/pages/signin_page/phone_login.dart';
-
 import '../pages/ownersprofile/owners_profile_page.dart';
 
 class OwnerProfileCard extends StatelessWidget {

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../globar_variables/const_values.dart';
-
 class SmallCard extends StatelessWidget {
   final String city;
   const SmallCard(this.city, {Key? key}) : super(key: key);

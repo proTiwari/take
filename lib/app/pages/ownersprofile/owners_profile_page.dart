@@ -1,23 +1,12 @@
-import 'dart:io';
-import 'dart:math';
+import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_styled_toast/flutter_styled_toast.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
-import 'package:take/app/pages/signin_page/phone_login.dart';
 import '../../Widgets/google_map_card.dart';
 import '../../firebase_functions/firebase_fun.dart';
-import '../signin_page/sign_in.provider.dart';
-import '../signup_page/signup_provider.dart';
-import 'package:path/path.dart' as base;
+import 'owners_profile_property_detail.dart';
 
 class OwnersProfilePage extends StatefulWidget {
   var valuedata;
@@ -50,14 +39,14 @@ class _OwnersProfilePageState extends State<OwnersProfilePage>
     super.initState();
     tabController = TabController(length: 2, vsync: this);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      data =
-          Provider.of<FirebaseServices>(context, listen: false).getOwnerProperties(globals.ownerprofiledata.properties);
+      data = Provider.of<FirebaseServices>(context, listen: false)
+          .getOwnerProperties(globals.ownerprofiledata.properties);
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     try {
       globals.ownerprofiledata.address;
     } catch (e) {
@@ -79,8 +68,9 @@ class _OwnersProfilePageState extends State<OwnersProfilePage>
           Consumer<FirebaseServices>(builder: (context, provider, child) {
         // provider.getProperties();
         return SingleChildScrollView(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.959,
+          child: Container(
+            margin: EdgeInsets.symmetric(
+                vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
             child: Column(
               children: [
                 const SizedBox(height: 10.0),
@@ -165,59 +155,82 @@ class _OwnersProfilePageState extends State<OwnersProfilePage>
                 SingleChildScrollView(
                   child: SizedBox(
                     height: MediaQuery.of(context).size.height * 0.67,
-                    child: Expanded(
-                      child: TabBarView(
-                        controller: tabController,
-                        children: [
-                          provider.owerpropertydata.isNotEmpty
-                              ? GridView.builder(
-                                  itemCount: provider.owerpropertydata.length,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                          mainAxisExtent: 200.0,
-                                          crossAxisCount: 3),
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                          image: DecorationImage(
-                                            image: NetworkImage(provider
-                                                .owerpropertydata[index]
-                                                .propertyimage[0]), //globals
-                                            //   .listofproperties[index]
-                                            // .propertyimage[0]
-
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 37.0,
-                                              right: 37.0,
-                                              top: 185.0,
-                                              bottom: 15.0),
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: TabBarView(
+                            controller: tabController,
+                            children: [
+                              provider.owerpropertydata.isNotEmpty
+                                  ? GridView.builder(
+                                      itemCount:
+                                          provider.owerpropertydata.length,
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                              mainAxisExtent: 200.0,
+                                              crossAxisCount: 3),
+                                      itemBuilder: (context, index) {
+                                        var detai = jsonEncode(
+                                            provider.owerpropertydata[index]);
+                                        print("uiuiiiuiuiuiu${detai}");
+                                        var detail = jsonDecode(detai);
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          OwnersProfileProperty(
+                                                              detail: detail)));
+                                            },
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        15.0)),
-                                            child: const Text(""),
+                                                    BorderRadius.circular(20.0),
+                                                image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      provider
+                                                              .owerpropertydata[
+                                                                  index]
+                                                              .propertyimage[
+                                                          0]), //globals
+                                                  //   .listofproperties[index]
+                                                  // .propertyimage[0]
+
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 37.0,
+                                                    right: 37.0,
+                                                    top: 185.0,
+                                                    bottom: 15.0),
+                                                child: Container(
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15.0)),
+                                                  child: const Text(""),
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                )
-                              : noGroupWidget(),
-                          GoogleMapCard(),
-                        ],
-                      ),
+                                        );
+                                      },
+                                    )
+                                  : noGroupWidget(),
+                              GoogleMapCard(),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 )
@@ -233,7 +246,7 @@ class _OwnersProfilePageState extends State<OwnersProfilePage>
     dynamic image = const NetworkImage(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd9gwkP14yXTwV2JMOryOh3Q4tS1UHmBqkcPGNfawYLr8UwHwrRsv_t50q5X5OMsqP5Ag&usqp=CAU");
     try {
-     image = NetworkImage(globals.ownerprofiledata.profileImage);
+      image = NetworkImage(globals.ownerprofiledata.profileImage);
     } catch (e) {
       image = const NetworkImage(
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd9gwkP14yXTwV2JMOryOh3Q4tS1UHmBqkcPGNfawYLr8UwHwrRsv_t50q5X5OMsqP5Ag&usqp=CAU");

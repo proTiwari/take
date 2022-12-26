@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'Image_animation.dart';
 import '../globar_variables/const_values.dart';
 
 class FilterCard extends StatelessWidget {

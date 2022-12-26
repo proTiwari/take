@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../globar_variables/globals.dart' as globals;
-import '../globar_variables/const_values.dart';
 
 class DetailCard extends StatelessWidget {
   var detail;

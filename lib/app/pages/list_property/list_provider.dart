@@ -5,8 +5,10 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:take/app/pages/splashscreen.dart';
 import 'package:take/app/providers/base_providers.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,12 +31,13 @@ class ListingModel {
 
 class ListProvider extends BaseProvider {
   List imagelistvalue = [];
+  List uploadimagelist = [];
 
   bool verify = true;
 
   var servicetypetext = "";
   var servicetypelist = [
-    'Service Type?',
+    'Which of the following is your property type?',
     'Hostel',
     'Hotel',
     'PG',
@@ -46,7 +49,7 @@ class ListProvider extends BaseProvider {
 
   var wanttotext = "";
   var wantTo = [
-    'Want to?',
+    'Want to sell property or rent it?',
     'Sell property',
     'Rent property',
   ];
@@ -85,7 +88,7 @@ class ListProvider extends BaseProvider {
 
   var roomstext = "";
   var rooms = [
-    'Number of rooms',
+    'How many rooms does your property have?',
     '1 Room',
     '2 Room',
     '3 Room',
@@ -177,7 +180,16 @@ class ListProvider extends BaseProvider {
   }
 
   void changeimagelist() {
+    if (globals.initlistimages.isNotEmpty) {
+      imagelistvalue = globals.initlistimages;
+      notifyListeners();
+    }
     imagelistvalue;
+    notifyListeners();
+  }//uploadimagelist
+
+  void uploadingimagelist() {
+    uploadimagelist;
     notifyListeners();
   }
 
@@ -191,7 +203,7 @@ class ListProvider extends BaseProvider {
   }
 
   void changeWantto(String value) {
-    if (value != "Want to?") {
+    if (value != "Want you want to sell property or rent it?") {
       _wantto = ListingModel(value, "null");
     } else if (value.isEmpty) {
       _wantto = ListingModel("null", "");
@@ -202,7 +214,7 @@ class ListProvider extends BaseProvider {
   }
 
   void changeServiceType(String value) {
-    if (value != "Service Type") {
+    if (value != "Which of the following is your property type?") {
       _servicetype = ListingModel(value, "null");
       // placetext.notifyListeners();
     } else if (value.isEmpty) {
@@ -269,7 +281,7 @@ class ListProvider extends BaseProvider {
   }
 
   void changeNumberOfRooms(String value) {
-    if (value != "Number Of rooms") {
+    if (value != "How many rooms does your property have?") {
       _numberofrooms = ListingModel(value, "null");
     } else if (value.isEmpty) {
       _numberofrooms = ListingModel("null", "");
@@ -434,7 +446,7 @@ class ListProvider extends BaseProvider {
           loading = false;
           notifyListeners();
           showToast(
-            "street address field is empty",
+            "complete address field is empty",
             context: context,
             animation: StyledToastAnimation.none,
           );
@@ -453,12 +465,12 @@ class ListProvider extends BaseProvider {
         }
 
         if (_numberofrooms.value == "null" ||
-            _numberofrooms.value == "Number of rooms") {
+            _numberofrooms.value == "How many rooms does your property have?") {
           verify = false;
           loading = false;
           notifyListeners();
           showToast(
-            "select number of rooms!",
+            "select 'How many rooms does your property have?'",
             context: context,
             animation: StyledToastAnimation.none,
           );
@@ -667,7 +679,7 @@ class ListProvider extends BaseProvider {
           notifyListeners();
           verify = false;
           showToast(
-            "street address field is empty",
+            "complete address field is empty",
             context: context,
             animation: StyledToastAnimation.none,
           );
@@ -708,7 +720,7 @@ class ListProvider extends BaseProvider {
         }
 
         if (_numberofrooms.value == "null" ||
-            _numberofrooms.value == "Number of rooms") {
+            _numberofrooms.value == "How many rooms does your property have?") {
           loading = false;
           notifyListeners();
           verify = false;
@@ -823,7 +835,7 @@ class ListProvider extends BaseProvider {
         notifyListeners();
         // notifyListeners();
         showToast(
-          "select 'want to?' field!",
+          "select 'Want to sell property or rent it?' field!",
           context: context,
           animation: StyledToastAnimation.none,
         );
@@ -885,7 +897,7 @@ class ListProvider extends BaseProvider {
     return result;
   }
 
-  uploadImage(context) async {
+uploadImage(context) async {
     verify = false;
     var uid = FirebaseAuth.instance.currentUser!.uid;
     if (globals.imageList.isNotEmpty) {
@@ -956,6 +968,7 @@ class ListProvider extends BaseProvider {
     return verify.toString();
   }
 
+
   Future<void> listproperty(context) async {
     try {
       listProperty(
@@ -982,7 +995,13 @@ class ListProvider extends BaseProvider {
         foodservice: foodservice.value,
         paymentduration: paymentduration.value,
       );
+      // await getproperty("Allahābād");
+      // await getUser();
       showToast("successfully uploaded", context: context);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) => SplashScreen()),
+          ModalRoute.withName('/'));
     } catch (e) {
       loading = false;
       notifyListeners();

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../globar_variables/const_values.dart';
-
 class FilterPageCard extends StatelessWidget {
   final String value;
   const FilterPageCard(this.value, {Key? key}) : super(key: key);

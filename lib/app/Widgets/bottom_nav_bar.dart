@@ -1,16 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:take/app/globar_variables/globals.dart';
 import 'package:take/app/pages/chat/group_list.dart';
 import 'package:take/app/pages/list_property/list_property.dart';
 import 'package:take/app/pages/explore_page/search.dart';
-
-import '../pages/chat/group_tile.dart';
+import 'package:take/app/pages/signin_page/phone_login.dart';
+import 'package:take/app/providers/base_providers.dart';
 import '../pages/profile_page/profile_page.dart';
-import '../pages/chat/chat_page.dart';
+import '../globar_variables/globals.dart' as globals;
 
 class CustomBottomNavigation extends StatefulWidget {
-
   CustomBottomNavigation(city);
 
   @override
@@ -20,14 +21,33 @@ class CustomBottomNavigation extends StatefulWidget {
 class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   late int pageIndex = 0;
 
-  final pages = [Search(city), const GroupListPage(), const ListProperty(), const ProfilePage()];
+  final pages = [
+    Search(city),
+    globals.logined == false ? LoginApp() : const GroupListPage(),
+    globals.logined == false ? LoginApp() : const ListProperty(),
+    globals.logined == false ? LoginApp() : const ProfilePage()
+  ];
+  BaseProvider? _userProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    getuser();
+  }
+
+  void getuser() async {
+    _userProvider = Provider.of<BaseProvider>(context, listen: false);
+    await _userProvider!.refreshUser();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: pages[pageIndex],
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+        margin: EdgeInsets.symmetric(
+            vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
         height: 70,
         decoration: BoxDecoration(
           boxShadow: [
