@@ -10,6 +10,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:take/app/Widgets/bottom_nav_bar.dart';
 import 'package:take/app/firebase_functions/firebase_fun.dart';
 import 'package:take/app/pages/profile_page/profile_page.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
@@ -63,32 +64,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
   void initState() {
     super.initState();
     try {
-      print(widget.valuedata.email);
+      print(widget.valuedata['email']);
       setState(() {
-        propertyon = widget.valuedata.wantto;
+        propertyon = widget.valuedata['wantto'];
       });
-      name.text = widget.valuedata.ownername;
-      email.text = widget.valuedata.email;
-      foodservice.text = widget.valuedata.foodservice;
-      phone.text = widget.valuedata.mobilenumber;
-      whatsapp.text = widget.valuedata.whatsappnumber;
-      advanvemoney.text = widget.valuedata.advancemoney;
-      amount.text = widget.valuedata.amount;
-      areaofland.text = widget.valuedata.areaofland;
-      streetaddress.text = widget.valuedata.streetaddress;
-      propertyname.text = widget.valuedata.propertyname;
-      sharing.text = widget.valuedata.sharing;
-      pincode.text = widget.valuedata.pincode;
-      paymentduration.text = widget.valuedata.paymentduration;
-      numberoffloors.text = widget.valuedata.numberoffloors;
-      numberofrooms.text = widget.valuedata.numberofrooms;
-      servicetype.text = widget.valuedata.servicetype;
-      discription.text = widget.valuedata.description == 'null'
-          ? "   -"
-          : widget.valuedata.description;
+      name.text = widget.valuedata['ownername'];
+      email.text = widget.valuedata['email'];
+      foodservice.text = widget.valuedata['foodservice'];
+      phone.text = widget.valuedata['mobilenumber'];
+      whatsapp.text = widget.valuedata['whatsappnumber'];
+      advanvemoney.text = widget.valuedata['advancemoney'];
+      amount.text = widget.valuedata['amount'];
+      areaofland.text = widget.valuedata['areaofland'];
+      streetaddress.text = widget.valuedata['streetaddress'];
+      propertyname.text = widget.valuedata['propertyname'];
+      sharing.text = widget.valuedata['sharing'];
+      pincode.text = widget.valuedata['pincode'];
+      paymentduration.text = widget.valuedata['paymentduration'];
+      numberoffloors.text = widget.valuedata['numberoffloors'];
+      numberofrooms.text = widget.valuedata['numberofrooms'];
 
-      initImageList = widget.valuedata.propertyimage;
-      globals.initlistimages = widget.valuedata.propertyimage;
+      servicetype.text = widget.valuedata['servicetype'];
+      discription.text = widget.valuedata['description'] == 'null'
+          ? "   -"
+          : widget.valuedata['description'];
+
+      initImageList = widget.valuedata['propertyimage'];
+      print(initImageList);
+      globals.initlistimages = widget.valuedata['propertyimage'];
     } catch (e) {
       print("ttttttttttttt");
       print(e.toString());
@@ -275,8 +278,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
         heightImage = true;
       }
       listImage.add(pickedFile);
+
       listImage.remove(null);
       globals.imageList = listImage;
+      ListProvider().uploadimagelist = listImage;
+      ListProvider().uploadingimagelist();
     });
   }
 
@@ -1205,7 +1211,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       onTap: () {
                         setState(
                           () {
-                            // initImageList = provider.imagelistvalue;
+                            initImageList = provider.imagelistvalue;
                             print(initImageList);
                           },
                         );
@@ -1219,8 +1225,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               (e) {
                                 return LoadedImagePropertyEdit(
                                     e,
-                                    widget.valuedata.city,
-                                    widget.valuedata.propertyId,
+                                    widget.valuedata['city'],
+                                    widget.valuedata['propertyId'],
                                     context);
                               },
                             ),
@@ -1238,13 +1244,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               onTap: () {
                                 setState(
                                   () {
-                                    listImage = provider.uploadimagelist;
-                                    print(listImage);
-                                    if (listImage.isEmpty) {
-                                      setState(() {
-                                        heightImage = false;
-                                      });
-                                    }
+                                    Future.delayed(const Duration(seconds: 1),
+                                        () {
+                                      listImage = provider.uploadimagelist;
+                                      print(listImage);
+                                      if (listImage.isEmpty) {
+                                        setState(() {
+                                          heightImage = false;
+                                        });
+                                      }
+                                    });
                                   },
                                 );
                               },
@@ -1348,7 +1357,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           });
                           print('this is start');
                           try {
-                            if (widget.valuedata.wantto == 'Sell property') {
+                            if (widget.valuedata['wantto'] == 'Sell property') {
                               if (name.text != '' && name.text != 'null') {
                                 if (pincode.text != '' &&
                                     pincode.text != 'null' &&
@@ -1399,13 +1408,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                         print('4');
                                                         await FirebaseFirestore
                                                             .instance
-                                                            .collection('State')
-                                                            .doc('City')
-                                                            .collection(widget
-                                                                .valuedata.city)
+                                                            .collection('City')
                                                             .doc(widget
-                                                                .valuedata
-                                                                .propertyId)
+                                                                    .valuedata[
+                                                                'propertyId'])
                                                             .update({
                                                           "advancemoney":
                                                               advanvemoney.text,
@@ -1442,19 +1448,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                         List listdatalink =
                                                             await uploadImage(
                                                                 listImage);
-                                                        if (listdatalink
-                                                             != null ) {
+                                                        if (listdatalink !=
+                                                            null) {
                                                           await FirebaseFirestore
                                                               .instance
                                                               .collection(
-                                                                  'State')
-                                                              .doc('City')
-                                                              .collection(widget
-                                                                  .valuedata
-                                                                  .city)
+                                                                  'City')
                                                               .doc(widget
-                                                                  .valuedata
-                                                                  .propertyId)
+                                                                      .valuedata[
+                                                                  'propertyId'])
                                                               .update({
                                                             'propertyimage':
                                                                 FieldValue
@@ -1465,14 +1467,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                         setState(() {
                                                           loading = false;
                                                         });
+                                                        Navigator.pop(context);
                                                         // ignore: use_build_context_synchronously
-                                                        Navigator
-                                                            .pushReplacement(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const ProfilePage()),
-                                                        );
+                                                        // Navigator
+                                                        //     .pushReplacement(
+                                                        //   context,
+                                                        // MaterialPageRoute(
+                                                        //     builder: (context) =>
+                                                        //         CustomBottomNavigation(
+                                                        //             "",
+                                                        //             "",
+                                                        //             "profile")),
+                                                        // );
                                                       } catch (e) {
                                                         setState(() {
                                                           loading = false;
@@ -1587,7 +1593,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
                           //rent property
                           try {
-                            if (widget.valuedata.wantto == 'Rent property') {
+                            if (widget.valuedata['wantto'] == 'Rent property') {
                               if (name.text != '' && name.text != 'null') {
                                 if (paymentduration.text != '' &&
                                     paymentduration.text != 'null') {
@@ -1647,14 +1653,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                           await FirebaseFirestore
                                                               .instance
                                                               .collection(
-                                                                  'State')
-                                                              .doc('City')
-                                                              .collection(widget
-                                                                  .valuedata
-                                                                  .city)
+                                                                  'City')
                                                               .doc(widget
-                                                                  .valuedata
-                                                                  .propertyId)
+                                                                      .valuedata[
+                                                                  'propertyId'])
                                                               .update({
                                                             "advancemoney":
                                                                 advanvemoney
@@ -1699,19 +1701,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                           List listdatalink =
                                                               await uploadImage(
                                                                   listImage);
-                                                          if (listdatalink
-                                                               != null) {
+                                                          if (listdatalink !=
+                                                              null) {
                                                             await FirebaseFirestore
                                                                 .instance
                                                                 .collection(
-                                                                    'State')
-                                                                .doc('City')
-                                                                .collection(widget
-                                                                    .valuedata
-                                                                    .city)
+                                                                    'City')
                                                                 .doc(widget
-                                                                    .valuedata
-                                                                    .propertyId)
+                                                                        .valuedata[
+                                                                    'propertyId'])
                                                                 .update({
                                                               'propertyimage':
                                                                   FieldValue
@@ -1724,12 +1722,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                             loading = false;
                                                           });
                                                           // ignore: use_build_context_synchronously
-                                                          Navigator.pushReplacement(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const ProfilePage()));
+                                                          Navigator.pop(
+                                                              context);
+                                                          // Navigator
+                                                          //     .pushReplacement(
+                                                          //   context,
+                                                          //   MaterialPageRoute(
+                                                          //     builder: (context) =>
+                                                          //     Navigator.pop(context),
+                                                          //         // CustomBottomNavigation("","","profile"),
+                                                          //   ),
+                                                          // );
                                                         } catch (e) {
                                                           setState(() {
                                                             loading = false;
@@ -1906,9 +1909,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       setState(() {
         loadingdelete = true;
       });
-      print('sdfsdsds');
-      print(widget.valuedata.propertyimage[0]);
-      for (var i in widget.valuedata.propertyimage) {
+      for (var i in widget.valuedata['propertyimage']) {
         var list = i.split('%2F');
         var list2 = list[2].split("?alt");
         print("property/${list[1]}/${list2[0]}");
@@ -1916,19 +1917,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
         final desertRef = storageRef.child("property/${list[1]}/${list2[0]}");
         await desertRef.delete();
       }
-      var val = [];
-      val.add("${widget.valuedata.city}/${widget.valuedata.propertyId}");
+
       await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({
-        'properties': FieldValue.arrayRemove(val),
-      });
-      await FirebaseFirestore.instance
-          .collection("State")
-          .doc('City')
-          .collection(widget.valuedata.city)
-          .doc(widget.valuedata.propertyId)
+          .collection("City")
+          .doc(widget.valuedata['propertyId'])
           .delete();
       showToast(context: context, "property deleted successfully");
     } catch (e) {

@@ -27,7 +27,7 @@ class AutoCompleteResult {
     placeId = json['place_id'];
     reference = json['reference'];
     structuredFormatting = json['structured_formatting'] != null
-        ? new StructuredFormatting.fromJson(json['structured_formatting'])
+        ? StructuredFormatting.fromJson(json['structured_formatting'])
         : null;
     if (json['terms'] != null) {
       terms = <Terms>[];
@@ -91,7 +91,7 @@ class StructuredFormatting {
       mainTextMatchedSubstrings = <MainTextMatchedSubstrings>[];
       json['main_text_matched_substrings'].forEach((v) {
         mainTextMatchedSubstrings!
-            .add(new MainTextMatchedSubstrings.fromJson(v));
+            .add(MainTextMatchedSubstrings.fromJson(v));
       });
     }
     secondaryText = json['secondary_text'];

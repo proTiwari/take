@@ -24,6 +24,8 @@ class _LoginAppState extends State<LoginApp> {
   static final _phoneController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -61,7 +63,7 @@ class _LoginAppState extends State<LoginApp> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     const SizedBox(
-                      height: 25,
+                      height: 85,
                     ),
                     SizedBox(
                       height: 80,
@@ -85,7 +87,7 @@ class _LoginAppState extends State<LoginApp> {
                             height: 30,
                           ),
                           const Text(
-                            "Hello",
+                            "Welcome",
                             style: TextStyle(
                                 fontSize: 28, fontWeight: FontWeight.bold),
                           ),
@@ -180,23 +182,23 @@ class _LoginAppState extends State<LoginApp> {
                               children: <TextSpan>[
                                 const TextSpan(text: ""),
                                 TextSpan(
-                                    text: 'Need Help With Your Account?',
-                                    style: linkStyle,
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        print('jkjbkk');
-                                        final Uri params = Uri(
-                                            scheme: 'mailto',
-                                            path: 'team@runforrent.com',
-                                            query: 'subject=Query about App');
-                                        var mailurl = params.toString();
-                                        if (await canLaunch(mailurl)) {
-                                          await launch(mailurl);
-                                        } else {
-                                          throw 'Could not launch $mailurl';
-                                        }
-                                      },
-                                      )
+                                  text: 'Need Help With Your Account?',
+                                  style: linkStyle,
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () async {
+                                      print('jkjbkk');
+                                      final Uri params = Uri(
+                                          scheme: 'mailto',
+                                          path: 'team@runforrent.com',
+                                          query: 'subject=Query about App');
+                                      var mailurl = params.toString();
+                                      if (await canLaunch(mailurl)) {
+                                        await launch(mailurl);
+                                      } else {
+                                        throw 'Could not launch $mailurl';
+                                      }
+                                    },
+                                )
                               ],
                             ),
                           ),

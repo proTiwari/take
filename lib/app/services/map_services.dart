@@ -6,7 +6,6 @@ import 'dart:convert' as convert;
 
 import '../models/auto_complete_result.dart';
 
-
 class MapServices {
   final String key = 'AIzaSyDPD-1XJlukQJQdMBhvYPUErOOgfwDB4M4';
   final String types = 'geocode';
@@ -21,7 +20,15 @@ class MapServices {
 
     var results = json['predictions'] as List;
 
+    
+
     return results.map((e) => AutoCompleteResult.fromJson(e)).toList();
+  }
+
+    void prints(var s1) {
+    String s = s1.toString();
+    final pattern = RegExp('.{1,800}');
+    pattern.allMatches(s).forEach((match) => print("${match.group(0)}\n"));
   }
 
   Future<Map<String, dynamic>> getPlace(String? input) async {
@@ -33,6 +40,7 @@ class MapServices {
     var json = convert.jsonDecode(response.body);
 
     var results = json['result'] as Map<String, dynamic>;
+    prints("here you go: ${results}");
 
     return results;
   }

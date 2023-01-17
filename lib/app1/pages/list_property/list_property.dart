@@ -24,7 +24,7 @@ class ListProperty extends StatefulWidget {
 }
 
 class _ListPropertyState extends State<ListProperty> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  GlobalKey<FormState> _formKey = GlobalKey();
 
   String countryValue = "";
   String stateValue = "";

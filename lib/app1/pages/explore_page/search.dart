@@ -31,8 +31,6 @@ class _SearchState extends State<Search> {
     50: const Color(0xFFFFD7C2),
     100: Color(0xFFF27121),
   };
-  
-  
 
   Future<void> openFilterDialog() async {
     await FilterListDialog.display<User>(
@@ -91,8 +89,8 @@ class _SearchState extends State<Search> {
     listtoreturn.add(State);
     return listtoreturn;
   }
+
   var Citys = "Allahabad";
-  
 
   @override
   void initState() {
@@ -144,7 +142,7 @@ class _SearchState extends State<Search> {
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
               border: Border.all(
-            color: isSelected! ? Color(0xFFF27121): Colors.grey[300]!,
+            color: isSelected! ? Color(0xFFF27121) : Colors.grey[300]!,
           )),
           child: Text(
             item.name,
@@ -167,7 +165,7 @@ class _SearchState extends State<Search> {
     print(globals.property[0]);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+          backgroundColor: Colors.white,
           body: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -177,10 +175,8 @@ class _SearchState extends State<Search> {
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 27, 0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Center(
@@ -222,10 +218,8 @@ class _SearchState extends State<Search> {
                         ),
                       ),
                     ),
-            ]
-                  ),
+                  ]),
                 ),
-
                 CitySelector
                     ? AnimatedSwitcher(
                         duration: const Duration(milliseconds: 200),
@@ -234,21 +228,21 @@ class _SearchState extends State<Search> {
                     : Container(),
                 !CitySelector
                     ? SingleChildScrollView(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height-154,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListView.builder(
-                            itemCount: globals.property.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              print("here ${index}");
-                              print(globals.userdata);
-                              return CardsWidget(globals.property[index]);
-                            },
+                        child: Container(
+                          height: MediaQuery.of(context).size.height - 154,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListView.builder(
+                              itemCount: globals.property.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                print("here ${index}");
+                                print(globals.userdata);
+                                return CardsWidget(globals.property[index]);
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    )
+                      )
                     : Container(),
               ],
             ),
@@ -265,22 +259,12 @@ class User {
 }
 
 List<User> userList = [
-  User(name: "less than 5000/month", avatar: "user.png"),
-  User(name: "less than 10,000/month", avatar: "user.png"),
-  User(name: "more than 10,000/month", avatar: "user.png"),
-  User(name: "Within 10km", avatar: "user.png"),
-  User(name: "Within 5km", avatar: "user.png"),
-  User(name: "Within 1km", avatar: "user.png"),
-  User(name: "House On Sale", avatar: "user.png"),
-  User(name: "House/Room On Rent", avatar: "user.png"),
-  User(name: "Hotel Service", avatar: "user.png"),
-  User(name: "PG Service", avatar: "user.png"),
-  User(name: "Hostel Service", avatar: "user.png"),
-  User(name: "Home Service", avatar: "user.png"),
-  User(name: "No Sharing", avatar: "user.png"),
-  User(name: "Two Sharing", avatar: "user.png"),
-  User(name: "Three Sharing", avatar: "user.png"),
-  User(name: "Many Sharing", avatar: "user.png"),
+  User(name: "Property On Sale", avatar: "Sell property"), //
+  User(name: "Property On Rent", avatar: "Rent property"), //
+  User(name: "Hotel Service", avatar: "Hotel"), //
+  User(name: "PG Service", avatar: "PG"), //
+  User(name: "Hostel Service", avatar: "Hostel"), //
+  User(name: "Home Service", avatar: "Home"), //
 ];
 
 class Location {

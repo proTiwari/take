@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:take/app/models/user_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +29,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage>
     with TickerProviderStateMixin {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController emailfield = TextEditingController();
@@ -46,10 +47,11 @@ class _ProfilePageState extends State<ProfilePage>
   bool isEdit = false;
   ValueNotifier? valuepropertydata;
   var circularProgress = 0.0;
-  bool emptyproperty = true;
   bool addressnotexist = false;
   var data;
   bool Imageloading = false;
+
+  bool loadui = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -61,28 +63,6 @@ class _ProfilePageState extends State<ProfilePage>
       // print(globals.userdata['name']);
       name.text = userProvider.getUser.name!;
       emailfield.text = userProvider.getUser.email!;
-
-      try {
-        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-          setState(() {
-            data = Provider.of<FirebaseServices>(context, listen: false)
-                .getProperties();
-          });
-        });
-
-        print("kkklllk${data}");
-        if (data.length == 0) {
-          print("sdddddddddddddddddddddddddddddddddd");
-          setState(() {
-            emptyproperty = false;
-          });
-        }
-      } catch (e) {
-        setState(() {
-          emptyproperty = false;
-        });
-        print("ssdsdsdddddd${e.toString()}");
-      }
     } catch (e) {
       print(e.toString());
     }
@@ -174,29 +154,14 @@ class _ProfilePageState extends State<ProfilePage>
     } catch (e) {
       addressnotexist = true;
     }
-    // print("kkklllk${globals.listofproperties}");
-    try {
-      if (userProvider.getUser.properties!.isEmpty) {
-        setState(() {
-          emptyproperty = false;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        emptyproperty = false;
-      });
-    }
 
+    List dataproperty = [];
     TextStyle defaultStyle =
         const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 14.0);
     TextStyle linkStyle =
         const TextStyle(color: Color.fromARGB(255, 9, 114, 199));
     final color = Theme.of(context).colorScheme.primary;
     var width = MediaQuery.of(context).size.width;
-    Stream<DocumentSnapshot> courseDocStream = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .snapshots();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -362,111 +327,93 @@ class _ProfilePageState extends State<ProfilePage>
                             return TabBarView(
                               controller: tabController,
                               children: [
-                                StreamBuilder<DocumentSnapshot>(
-                                    stream: courseDocStream,
+                                StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("City")
+                                        .snapshots(),
                                     builder: (context,
-                                        AsyncSnapshot<DocumentSnapshot>
-                                            snapshot) {
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.active) {
-                                        // get course document
-                                        var courseDocument =
-                                            snapshot.data!.data() as Map;
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
 
-                                        globals.userdata = courseDocument;
-                                        return GridView.builder(
-                                          itemCount:
-                                              courseDocument['properties']
-                                                  .length,
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return SizedBox(
+                                          height: 500,
+                                          child: Shimmer.fromColors(
+                                            baseColor: Colors.grey.shade300,
+                                            highlightColor: Colors.white,
+                                            child: Center(
+                                              child: GridView.builder(
+                                          itemCount: 3,
                                           gridDelegate:
                                               const SliverGridDelegateWithFixedCrossAxisCount(
                                                   mainAxisExtent: 200.0,
                                                   crossAxisCount: 3),
                                           itemBuilder: (context, index) {
-                                            try {
-                                              print("ffff");
-                                              var data = globals
-                                                  .userdata['properties'];
-                                              print("jjjj$data");
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: GestureDetector(
+                                              
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.black,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20.0),
+                                                    // image: DecorationImage(
+                                                    //   image: ,
+                                                    //   fit: BoxFit.cover,
+                                                    // ),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 37.0,
+                                                            right: 37.0,
+                                                            top: 185.0,
+                                                            bottom: 15.0),
+                                                    child: Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      15.0)),
+                                                      child: const Text(""),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        )
+                                            ),
+                                          ),
+                                        );
+                                      }
 
-                                              for (var i in data) {
-                                                List dd = i.split("/");
-                                                print(
-                                                    "this is first value in the list: ${dd[0]}");
-                                                print(dd[1]);
-                                                // PropertyModel? propertyModel;
-                                                PropertyModel propertyModel;
-                                                FirebaseFirestore.instance
-                                                    .collection("State")
-                                                    .doc("City")
-                                                    .collection(dd[0])
-                                                    .doc(dd[1])
-                                                    .get()
-                                                    .then((value) => {
-                                                          propertyModel =
-                                                              PropertyModel(
-                                                            city: value
-                                                                .get("city"),
-                                                            state: value
-                                                                .get("state"),
-                                                            propertyId: value.get(
-                                                                "propertyId"),
-                                                            propertyimage:
-                                                                value.get(
-                                                                    "propertyimage"),
-                                                            pincode: value
-                                                                .get("pincode"),
-                                                            streetaddress:
-                                                                value.get(
-                                                                    "streetaddress"),
-                                                            wantto: value
-                                                                .get("wantto"),
-                                                            advancemoney: value.get(
-                                                                "advancemoney"),
-                                                            numberofrooms:
-                                                                value.get(
-                                                                    "numberofrooms"),
-                                                            amount: value
-                                                                .get("amount"),
-                                                            propertyname: value.get(
-                                                                "propertyname"),
-                                                            areaofland: value.get(
-                                                                "areaofland"),
-                                                            numberoffloors:
-                                                                value.get(
-                                                                    "numberoffloors"),
-                                                            ownername: value.get(
-                                                                "ownername"),
-                                                            mobilenumber: value.get(
-                                                                "mobilenumber"),
-                                                            whatsappnumber:
-                                                                value.get(
-                                                                    "whatsappnumber"),
-                                                            email: value
-                                                                .get("email"),
-                                                            description: value.get(
-                                                                "description"),
-                                                            servicetype: value.get(
-                                                                "servicetype"),
-                                                            sharing: value
-                                                                .get('sharing'),
-                                                            foodservice: value.get(
-                                                                "foodservice"),
-                                                            paymentduration:
-                                                                value.get(
-                                                                    "paymentduration"),
-                                                          ),
-                                                        })
-                                                    .whenComplete(() => {})
-                                                    .catchError((error) {
-                                                  print(error);
-                                                }); // valuedata.add(propertyModel)
-                                              }
-                                            } catch (e) {
-                                              print(
-                                                  "here is the error: ${e.toString()}");
-                                            }
+                                      var documents = snapshot.data!.docs;
+                                      print(
+                                          "jnknkjnk: ${documents.first['uid']}");
+                                      var list;
+                                      list = documents.where((doc) {
+                                        return doc.get("uid").contains(
+                                            FirebaseAuth
+                                                .instance.currentUser!.uid);
+                                      }).toList();
+                                      print("lllll/: ${list}");
 
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.active) {
+                                        return GridView.builder(
+                                          itemCount: list.length,
+                                          gridDelegate:
+                                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                                  mainAxisExtent: 200.0,
+                                                  crossAxisCount: 3),
+                                          itemBuilder: (context, index) {
                                             return Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
@@ -478,8 +425,7 @@ class _ProfilePageState extends State<ProfilePage>
                                                       builder: (BuildContext
                                                               context) =>
                                                           EditProfilePage(
-                                                              provider.valuedata[
-                                                                  index]),
+                                                              list[index]),
                                                     ),
                                                   );
                                                 }),
@@ -490,13 +436,9 @@ class _ProfilePageState extends State<ProfilePage>
                                                         BorderRadius.circular(
                                                             20.0),
                                                     image: DecorationImage(
-                                                      image: NetworkImage(provider
-                                                              .valuedata[index]
-                                                              .propertyimage[
-                                                          0]), //globals
-                                                      //   .listofproperties[index]
-                                                      // .propertyimage[0]
-
+                                                      image: NetworkImage(list[
+                                                              index]
+                                                          ['propertyimage'][0]),
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
@@ -525,7 +467,10 @@ class _ProfilePageState extends State<ProfilePage>
                                           },
                                         );
                                       } else {
-                                        return Text("data");
+                                        return const Center(
+                                            child: CircularProgressIndicator(
+                                          color: Colors.red,
+                                        ));
                                       }
                                       // get sections from the document
                                     }),
@@ -995,10 +940,12 @@ class _ProfilePageState extends State<ProfilePage>
     return ClipOval(
         child: Material(
       color: Colors.black12,
-      child: profileimage != null ? CircleAvatar(
-          radius: 50.0,
-          backgroundImage: FileImage(File(profileimage.path)),
-        ) : image,
+      child: profileimage != null
+          ? CircleAvatar(
+              radius: 50.0,
+              backgroundImage: FileImage(File(profileimage.path)),
+            )
+          : image,
     ));
   }
 

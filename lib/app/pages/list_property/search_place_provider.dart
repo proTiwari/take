@@ -21,6 +21,12 @@ class PlaceResults extends ChangeNotifier {
   }
 }
 
+//   void setResults(allPlaces) {
+//     allReturnedResults = allPlaces;
+//     notifyListeners();
+//   }
+// }
+
 class SearchToggle extends ChangeNotifier {
   bool searchToggle = false;
 

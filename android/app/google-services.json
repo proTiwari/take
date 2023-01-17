@@ -14,6 +14,75 @@
       },
       "oauth_client": [
         {
+          "client_id": "555235323232-hr8vp0mhb231sqlh78ug4tgq2oilgkni.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.take",
+            "certificate_hash": "c85806d5972ea8a1564851b2dad500b7fbe5bb1d"
+          }
+        },
+        {
+          "client_id": "555235323232-o63u9a051hf6br8vvff4mvt27lod0qem.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.take",
+            "certificate_hash": "70b40f7f1ed0bfb201430a3267f167c37d1d437f"
+          }
+        },
+        {
+          "client_id": "555235323232-6sm4v8g1g2hkgnaqqs0hq60u42tfgu75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApTeFd8SqOme6EJe3jGuzEUOKcM4sJXHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "555235323232-6sm4v8g1g2hkgnaqqs0hq60u42tfgu75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:555235323232:android:49aa8bb04b367fec0d4205",
+        "android_client_info": {
+          "package_name": "com.runforrent.take"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "555235323232-4dcg2l7adl2gaumia11c0lma1061jht4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.runforrent.take",
+            "certificate_hash": "70b40f7f1ed0bfb201430a3267f167c37d1d437f"
+          }
+        },
+        {
+          "client_id": "555235323232-rkdpc6sfspb19faef62o3u84jefqa9af.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.runforrent.take",
+            "certificate_hash": "c85806d5972ea8a1564851b2dad500b7fbe5bb1d"
+          }
+        },
+        {
+          "client_id": "555235323232-va4biva6i7fdk5i8nr9ipci154hcbai3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.runforrent.take",
+            "certificate_hash": "a244ca1e31af088334c3264f6f252dcd95ae94fd"
+          }
+        },
+        {
           "client_id": "555235323232-6sm4v8g1g2hkgnaqqs0hq60u42tfgu75.apps.googleusercontent.com",
           "client_type": 3
         }

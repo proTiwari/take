@@ -4,15 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:take/app/pages/list_property/onmap.dart';
+import 'package:take/app/services/location_services.dart';
 import '../../Widgets/image_upload_card.dart';
 import '../../Widgets/loaded_images.dart';
 import '../../providers/base_providers.dart';
 import 'agreement_document.dart';
 import 'list_provider.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ListProperty extends StatefulWidget {
   const ListProperty({Key? key}) : super(key: key);
@@ -22,7 +26,7 @@ class ListProperty extends StatefulWidget {
 }
 
 class _ListPropertyState extends State<ListProperty> {
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  GlobalKey<FormState> _formKey = GlobalKey();
 
   String countryValue = "";
   String stateValue = "";
@@ -38,7 +42,8 @@ class _ListPropertyState extends State<ListProperty> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController whatsappController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  TextEditingController pincode = TextEditingController();
 
   bool _loading = false;
   double _progressValue = 0.0;
@@ -51,17 +56,22 @@ class _ListPropertyState extends State<ListProperty> {
   final ImagePicker _picker = ImagePicker();
   dynamic imageFile;
   List listImage = [];
+  String? _currentAddress;
+  Position? _currentPosition;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     addData();
+
     try {
       emailController.text = userProvider.getUser.email!;
       nameController.text = userProvider.getUser.name!;
       phoneController.text = userProvider.getUser.phone!;
       whatsappController.text = userProvider.getUser.phone!;
+      pincode.text = globals.postalcode;
+      results = globals.latlong;
     } catch (e) {
       print("ttttttttttttt${e}");
     }
@@ -72,7 +82,51 @@ class _ListPropertyState extends State<ListProperty> {
 
   addData() async {
     userProvider = Provider.of<BaseProvider>(context, listen: false);
+
     await userProvider.refreshUser();
+  }
+
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+            '${place.street}, ${place.subLocality},${place.locality}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission =
+        await LocationService().handleLocationPermission(context);
+    print("sd");
+    if (!hasPermission) return;
+    print("dsfs");
+    try {
+      await Geolocator.getCurrentPosition(
+              desiredAccuracy: LocationAccuracy.high)
+          .then((Position position) {
+        print("dsisw");
+        setState(() {
+          print("wew");
+          _currentPosition = position;
+          var res = LatLng(position.latitude, position.longitude);
+          _getAddressFromLatLng(position);
+          results = res;
+          globals.latlong = results;
+          print(results);
+        });
+      }).catchError((e) {
+        debugPrint(e);
+        print("sd");
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Widget bottomSheet() {
@@ -171,45 +225,40 @@ class _ListPropertyState extends State<ListProperty> {
   // }
 
   Widget currentlocation() {
-    return Container(
-        padding: const EdgeInsets.fromLTRB(9, 3, 9, 0),
-        height: 60,
-        width: 60,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.shade100,
-                offset: const Offset(1, 1),
-                blurRadius: 0,
-                spreadRadius: 3)
-          ],
-          color: Colors.white,
-          // color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: const Icon(Icons.gps_fixed));
+    return GestureDetector(
+      onTap: (() {
+        print("_getCurrentPosition");
+        _getCurrentPosition();
+      }),
+      child: Container(
+          padding: const EdgeInsets.fromLTRB(9, 3, 9, 0),
+          height: 60,
+          width: 60,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.shade100,
+                  offset: const Offset(1, 1),
+                  blurRadius: 0,
+                  spreadRadius: 3)
+            ],
+            color: Colors.white,
+            // color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(100),
+          ),
+          child: const Icon(Icons.gps_fixed)),
+    );
   }
 
   var results;
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    // Navigator.push returns a Future that completes after calling
-    // Navigator.pop on the Selection Screen.
     final result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OnMap()),
     );
-
-    // When a BuildContext is used from a StatefulWidget, the mounted property
-    // must be checked after an asynchronous gap.
-    // if (!mounted) return;
-
-    // After the Selection Screen returns a result, hide any previous snackbars
-    // and show the new result.
-    // ScaffoldMessenger.of(context)
-    //   ..removeCurrentSnackBar()
-    //   ..showSnackBar(SnackBar(content: Text('$result')));
     setState(() {
       results = result;
+      globals.latlong = results;
     });
   }
 
@@ -262,6 +311,39 @@ class _ListPropertyState extends State<ListProperty> {
         ),
       ),
     );
+  }
+
+  Future<bool> handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services'),
+        ),
+      );
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
   }
 
   @override
@@ -440,6 +522,7 @@ class _ListPropertyState extends State<ListProperty> {
                                           14.0, 0, 0, 8),
                                       child: Center(
                                         child: TextFormField(
+                                          controller: pincode,
                                           keyboardType: TextInputType.number,
                                           decoration: const InputDecoration(
                                             fillColor: Colors.black,
@@ -522,11 +605,30 @@ class _ListPropertyState extends State<ListProperty> {
                           height: 30,
                         ),
 
-                        results == null ? const SizedBox() : Text("$results"),
+                        results == null
+                            ? const SizedBox()
+                            : Text(results.toString().substring(6)),
                         const SizedBox(
                           height: 7,
                         ),
                         // location on map or current coordinate
+
+                        // Column(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Text('LAT: ${_currentPosition?.latitude ?? ""}'),
+                        //     Text('LNG: ${_currentPosition?.longitude ?? ""}'),
+                        //     Text('ADDRESS: ${_currentAddress ?? ""}'),
+                        //     const SizedBox(height: 32),
+                        //     ElevatedButton(
+                        //       onPressed: _getCurrentPosition,
+                        //       child: const Text("Get Current Location"),
+                        //     )
+                        //   ],
+                        // ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
                         Padding(
                           padding: const EdgeInsets.all(18.0),
                           child: IntrinsicHeight(
@@ -629,6 +731,17 @@ class _ListPropertyState extends State<ListProperty> {
                                       );
                                     }).toList(),
                                     onChanged: (String? newValue) {
+                                      provider.changePinCode(globals.postalcode.toString());
+                                      provider.changeEmail(
+                                          userProvider.getUser.email);
+                                      provider.changeOwersName(
+                                          userProvider.getUser.name.toString());
+                                      provider.changeWhatsappNumber(userProvider
+                                          .getUser.phone
+                                          .toString());
+                                      provider.changeMobileNumber(userProvider
+                                          .getUser.phone
+                                          .toString());
                                       setState(() {
                                         if (newValue ==
                                             "How many rooms does your property have?") {
@@ -1093,7 +1206,7 @@ class _ListPropertyState extends State<ListProperty> {
                                             height: 43,
                                             // margin: EdgeInsets.symmetric(vertical: 0, horizontal: width < 800?10:width*0.24),
                                             width: width < 800
-                                                ? 200
+                                                ? 170
                                                 : width * 0.22,
                                             child: DecoratedBox(
                                               decoration: const BoxDecoration(
@@ -1141,7 +1254,7 @@ class _ListPropertyState extends State<ListProperty> {
                                           SizedBox(
                                             height: 43,
                                             width: width < 800
-                                                ? 200
+                                                ? 170
                                                 : width * 0.22,
                                             child: DecoratedBox(
                                               decoration: const BoxDecoration(

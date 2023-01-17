@@ -186,12 +186,14 @@ class ListProvider extends BaseProvider {
     }
     imagelistvalue;
     notifyListeners();
-  }//uploadimagelist
+  } //uploadimagelist
 
   void uploadingimagelist() {
     uploadimagelist;
     notifyListeners();
   }
+
+  
 
   void changecity(String value) {
     if (value == "" || value == "*City" || value == "null") {
@@ -897,7 +899,7 @@ class ListProvider extends BaseProvider {
     return result;
   }
 
-uploadImage(context) async {
+  uploadImage(context) async {
     verify = false;
     var uid = FirebaseAuth.instance.currentUser!.uid;
     if (globals.imageList.isNotEmpty) {
@@ -968,13 +970,19 @@ uploadImage(context) async {
     return verify.toString();
   }
 
-
   Future<void> listproperty(context) async {
     try {
+      //city name updating
+      var namecity = city.value;
+      String result = namecity.replaceAll('ā', 'a');
+      result = result.replaceAll('Ā', 'A');
+      result = result.replaceAll('ū', 'u');
+      var finalcity = result.replaceAll('ī', 'i');
+       
       listProperty(
         propertyId: generateRandomString(74),
         state: state.value,
-        city: city.value,
+        city: finalcity,
         propertyimage: downloadUrl,
         pincode: pincode.value,
         streetaddress: streetaddress.value,
