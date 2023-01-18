@@ -1223,7 +1223,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           if (true)
                             ...(initImageList).map(
                               (e) {
-                                return LoadedImagePropertyEdit(
+                                return oldimagedelete(
                                     e,
                                     widget.valuedata['city'],
                                     widget.valuedata['propertyId'],
@@ -1264,7 +1264,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   if (listImage != [])
                                     ...listImage.map(
                                       (e) {
-                                        return UploadingImageProperty(e);
+                                        return newpropertyimage(e);
                                       },
                                     ),
                                 ],
@@ -1892,6 +1892,258 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  List istodelete = [];
+  Widget oldimagedelete(e, city, propertyid, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(570),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(children: [
+          e == null
+              ? Container()
+              : Consumer<ListProvider>(builder: (context, provider, child) {
+                  return Stack(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 50.0,
+                        child: Image.network(
+                          e,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      const Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Icon(
+                            Icons.circle,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            size: 43,
+                          )),
+                      Positioned(
+                        bottom: -3,
+                        right: -3,
+                        child: IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () async {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: const Text(''),
+                                content: globals.initlistimages.length == 1
+                                    ? const Text(
+                                        'Atleast one image is required!')
+                                    : const Text(
+                                        'Are you sure you want to delete this image?'),
+                                actions: <Widget>[
+                                  globals.initlistimages.length != 1
+                                      ? TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text('No'),
+                                        )
+                                      : const SizedBox(),
+                                  TextButton(
+                                    onPressed: () async {
+                                      // ignore: use_build_context_synchronously
+                                      // print('hjjjjjjjjj');
+                                      // print(globals.initlistimages.length);
+                                      if (globals.initlistimages.length != 1) {
+                                        istodelete.add(e);
+                                        // globals.initlistimages.remove(widget.e);
+                                        // provider.imagelistvalue =
+                                        //     globals.initlistimages;
+                                        // provider.changeimagelist();
+                                        // provider.imagelistvalue = globals.imageList;
+                                        // provider.changeimagelist();
+                                        setState(() {
+                                          istodelete;
+                                        });
+                                        Navigator.pop(
+                                            context, "globals.initlistimages");
+                                        deleteImage(e, propertyid);
+                                      }
+
+                                      // ignore: use_build_context_synchronously
+                                      // Navigator.pushReplacement(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) =>
+                                      //           const ProfilePage()),
+                                      // );
+                                    },
+                                    child: globals.initlistimages.length == 1
+                                        ? TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text('Okay'),
+                                          )
+                                        : const Text('Yes'),
+                                  ),
+                                ],
+                              ),
+                            );
+                            // deleteImage();
+                            // globals.initlistimages.remove(widget.e);
+                            // provider.imagelistvalue = globals.imageList;
+                            // provider.changeimagelist();
+                            // Navigator.pop(context, globals.initlistimages);
+                          },
+                        ),
+                      ),
+                      istodelete.contains(e)
+                          ? const Positioned(
+                              bottom: 38,
+                              right: 35,
+                              child: Center(
+                                child: SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.blueAccent,
+                                    )),
+                              ),
+                            )
+                          : const SizedBox()
+                    ],
+                  );
+                }),
+        ]),
+      ),
+    );
+  }
+
+  void deleteImage(e, propertyid) async {
+    try {
+      var valtodelete = [];
+      valtodelete.add("${e}");
+      var list = e.toString().split('%2F');
+      var list2 = list[2].split("?alt");
+
+      print("property/${list[1]}/${list2[0]}");
+      final storageRef = FirebaseStorage.instance.ref();
+      final desertRef = storageRef.child("property/${list[1]}/${list2[0]}");
+      await desertRef.delete();
+      await FirebaseFirestore.instance
+          .collection("City")
+          .doc(propertyid)
+          .update({
+        'propertyimage': FieldValue.arrayRemove(valtodelete),
+      });
+      showToast(context: context, "deleted successfully");
+      setState(() {
+        initImageList.remove(e);
+      });
+    } catch (e) {
+      print("wewewwwwwwwwww$e");
+    }
+  }
+
+  Widget newpropertyimage(item) {
+    print("1");
+    // print(widget.e);
+    print("2");
+    print("9");
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+      height: 100,
+      decoration: BoxDecoration(
+        // boxShadow: [
+
+        // ],
+        color: Colors.white,
+        // color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(570),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            item == null
+                ? Container()
+                : Consumer<ListProvider>(builder: (context, provider, child) {
+                    return Stack(children: [
+                      CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage: FileImage(File(item.path)),
+                      ),
+                      const Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Icon(
+                            Icons.circle,
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            size: 43,
+                          )),
+                      Positioned(
+                          bottom: -3,
+                          right: -3,
+                          child: IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () async {
+                              // globals.uploadingimageList.remove(item);
+                              // provider.uploadimagelist =
+                              //     globals.uploadingimageList;
+                              setState(() {
+                                listImage.remove(item);
+                              });
+                              // provider.uploadingimagelist();
+                              // Navigator.pop(context, globals.imageList);
+                            },
+                          )),
+                    ]);
+                  }
+                    // : Consumer<ListProvider>(
+                    //     builder: (context, provider, child) {
+                    //       return Stack(children: [
+                    //         CircleAvatar(
+                    //           backgroundColor: Colors.white,
+                    //           radius: 50.0,
+                    //           child: Image.memory(
+                    //             widget.e,
+                    //             fit: BoxFit.fill,
+                    //           ),
+                    //         ),
+                    //         const Positioned(
+                    //           bottom: 0,
+                    //           right: 0,
+                    //           child: Icon(
+                    //             Icons.circle,
+                    //             color: Color.fromARGB(255, 255, 255, 255),
+                    //             size: 43,
+                    //           ),
+                    //         ),
+                    //         Positioned(
+                    //           bottom: -3,
+                    //           right: -3,
+                    //           child: IconButton(
+                    //             icon: const Icon(Icons.delete),
+                    //             onPressed: () {
+                    //               setState(() {
+                    //                 globals.uploadingimageList.remove(widget.e);
+                    //                 provider.uploadimagelist =
+                    //                     globals.uploadingimageList;
+                    //                 provider.uploadingimagelist();
+                    //                 // Navigator.pop(context, globals.imageList);
+                    //               });
+                    //             },
+                    //           ),
+                    //         ),
+                    //       ]);
+                    //     },
+                    //   ),
+                    )
+          ],
         ),
       ),
     );

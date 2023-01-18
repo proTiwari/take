@@ -39,7 +39,6 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   void initState() {
     super.initState();
     getuser();
-    
 
     // 1. This method call when app in terminated state and you get a notification
     // when you click on notification app open from terminated state and you can get notification data in this method
@@ -109,22 +108,28 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         return false;
       },
       child: Scaffold(
+        // backgroundColor: Colors.blueAccent,
         body: widget.profile == "profile" ? pages[3] : pages[pageIndex],
         bottomNavigationBar: Container(
           margin: EdgeInsets.symmetric(
               vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
           height: 70,
           decoration: BoxDecoration(
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
-                  color: Colors.grey.shade300,
-                  offset: const Offset(5, 15),
+                  color: Color.fromARGB(255, 248, 243, 243),
+                  offset: Offset(9, 8),
+                  blurRadius: 2,
+                  spreadRadius: 2),
+              BoxShadow(
+                  color: Color.fromARGB(255, 205, 202, 202),
+                  offset: Offset(5, 15),
                   blurRadius: 5,
                   spreadRadius: 3)
             ],
-            color: Colors.white,
+            color: const Color.fromARGB(255, 255, 255, 255),
             // color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(22),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

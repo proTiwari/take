@@ -66,7 +66,7 @@ class _ParallelDropDownListState extends State<ParallelDropDownList> {
                 ),
                 Container(
                   padding: const EdgeInsets.fromLTRB(00, 0, 0, 0),
-                  height: MediaQuery.of(context).size.height * 0.65,
+                  height: MediaQuery.of(context).size.height * 0.60,
                   width: MediaQuery.of(context).size.width * 0.45,
                   child: Card(
                     elevation: 0,

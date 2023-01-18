@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -23,8 +24,6 @@ class _LoginAppState extends State<LoginApp> {
   final _codeController = TextEditingController();
   static final _phoneController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +86,7 @@ class _LoginAppState extends State<LoginApp> {
                             height: 30,
                           ),
                           const Text(
-                            "Welcome",
+                            "Welcome!",
                             style: TextStyle(
                                 fontSize: 28, fontWeight: FontWeight.bold),
                           ),
@@ -95,7 +94,7 @@ class _LoginAppState extends State<LoginApp> {
                             height: 10,
                           ),
                           const Text(
-                            "Please Login to Your Account",
+                            "To access this feature please login",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 15,
@@ -133,9 +132,14 @@ class _LoginAppState extends State<LoginApp> {
                           GestureDetector(
                             onTap: () {
                               FocusScope.of(context).unfocus();
-                              provider.loginUser(
-                                  _phoneController.text, context);
-                              print(provider.loading);
+                              if (_phoneController.text.length == 10) {
+                                provider.loginUser(
+                                    _phoneController.text, context);
+                                print(provider.loading);
+                              } else {
+                                showToast(context:context,
+                                    "phone number must contain 10 digits");
+                              }
                             },
                             child: Container(
                               alignment: Alignment.center,

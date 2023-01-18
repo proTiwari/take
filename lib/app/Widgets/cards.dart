@@ -40,18 +40,18 @@ class _CardsWidgetState extends State<CardsWidget> {
           vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
       // margin: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        boxShadow: [
-          // BoxShadow(
-          //     color: Colors.grey.shade200,
-          //     offset: const Offset(5, 15),
-          //     blurRadius: 5,
-          //     spreadRadius: 3)
-          BoxShadow(
-              color: Color.fromARGB(255, 255, 255, 255),
-              // offset: const Offset(50,0),
-              blurRadius: 5,
-              spreadRadius: 5)
-        ],
+        // boxShadow: [
+        //   // BoxShadow(
+        //   //     color: Colors.grey.shade200,
+        //   //     offset: const Offset(5, 15),
+        //   //     blurRadius: 5,
+        //   //     spreadRadius: 3)
+        //   BoxShadow(
+        //       color: Color.fromARGB(255, 255, 255, 255),
+        //       // offset: const Offset(50,0),
+        //       blurRadius: 5,
+        //       spreadRadius: 5)
+        // ],
         // color: Colors.white,
         // // color: Theme.of(context).primaryColor,
         // borderRadius: BorderRadius.circular(58),

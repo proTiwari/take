@@ -188,14 +188,6 @@ class _SearchState extends ConsumerState<Search> {
       onWillPop: () async {
         setState(() {
           searchToggle = false;
-
-          searchController.text = '';
-          // _markers = {};
-          if (searchFlag.searchToggle) {
-            searchFlag.toggleSearch();
-          }
-        });
-        setState(() {
           CitySelector = false;
         });
         return false;

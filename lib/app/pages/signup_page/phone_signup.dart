@@ -90,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             height: 10,
                           ),
                           const Text(
-                            "Create Your Account in Just One Click",
+                            "Let us know about you",
                             style: TextStyle(
                               color: Colors.grey,
                               fontSize: 15,
