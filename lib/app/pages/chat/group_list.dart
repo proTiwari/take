@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../services/char_services.dart';
 import '../../services/database_service.dart';
+import '../list_property/flutter_flow/flutter_flow_theme.dart';
 import 'group_tile.dart';
 
 class GroupListPage extends StatefulWidget {
@@ -95,7 +96,7 @@ class _GroupListPageState extends State<GroupListPage> {
         centerTitle: true,
         elevation: 0,
         title: const Text("chats", style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       ),
       body: groupList(),
     );
@@ -231,6 +232,7 @@ class _GroupListPageState extends State<GroupListPage> {
                       var profileimage =
                           getprofile(snapshot.data['groups'][reverseIndex]);
                       return Container(
+                        color: FlutterFlowTheme.of(context).primaryBackground,
                         margin: EdgeInsets.symmetric(
                             vertical: 0,
                             horizontal: width < 800 ? 10 : width * 0.24),

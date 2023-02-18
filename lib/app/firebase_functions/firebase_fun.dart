@@ -234,13 +234,14 @@ void listProperty({
         "https://cdn.pixabay.com/photo/2021/06/07/13/45/user-6318003__340.png";
   }
   GeoRange georange = GeoRange();
-  var geohash = georange.encode(globals.latlong.latitude, globals.latlong.longitude);
+  var geohash =
+      georange.encode(globals.latlong.latitude, globals.latlong.longitude);
 
   try {
     await FirebaseFirestore.instance.collection("City").doc(propertyId).set({
       'uid': _auth.currentUser!.uid,
       'date': DateTime.now(),
-      'geohash':geohash,
+      'geohash': geohash,
       'profileImage': profileImage,
       'propertyId': propertyId,
       'state': state,
@@ -298,22 +299,26 @@ void listProperty({
 
 getUser() async {
   var data;
-  if (_auth.currentUser != null) {
-    print(
-        "lllllllllllllll${_auth.currentUser!.email}llllllllllllllllllllllll${_auth.currentUser!.uid}");
+  try {
+    if (_auth.currentUser != null) {
+      print(
+          "lllllllllllllll${_auth.currentUser!.email}llllllllllllllllllllllll${_auth.currentUser!.uid}");
 
-    data = await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(_auth.currentUser!.uid)
-        .get()
-        .then((value) => {
-              // print(value.get("name")),
-              globals.userdata = value,
-            })
-        .whenComplete(() => {
-              print("completed${globals.userdata}"),
-            });
-    // print("globals userdata : ${globals.userdata["name"]}");
+      data = await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(_auth.currentUser!.uid)
+          .get()
+          .then((value) => {
+                // print(value.get("name")),
+                globals.userdata = value,
+              })
+          .whenComplete(() => {
+                print("completed${globals.userdata}"),
+              });
+      // print("globals userdata : ${globals.userdata["name"]}");
+    }
+  } catch (e) {
+    print(e.toString());
   }
 }
 

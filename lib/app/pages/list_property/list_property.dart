@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
 import 'package:provider/provider.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:take/app/pages/list_property/cityList.dart';
 import 'package:take/app/pages/list_property/onmap.dart';
 import 'package:take/app/services/location_services.dart';
 import '../../Widgets/image_upload_card.dart';
@@ -17,6 +18,7 @@ import '../../providers/base_providers.dart';
 import 'agreement_document.dart';
 import 'list_provider.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 
 class ListProperty extends StatefulWidget {
   const ListProperty({Key? key}) : super(key: key);
@@ -390,6 +392,27 @@ class _ListPropertyState extends State<ListProperty> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
+                        // city field parameter
+
+                        Container(
+                          child: DropdownSearch<String>(
+                            popupProps: PopupProps.menu(
+                              menuProps: const MenuProps(borderOnForeground: true ,elevation: 0),
+                              showSearchBox: true,
+                              showSelectedItems: true,
+                              disabledItemFn: (String s) => s.startsWith('I'),
+                            ),
+                            items: cityList,
+                            dropdownDecoratorProps: const DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                labelText: "City",
+                                hintText: "Prayagraj",
+                              ),
+                            ),
+                            onChanged: print,
+                            selectedItem: "Prayagraj",
+                          ),
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -731,7 +754,8 @@ class _ListPropertyState extends State<ListProperty> {
                                       );
                                     }).toList(),
                                     onChanged: (String? newValue) {
-                                      provider.changePinCode(globals.postalcode.toString());
+                                      provider.changePinCode(
+                                          globals.postalcode.toString());
                                       provider.changeEmail(
                                           userProvider.getUser.email);
                                       provider.changeOwersName(

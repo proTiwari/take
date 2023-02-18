@@ -58,11 +58,10 @@ class ListProvider extends BaseProvider {
   var sharinglist = [
     'Number of sharing?',
     'No sharing',
-    'No limits',
     'Two sharing',
     'Three sharing',
-    'Family',
-    'Many sharing',
+    'Above Three',
+    'No limits',
     'Will be discussed',
   ];
 
@@ -192,8 +191,6 @@ class ListProvider extends BaseProvider {
     uploadimagelist;
     notifyListeners();
   }
-
-  
 
   void changecity(String value) {
     if (value == "" || value == "*City" || value == "null") {
@@ -978,7 +975,7 @@ class ListProvider extends BaseProvider {
       result = result.replaceAll('Ā', 'A');
       result = result.replaceAll('ū', 'u');
       var finalcity = result.replaceAll('ī', 'i');
-       
+
       listProperty(
         propertyId: generateRandomString(74),
         state: state.value,

@@ -4,13 +4,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:spell_checker/spell_checker.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
 import '../Widgets/bottom_nav_bar.dart';
 import '../firebase_functions/firebase_fun.dart';
 import '../services/location_services.dart';
+import 'list_property/flutter_flow/flutter_flow_util.dart';
 
 // optional distance parameter. Default is 1.0
 
@@ -35,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // const str = 'Allahābād';
     // final findList = checker.find(str);
     // print(findList);
-    
+
     delay();
     // getCity();
   }
@@ -106,13 +104,15 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   updatedeviceid() async {
-    final fcmToken = await FirebaseMessaging.instance.getToken();
-    await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update({
-          "devicetoken":fcmToken
-        });
+    try {
+      final fcmToken = await FirebaseMessaging.instance.getToken();
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({"devicetoken": fcmToken});
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   void delay() async {
@@ -138,20 +138,62 @@ class _SplashScreenState extends State<SplashScreen> {
     // ignore: use_build_context_synchronously
     if (globals.city == null || globals.city == '') {
       // ignore: use_build_context_synchronously
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  CustomBottomNavigation("Allahabad", '','')),
-          ModalRoute.withName('/'));
+      context.pushNamed(
+        'customnav',
+        queryParams: {
+          'city': serializeParam(
+            'Prayagraj',
+            ParamType.String,
+          ),
+          'secondcall': serializeParam(
+            'Prayagraj',
+            ParamType.String,
+          ),
+          'profile': serializeParam(
+            'Prayagraj',
+            ParamType.String,
+          )
+        }.withoutNulls,
+        extra: <String, dynamic>{
+          kTransitionInfoKey: TransitionInfo(
+            hasTransition: true,
+            transitionType: PageTransitionType.rightToLeft,
+            duration: Duration(milliseconds: 600),
+          ),
+        },
+      );
+      // Navigator.pushAndRemoveUntil(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (BuildContext context) =>
+      //             CustomBottomNavigation("Allahabad", '', '')),
+      //     ModalRoute.withName('/'));
     } else {
       // ignore: use_build_context_synchronously
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) =>
-                  CustomBottomNavigation(globals.city, '','')),
-          ModalRoute.withName('/'));
+      context.pushNamed(
+        'customnav',
+        queryParams: {
+          'city': serializeParam(
+            '${globals.city}',
+            ParamType.String,
+          ),
+          'secondcall': serializeParam(
+            'Prayagraj',
+            ParamType.String,
+          ),
+          'profile': serializeParam(
+            'Prayagraj',
+            ParamType.String,
+          )
+        }.withoutNulls,
+        extra: <String, dynamic>{
+          kTransitionInfoKey: TransitionInfo(
+            hasTransition: true,
+            transitionType: PageTransitionType.rightToLeft,
+            duration: Duration(milliseconds: 600),
+          ),
+        },
+      );
     }
 
     // Future.delayed(const Duration(seconds: 0)).then(

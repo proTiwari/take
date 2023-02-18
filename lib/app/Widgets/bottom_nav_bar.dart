@@ -12,12 +12,14 @@ import 'package:take/app/pages/explore_page/search.dart';
 import 'package:take/app/pages/signin_page/phone_login.dart';
 import 'package:take/app/providers/base_providers.dart';
 import '../notificationservice/local_notification_service.dart';
+import '../pages/list_property/flutter_flow/flutter_flow_theme.dart';
+import '../pages/list_property/home_page/home_page_widget.dart';
 import '../pages/profile_page/profile_page.dart';
 import '../globar_variables/globals.dart' as globals;
 
 class CustomBottomNavigation extends StatefulWidget {
   String profile;
-  CustomBottomNavigation(city, secondcall, this.profile);
+  CustomBottomNavigation(city, secondcall, this.profile,);
 
   @override
   State<CustomBottomNavigation> createState() => _CustomBottomNavigationState();
@@ -30,7 +32,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   final pages = [
     Search(city, secondcall),
     globals.logined == false ? LoginApp() : const GroupListPage(),
-    globals.logined == false ? LoginApp() : const ListProperty(),
+    globals.logined == false ? LoginApp() : const ListPropertyPage(),
     globals.logined == false ? LoginApp() : const ProfilePage()
   ];
   BaseProvider? _userProvider;
@@ -108,11 +110,11 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         return false;
       },
       child: Scaffold(
-        // backgroundColor: Colors.blueAccent,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: widget.profile == "profile" ? pages[3] : pages[pageIndex],
         bottomNavigationBar: Container(
           margin: EdgeInsets.symmetric(
-              vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
+              vertical: 0, horizontal: width < 800 ? 8 : width * 0.24),
           height: 70,
           decoration: BoxDecoration(
             boxShadow: const [
@@ -140,7 +142,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color:
-                      pageIndex == 0 ? const Color(0xFFF27121) : Colors.white,
+                      pageIndex == 0 ?FlutterFlowTheme.of(context).alternate : Colors.white,
                 ),
                 child: IconButton(
                   enableFeedback: false,
@@ -176,7 +178,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color:
-                      pageIndex == 1 ? const Color(0xFFF27121) : Colors.white,
+                      pageIndex == 1 ? FlutterFlowTheme.of(context).alternate: Colors.white,
                 ),
                 child: IconButton(
                   enableFeedback: false,
@@ -212,7 +214,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(50),
                   color:
-                      pageIndex == 2 ? const Color(0xFFF27121) : Colors.white,
+                      pageIndex == 2 ? FlutterFlowTheme.of(context).alternate: Colors.white,
                 ),
                 child: IconButton(
                   enableFeedback: false,
@@ -247,7 +249,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                 width: 60,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    color: pageIndex == 3 ? Color(0xFFF27121) : Colors.white),
+                    color: pageIndex == 3 ? FlutterFlowTheme.of(context).alternate: Colors.white),
                 child: IconButton(
                   enableFeedback: false,
                   onPressed: () {

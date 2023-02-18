@@ -9,7 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:take/app/Widgets/cards.dart';
 import 'package:take/app/Widgets/paralleldropdownlist.dart';
+import 'package:take/app/pages/app_state.dart';
 import 'package:take/app/pages/explore_page/googlemap.dart';
+import 'package:take/app/pages/list_property/custom_code/widgets/city_drop_down.dart';
 import '../../Widgets/google_map_circle.dart';
 import '../../globar_variables/globals.dart' as globals;
 import '../../Widgets/filter_card.dart';
@@ -17,6 +19,7 @@ import 'package:filter_list/filter_list.dart';
 
 import '../../models/auto_complete_result.dart';
 import '../../services/map_services.dart';
+import '../list_property/flutter_flow/flutter_flow_theme.dart';
 import '../list_property/search_place_provider.dart';
 
 class Search extends ConsumerStatefulWidget {
@@ -80,12 +83,16 @@ class _SearchState extends ConsumerState<Search> {
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: BoxDecoration(
               border: Border.all(
-            color: isSelected! ? Color(0xFFF27121) : Colors.grey[300]!,
+            color: isSelected!
+                ? FlutterFlowTheme.of(context).alternate
+                : Colors.grey[300]!,
           )),
           child: Text(
             item.name,
             style: TextStyle(
-                color: isSelected ? Color(0xFFF27121) : Colors.grey[500]),
+                color: isSelected
+                    ? FlutterFlowTheme.of(context).alternate
+                    : Colors.grey[500]),
           ),
         );
       },
@@ -194,7 +201,7 @@ class _SearchState extends ConsumerState<Search> {
       },
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           body: Center(
             child: Stack(children: [
               ListView(
@@ -204,17 +211,18 @@ class _SearchState extends ConsumerState<Search> {
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 5.0),
                     child: Column(children: [
                       Container(
-                        height: 50.0,
+                        height: 47.0,
                         decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                                color: Colors.grey.shade200,
+                                color: FlutterFlowTheme.of(context)
+                                    .secondaryBackground,
                                 // offset: const Offset),
                                 blurRadius: 0,
                                 spreadRadius: 1)
                           ],
                           borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.white,
+                          // color: Colors.white,
                         ),
                         child: TextFormField(
                           controller: searchController,
@@ -321,7 +329,8 @@ class _SearchState extends ConsumerState<Search> {
                                                     spreadRadius: 1)
                                               ],
                                               color: nearboolmarker
-                                                  ? const Color(0xFFF27121)
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .alternate
                                                   : Colors.white,
                                               // color: Theme.of(context).primaryColor,
                                               borderRadius:
@@ -373,7 +382,8 @@ class _SearchState extends ConsumerState<Search> {
                                                     spreadRadius: 1)
                                               ],
                                               color: globals.secondcall == true
-                                                  ? const Color(0xFFF27121)
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .alternate
                                                   : Colors.white,
                                               // color: Theme.of(context).primaryColor,
                                               borderRadius:
@@ -443,10 +453,11 @@ class _SearchState extends ConsumerState<Search> {
                                                     blurRadius: 0,
                                                     spreadRadius: 1)
                                               ],
-                                              color:
-                                                  selectedUserList!.isNotEmpty
-                                                      ? const Color(0xFFF27121)
-                                                      : Colors.white,
+                                              color: selectedUserList!
+                                                      .isNotEmpty
+                                                  ? FlutterFlowTheme.of(context)
+                                                      .alternate
+                                                  : Colors.white,
                                               // color: Theme.of(context).primaryColor,
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -524,10 +535,16 @@ class _SearchState extends ConsumerState<Search> {
                               ),
                             ),
                             AnimatedSwitcher(
-                              duration: const Duration(milliseconds: 0),
-                              child: ParallelDropDownList(
-                                  stateCity, widget.city, "search", []),
-                            ),
+                                duration: const Duration(milliseconds: 0),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(18.0, 8, 18, 0),
+                                  child: CityDropDown(),
+                                )
+
+                                // ParallelDropDownList(
+                                //     stateCity, widget.city, "search", []),
+                                ),
                           ],
                         )
                       : Container(),
@@ -626,15 +643,15 @@ class _SearchState extends ConsumerState<Search> {
                                     return element
                                         .get("city")
                                         .toString()
-                                        .contains("Allahabad");
+                                        .contains("Prayagraj");
                                   }).toList();
 
-                                  if (globals.secondcall == true) {
+                                  if (FFAppState().cityname != "") {
                                     initList = documents.where((element) {
                                       return element
                                           .get("city")
                                           .toString()
-                                          .contains(widget.city);
+                                          .contains(FFAppState().cityname);
                                     }).toList();
                                     print(
                                         "hhhhhhh${widget.city}hhhhhhhhhhh${initList}");
@@ -844,7 +861,11 @@ class _SearchState extends ConsumerState<Search> {
             child: GestureDetector(
                 onTap: (() {
                   print("clicked google map button");
-                  if (initList.isNotEmpty) {
+                  if (initList.isEmpty) {
+                    initList = initListWithoutLocation;
+                  }
+                  if (initList.isNotEmpty ||
+                      initListWithoutLocation.isNotEmpty) {
                     selectedUserList!.isNotEmpty
                         ? Navigator.push(
                             context,
@@ -864,79 +885,79 @@ class _SearchState extends ConsumerState<Search> {
                 }),
                 child: const GoogleMapCircle()),
           ),
-          drawer: Drawer(
-            child: Container(
-              height: 55,
-              child: ListView(
-                padding: const EdgeInsets.all(0),
-                children: [
-                  const DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.green,
-                    ), //BoxDecoration
-                    child: UserAccountsDrawerHeader(
-                      decoration: BoxDecoration(color: Colors.green),
-                      accountName: Text(
-                        "Abhishek Mishra",
-                        style: TextStyle(fontSize: 18),
-                      ),
-                      accountEmail: Text("abhishekm977@gmail.com"),
-                      currentAccountPictureSize: Size.square(50),
-                      currentAccountPicture: CircleAvatar(
-                        backgroundColor: Color.fromARGB(255, 165, 255, 137),
-                        child: Text(
-                          "A",
-                          style: TextStyle(fontSize: 30.0, color: Colors.blue),
-                        ), //Text
-                      ), //circleAvatar
-                    ), //UserAccountDrawerHeader
-                  ), //DrawerHeader
-                  ListTile(
-                    leading: const Icon(Icons.person),
-                    title: const Text(' My Profile '),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.book),
-                    title: const Text(' My Course '),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.workspace_premium),
-                    title: const Text(' Go Premium '),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.video_label),
-                    title: const Text(' Saved Videos '),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.edit),
-                    title: const Text(' Edit Profile '),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.logout),
-                    title: const Text('LogOut'),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ), //Drawer
+          // drawer: Drawer(
+          //   child: Container(
+          //     height: 55,
+          //     child: ListView(
+          //       padding: const EdgeInsets.all(0),
+          //       children: [
+          //         const DrawerHeader(
+          //           decoration: BoxDecoration(
+          //             color: Colors.green,
+          //           ), //BoxDecoration
+          //           child: UserAccountsDrawerHeader(
+          //             decoration: BoxDecoration(color: Colors.green),
+          //             accountName: Text(
+          //               "Abhishek Mishra",
+          //               style: TextStyle(fontSize: 18),
+          //             ),
+          //             accountEmail: Text("abhishekm977@gmail.com"),
+          //             currentAccountPictureSize: Size.square(50),
+          //             currentAccountPicture: CircleAvatar(
+          //               backgroundColor: Color.fromARGB(255, 165, 255, 137),
+          //               child: Text(
+          //                 "A",
+          //                 style: TextStyle(fontSize: 30.0, color: Colors.blue),
+          //               ), //Text
+          //             ), //circleAvatar
+          //           ), //UserAccountDrawerHeader
+          //         ), //DrawerHeader
+          //         ListTile(
+          //           leading: const Icon(Icons.person),
+          //           title: const Text(' My Profile '),
+          //           onTap: () {
+          //             Navigator.pop(context);
+          //           },
+          //         ),
+          //         ListTile(
+          //           leading: const Icon(Icons.book),
+          //           title: const Text(' My Course '),
+          //           onTap: () {
+          //             Navigator.pop(context);
+          //           },
+          //         ),
+          //         ListTile(
+          //           leading: const Icon(Icons.workspace_premium),
+          //           title: const Text(' Go Premium '),
+          //           onTap: () {
+          //             Navigator.pop(context);
+          //           },
+          //         ),
+          //         ListTile(
+          //           leading: const Icon(Icons.video_label),
+          //           title: const Text(' Saved Videos '),
+          //           onTap: () {
+          //             Navigator.pop(context);
+          //           },
+          //         ),
+          //         ListTile(
+          //           leading: const Icon(Icons.edit),
+          //           title: const Text(' Edit Profile '),
+          //           onTap: () {
+          //             Navigator.pop(context);
+          //           },
+          //         ),
+          //         ListTile(
+          //           leading: const Icon(Icons.logout),
+          //           title: const Text('LogOut'),
+          //           onTap: () {
+          //             Navigator.pop(context);
+          //           },
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ), //Drawer
         ),
       ),
     );

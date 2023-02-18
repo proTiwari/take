@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' as riverpod;
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +20,9 @@ import 'package:take/app/firebase_functions/firebase_fun.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'app/models/user_model.dart';
 import 'app/notificationservice/local_notification_service.dart';
+import 'app/pages/app_state.dart';
+import 'app/pages/list_property/flutter_flow/internationalization.dart';
+import 'app/pages/list_property/flutter_flow/nav/nav.dart';
 import 'app/pages/responsive_layout.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -104,15 +108,37 @@ void main() async {
   });
 
   runApp(const riverpod.ProviderScope(child: MyApp()));
+
+  final appState = FFAppState(); // Initialize FFAppState
+
+  runApp(ChangeNotifierProvider(
+    create: (context) => appState,
+    child: const riverpod.ProviderScope(child: MyApp()),
+  ));
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   State<MyApp> createState() => _MyAppState();
+  static _MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>()!;
 }
 
 class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+  ThemeMode _themeMode = ThemeMode.system;
+
+  late AppStateNotifier _appStateNotifier;
+  late GoRouter _router;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _appStateNotifier = AppStateNotifier();
+    _router = createRouter(_appStateNotifier);
+  }
+
   FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -128,45 +154,51 @@ class _MyAppState extends State<MyApp> {
           initialData: null,
         ),
       ],
-      child: MaterialApp(
+      child: MaterialApp.router(
+        localizationsDelegates: [
+        FFLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: _locale,
+      supportedLocales: const [Locale('en', '')],
+      theme: ThemeData(brightness: Brightness.light),
+        routeInformationParser: _router.routeInformationParser,
+        routerDelegate: _router.routerDelegate,
         // initialRoute: '/',
         // routes: {
         //   '/':(context) =>  auth.currentUser == null ? LoginApp(): const SplashScreen(),
         // },
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              // Checking if the snapshot has any data or not
-              if (snapshot.hasData) {
-                // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-                return const ResponsiveLayout(
-                  mobileScreenLayout: SplashScreen(),
-                  webScreenLayout: SplashScreen(),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('${snapshot.error}'),
-                );
-              }
-            }
+        // home: StreamBuilder(
+        //   stream: FirebaseAuth.instance.authStateChanges(),
+        //   builder: (context, snapshot) {
+        //     if (snapshot.connectionState == ConnectionState.active) {
+        //       // Checking if the snapshot has any data or not
+        //       if (snapshot.hasData) {
+        //         // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
+        //         return const ResponsiveLayout(
+        //           mobileScreenLayout: SplashScreen(),
+        //           webScreenLayout: SplashScreen(),
+        //         );
+        //       } else if (snapshot.hasError) {
+        //         return Center(
+        //           child: Text('${snapshot.error}'),
+        //         );
+        //       }
+        //     }
 
-            // means connection to future hasnt been made yet
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        //     // means connection to future hasnt been made yet
+        //     if (snapshot.connectionState == ConnectionState.waiting) {
+        //       return const Center(
+        //         child: CircularProgressIndicator(),
+        //       );
+        //     }
 
-            return const SplashScreen();
-          },
-        ),
+        //     return const SplashScreen();
+        //   },
+        // ),
         title: '',
-        theme: ThemeData(
-          //#FC7676
-          // visualDensity: VisualDensity.adaptivePlatformDensity,
-          primaryColor: const Color(0xFFF27121),
-        ),
         debugShowCheckedModeBanner: false,
       ),
     );

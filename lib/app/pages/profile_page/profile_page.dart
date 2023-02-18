@@ -19,6 +19,7 @@ import '../../firebase_functions/firebase_fun.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 import '../../models/property_model.dart';
+import '../list_property/flutter_flow/flutter_flow_theme.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -163,10 +164,10 @@ class _ProfilePageState extends State<ProfilePage>
     final color = Theme.of(context).colorScheme.primary;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        shadowColor:FlutterFlowTheme.of(context).primaryBackground,
         flexibleSpace: const FlexibleSpaceBar(),
         elevation: 0,
         actions: [
@@ -231,6 +232,7 @@ class _ProfilePageState extends State<ProfilePage>
         automaticallyImplyLeading: false,
       ),
       body: SafeArea(
+        
         child: SingleChildScrollView(
           child: Container(
             margin: EdgeInsets.symmetric(

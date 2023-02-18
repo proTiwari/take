@@ -705,12 +705,13 @@ class _GooglemapState extends ConsumerState<Googlemap> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Material(
+                      color: Colors.blueAccent,
                       elevation: 10,
                       child: Container(
-                        color: Colors.blueAccent,
                         padding: const EdgeInsets.all(0.0),
                         height: 60.0, //MediaQuery.of(context).size.width * .08,
-                        width: MediaQuery.of(context).size.width * 0.9, //MediaQuery.of(context).size.width * .3,
+                        width: MediaQuery.of(context).size.width *
+                            0.9, //MediaQuery.of(context).size.width * .3,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(23),
                         ),
@@ -721,8 +722,7 @@ class _GooglemapState extends ConsumerState<Googlemap> {
                                 'Back',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                  fontSize: 25,color: Colors.white
-                                ),
+                                    fontSize: 25, color: Colors.white),
                               ),
                             ),
                           ],

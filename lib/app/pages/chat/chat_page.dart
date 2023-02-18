@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:take/app/Widgets/wedigets.dart';
 import 'package:take/app/pages/ownersprofile/owners_profile_page.dart';
 
-import '../../../app1/models/user_model.dart';
+
+import '../../models/user_model.dart';
 import '../../services/database_service.dart';
 import '../../Widgets/group_info.dart';
 import '../../Widgets/message_tile.dart';
