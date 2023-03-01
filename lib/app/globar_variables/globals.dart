@@ -9,6 +9,7 @@ var width;
 var height;
 var postalcode;
 var latlong;
+var recentmessagetemp;
 var logintoken;
 var list;
 var city = 'Allahabad';

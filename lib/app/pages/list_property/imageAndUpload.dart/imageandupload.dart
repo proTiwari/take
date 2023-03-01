@@ -268,6 +268,24 @@ class _UploadPropertyState extends State<UploadProperty> {
                                 lon: FFAppState().lon,
                                 areaoflandunit: FFAppState().areaoflandunit,
                               );
+                              try {
+                                await FirebaseFirestore.instance
+                                    .collection("State")
+                                    .doc("City")
+                                    .update({
+                                  "city": FieldValue.arrayUnion(
+                                      [FFAppState().cityname])
+                                });
+                              } catch (e) {
+                                print("gsdsdds${e}");
+                                await FirebaseFirestore.instance
+                                    .collection("State")
+                                    .doc("City")
+                                    .set({
+                                  "city": FieldValue.arrayUnion(
+                                      [FFAppState().cityname])
+                                });
+                              }
                               await CityRecord.collection
                                   .doc(propertyid)
                                   .set(cityCreateData)
@@ -282,7 +300,7 @@ class _UploadPropertyState extends State<UploadProperty> {
                                   .doc(propertyid)
                                   .update({
                                 "propertyimage": downloadUrl
-                              }).whenComplete(() {
+                              }).whenComplete(() async {
                                 setState(() {
                                   loading = false;
                                   showToast("Successfully uploaded",

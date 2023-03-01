@@ -103,7 +103,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                     Align(
                       alignment: AlignmentDirectional(0, 0.6),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 20),
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 10, 20, 10),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -121,7 +121,8 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                         .secondaryBackground,
                                     borderRadius: BorderRadius.circular(50),
                                     border: Border.all(
-                                      color: Color(0xFFCAC2C2),
+                                      color: FlutterFlowTheme.of(context)
+                                                      .alternate,
                                     ),
                                   ),
                                   child: Stack(
@@ -918,7 +919,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                             ),
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 30, 0, 10),
+                                  EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
                               child: InkWell(
                                 onTap: () async {
                                   FocusScope.of(context).unfocus();

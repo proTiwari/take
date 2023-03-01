@@ -21,6 +21,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'app/models/user_model.dart';
 import 'app/notificationservice/local_notification_service.dart';
 import 'app/pages/app_state.dart';
+import 'app/pages/list_property/flutter_flow/flutter_flow_theme.dart';
 import 'app/pages/list_property/flutter_flow/internationalization.dart';
 import 'app/pages/list_property/flutter_flow/nav/nav.dart';
 import 'app/pages/responsive_layout.dart';
@@ -107,6 +108,11 @@ void main() async {
     }
   });
 
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Color(0xFFFFFFFF),
+    systemNavigationBarIconBrightness: Brightness.dark,
+  ));
+
   runApp(const riverpod.ProviderScope(child: MyApp()));
 
   final appState = FFAppState(); // Initialize FFAppState
@@ -156,14 +162,14 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp.router(
         localizationsDelegates: [
-        FFLocalizationsDelegate(),
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      locale: _locale,
-      supportedLocales: const [Locale('en', '')],
-      theme: ThemeData(brightness: Brightness.light),
+          FFLocalizationsDelegate(),
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        locale: _locale,
+        supportedLocales: const [Locale('en', '')],
+        theme: ThemeData(brightness: Brightness.light),
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,
         // initialRoute: '/',

@@ -228,6 +228,7 @@ class _GroupListPageState extends State<GroupListPage> {
                     itemBuilder: (context, index) {
                       int reverseIndex =
                           snapshot.data['groups'].length - index - 1;
+                      print("7777777777777: ${snapshot.data['groups'][reverseIndex]}");
                       // return Text(getId(snapshot.data['groups'][reverseIndex]));}
                       var profileimage =
                           getprofile(snapshot.data['groups'][reverseIndex]);

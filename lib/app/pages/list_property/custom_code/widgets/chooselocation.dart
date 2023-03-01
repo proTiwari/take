@@ -1,4 +1,5 @@
 // Automatic FlutterFlow imports
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:take/app/pages/app_state.dart';
@@ -8,13 +9,14 @@ import '../../backend/backend.dart';
 import '../../flutter_flow/flutter_flow_theme.dart';
 import '../../flutter_flow/flutter_flow_util.dart';
 import '../../onmap.dart';
+import '../../search_place_provider.dart';
 import 'index.dart'; // Imports other custom widgets
 import 'package:flutter/material.dart';
 import '../../../../globar_variables/globals.dart' as globals;
 // Begin custom widget code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-class Chooselocation extends StatefulWidget {
+class Chooselocation extends ConsumerStatefulWidget {
   const Chooselocation({
     Key? key,
     this.width,
@@ -25,15 +27,15 @@ class Chooselocation extends StatefulWidget {
   final double? height;
 
   @override
-  _ChooselocationState createState() => _ChooselocationState();
+  ConsumerState<Chooselocation> createState() => _ChooselocationState();
 }
 
-class _ChooselocationState extends State<Chooselocation> {
+class _ChooselocationState extends ConsumerState<Chooselocation> {
   @override
   void initState() {
     super.initState();
-    FFAppState().lat = globals.latlong.latitude;
-    FFAppState().lon = globals.latlong.longitude;
+    // FFAppState().lat = globals.latlong.latitude;
+    // FFAppState().lon = globals.latlong.longitude;
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
@@ -81,8 +83,7 @@ class _ChooselocationState extends State<Chooselocation> {
   LatLng results = globals.latlong;
 
   Future<void> _getCurrentPosition() async {
-    final hasPermission =
-        await LocationService().handleLocationPermission(context);
+    final hasPermission = await LocationService().handleLocationPermission();
     print("sd");
     if (!hasPermission) return;
     print("dsfs");
@@ -96,6 +97,7 @@ class _ChooselocationState extends State<Chooselocation> {
           _currentPosition = position;
           var res = LatLng(position.latitude, position.longitude);
           _getAddressFromLatLng(position);
+
           results = res;
           globals.latlong = results;
           FFAppState().lat = results.latitude;
@@ -153,11 +155,13 @@ class _ChooselocationState extends State<Chooselocation> {
 
   @override
   Widget build(BuildContext context) {
+    var locationprovider = ref.watch(locationProvider);
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 22),
-          child: Text("$results"),
+          child: Text("${FFAppState().lat}, ${FFAppState().lon}"),
+          // child: Text("$results"),
         ),
         IntrinsicHeight(
           child:

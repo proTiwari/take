@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/change_notifier.dart';
 import 'package:take/app/Widgets/bottom_nav_bar.dart';
@@ -215,24 +216,6 @@ void listProperty({
     print(e);
   }
 
-  if (profileImage == null || profileImage == '') {
-    try {
-      await FirebaseFirestore.instance
-          .collection("Controllers")
-          .doc("variables")
-          .get()
-          .then((value) {
-        profileImage = value.data()!["defaultprofileImage"];
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  if (profileImage == null || profileImage == '') {
-    profileImage =
-        "https://cdn.pixabay.com/photo/2021/06/07/13/45/user-6318003__340.png";
-  }
   GeoRange georange = GeoRange();
   var geohash =
       georange.encode(globals.latlong.latitude, globals.latlong.longitude);
@@ -298,28 +281,20 @@ void listProperty({
 }
 
 getUser() async {
-  var data;
   try {
-    if (_auth.currentUser != null) {
-      print(
-          "lllllllllllllll${_auth.currentUser!.email}llllllllllllllllllllllll${_auth.currentUser!.uid}");
-
-      data = await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(_auth.currentUser!.uid)
-          .get()
-          .then((value) => {
-                // print(value.get("name")),
-                globals.userdata = value,
-              })
-          .whenComplete(() => {
-                print("completed${globals.userdata}"),
-              });
-      // print("globals userdata : ${globals.userdata["name"]}");
-    }
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_auth.currentUser!.uid)
+        .get()
+        .then((value) => {
+              globals.userdata = value,
+            });
   } catch (e) {
-    print(e.toString());
+    if (kDebugMode) {
+      print("getuser error: ${e.toString()}");
+    }
   }
+  return;
 }
 
 // getproperty(city) async {

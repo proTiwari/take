@@ -104,7 +104,7 @@ class _ListPropertyState extends State<ListProperty> {
 
   Future<void> _getCurrentPosition() async {
     final hasPermission =
-        await LocationService().handleLocationPermission(context);
+        await LocationService().handleLocationPermission();
     print("sd");
     if (!hasPermission) return;
     print("dsfs");

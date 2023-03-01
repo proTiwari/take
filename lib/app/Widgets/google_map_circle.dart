@@ -14,7 +14,7 @@ class GoogleMapCircle extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-              color: FlutterFlowTheme.of(context).primaryBackground,
+              color: FlutterFlowTheme.of(context).secondaryBackground,
               offset: const Offset(1, 1),
               blurRadius: 0,
               spreadRadius: 3)

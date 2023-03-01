@@ -4,8 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:take/app/Widgets/wedigets.dart';
+import 'package:take/app/pages/list_property/flutter_flow/flutter_flow_theme.dart';
 import 'package:take/app/pages/ownersprofile/owners_profile_page.dart';
-
 
 import '../../models/user_model.dart';
 import '../../services/database_service.dart';
@@ -132,12 +132,17 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        //   leading: Padding(
-        //   padding: const EdgeInsets.all(8.0),
-        //   child: ClipOval(
-        //     child: Image(image: Image.network(widget.profileImage).image,),
-        //   ),
-        // ),
+        leading: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+            )),
         title: InkWell(
           onTap: () {
             Navigator.push(
@@ -154,20 +159,30 @@ class _ChatPageState extends State<ChatPage> {
               SizedBox(
                 height: 40,
                 width: 40,
-                child: ClipOval(
-                  child: Align(
-                    child: Image.network(widget.profileImage),
-                  ),
-                ),
+                child: widget.profileImage == ''
+                    ? ClipOval(
+                        child: Align(
+                          child: Image.network(
+                              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+                        ),
+                      )
+                    : ClipOval(
+                        child: Align(
+                          child: Image.network(widget.profileImage),
+                        ),
+                      ),
               ),
               const SizedBox(
                 width: 10,
               ),
-              Text(widget.groupName),
+              Text(
+                widget.groupName,
+                style: TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
+              ),
             ],
           ),
         ),
-        backgroundColor: Colors.grey[700],
+        backgroundColor: Color.fromARGB(255, 230, 229, 229),
         actions: [
           // SizedBox(
           //   width: 60.0,
@@ -189,56 +204,77 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       body: Container(
+        color: Color.fromARGB(255, 230, 229, 229),
         margin: EdgeInsets.symmetric(
             vertical: 0, horizontal: width < 800 ? 0 : width * 0.24),
-        child: Stack(
-          children: <Widget>[
-            // chat messages here
-            chatMessages(),
-            Container(
-              alignment: Alignment.bottomCenter,
-              width: MediaQuery.of(context).size.width,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
-                width: MediaQuery.of(context).size.width,
-                color: Colors.grey[700],
-                child: Row(children: [
-                  Expanded(
-                      child: TextFormField(
-                    controller: messageController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                      hintText: "Send a message...",
-                      hintStyle: TextStyle(color: Colors.white, fontSize: 16),
-                      border: InputBorder.none,
-                    ),
-                  )),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      sendMessage();
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: const Center(
-                          child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                      )),
-                    ),
-                  )
-                ]),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              // chat messages here
+              chatMessages(),
+              SizedBox(
+                height: 10,
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0,0,0,6),
+                child: Container(
+                  alignment: Alignment.bottomCenter,
+                  width: MediaQuery.of(context).size.width,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 0.1,
+                          offset: Offset(0, 0),
+                        )
+                      ],
+                    ),
+                    height: 60,
+                    width: MediaQuery.of(context).size.width * 0.95,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
+                      child: Row(children: [
+                        Expanded(
+                            child: TextFormField(
+                          maxLines: 30,
+                          minLines: 1,
+                          controller: messageController,
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 0, 0, 0)),
+                          decoration: const InputDecoration(
+                            hintText: "Send a message...",
+                            hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 16),
+                            border: InputBorder.none,
+                          ),
+                        )),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            print("sendmessage");
+                            sendMessage();
+                          },
+                          child: const Center(
+                              child: Icon(
+                            Icons.send,
+                            color: Color.fromARGB(255, 182, 190, 184),
+                          )),
+                        )
+                      ]),
+                    ),
+                  ),
+                ),
+              ),
+              // SizedBox(
+              //   height: 80,
+              // ),
+            ],
+          ),
         ),
       ),
     );
@@ -247,57 +283,65 @@ class _ChatPageState extends State<ChatPage> {
   chatMessages() {
     var propertydata;
     var imageurl;
-    return MediaQuery.removePadding(
-      context: context,
-      removeTop: true,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.8,
-        child: StreamBuilder(
-          stream: chats,
-          builder: (context, AsyncSnapshot snapshot) {
-            Timer(const Duration(milliseconds: 100), () {
-              listScrollController.animateTo(
-                listScrollController.position.maxScrollExtent,
-                curve: Curves.easeOut,
-                duration: const Duration(milliseconds: 750),
-              );
-            });
-            return snapshot.hasData
-                ? MediaQuery.removePadding(
-                    context: context,
-                    removeTop: true,
-                    child: ListView.builder(
-                      controller: listScrollController,
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index) {
-                        try {
-                           return MessageTile(
-                            imageurl: snapshot.data.docs[index]['imageurl'],
-                            propertydata: snapshot.data.docs[index]['propertydata'],
-                            status: snapshot.data.docs[index]['status'],
-                            time: snapshot.data.docs[index]['time'],
-                            message: snapshot.data.docs[index]['message'],
-                            sender: snapshot.data.docs[index]['sender'],
-                            sentByMe: FirebaseAuth.instance.currentUser!.uid ==
-                                snapshot.data.docs[index]['sender']);
-                        } catch (e) {
-                           return MessageTile(
-                            imageurl: '',
-                            propertydata: '',
-                            status: snapshot.data.docs[index]['status'],
-                            time: snapshot.data.docs[index]['time'],
-                            message: snapshot.data.docs[index]['message'],
-                            sender: snapshot.data.docs[index]['sender'],
-                            sentByMe: FirebaseAuth.instance.currentUser!.uid ==
-                                snapshot.data.docs[index]['sender']);
-                        }
-                        
-                      },
-                    ),
-                  )
-                : Container();
-          },
-        ),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.78,
+      child: StreamBuilder(
+        stream: chats,
+        builder: (context, AsyncSnapshot snapshot) {
+          Timer(const Duration(milliseconds: 100), () {
+            listScrollController.animateTo(
+              listScrollController.position.maxScrollExtent,
+              curve: Curves.easeOut,
+              duration: const Duration(milliseconds: 750),
+            );
+          });
+          int reverseIndex;
+          return snapshot.hasData
+              ? ListView.builder(
+                  reverse: true,
+                  // controller: listScrollController,
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    reverseIndex = snapshot.data.docs.length - index - 1;
+                    try {
+                      print(reverseIndex);
+                      print(snapshot.data.docs[reverseIndex]['message']);
+                      print(snapshot.data.docs.length);
+                      if (reverseIndex != 0) {
+                        print("siojdfoijeoooooooooooooooooo");
+                        globals.recentmessagetemp =
+                            snapshot.data.docs[reverseIndex - 1]['sender'];
+                      } else {
+                        print("siojdfoijeoiiiiiiiiiiiiiii");
+                        globals.recentmessagetemp = "justToCreateAdiffrence";
+                      }
+
+                      return MessageTile(
+                          imageurl: snapshot.data.docs[reverseIndex]
+                              ['imageurl'],
+                          propertydata: snapshot.data.docs[reverseIndex]
+                              ['propertydata'],
+                          status: snapshot.data.docs[reverseIndex]['status'],
+                          time: snapshot.data.docs[reverseIndex]['time'],
+                          message: snapshot.data.docs[reverseIndex]['message'],
+                          sender: snapshot.data.docs[reverseIndex]['sender'],
+                          sentByMe: FirebaseAuth.instance.currentUser!.uid ==
+                              snapshot.data.docs[reverseIndex]['sender']);
+                    } catch (e) {
+                      return MessageTile(
+                          imageurl: '',
+                          propertydata: '',
+                          status: snapshot.data.docs[reverseIndex]['status'],
+                          time: snapshot.data.docs[reverseIndex]['time'],
+                          message: snapshot.data.docs[reverseIndex]['message'],
+                          sender: snapshot.data.docs[reverseIndex]['sender'],
+                          sentByMe: FirebaseAuth.instance.currentUser!.uid ==
+                              snapshot.data.docs[reverseIndex]['sender']);
+                    }
+                  },
+                )
+              : Container();
+        },
       ),
     );
   }
