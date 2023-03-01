@@ -12,6 +12,20 @@ xmlns:tools="http://schemas.android.com/tools"
         android:label="RunForRent"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
+
+
+
+        <!-- Provider -->
+<provider
+    android:name="androidx.core.content.FileProvider"
+    android:authorities="${applicationId}.fileProvider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/file_paths" />
+</provider>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -28,7 +42,16 @@ xmlns:tools="http://schemas.android.com/tools"
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
-
+        <!-- Provider -->
+<!-- <provider
+    android:name="androidx.core.content.FileProvider"
+    android:authorities="${applicationId}.fileProvider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/file_paths" />
+</provider> -->
 
 
             <intent-filter>

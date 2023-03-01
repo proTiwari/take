@@ -34,6 +34,7 @@ abstract class FlutterFlowTheme {
   late Color overlay;
   late Color primary30;
   late Color customColor1;
+  late Color greenColor;
   late Color grayIcon;
   late Color gray200;
   late Color gray600;
@@ -68,6 +69,7 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color secondaryBackground = const Color(0xFFFFFFFF);
   late Color primaryText = const Color(0xFF101213);
   late Color secondaryText = const Color(0xFF57636C);
+  late Color greenColor = Color.fromARGB(255, 30, 198, 164);
 
   late Color primaryBtnText = Color(0xFFFFFFFF);
   late Color lineColor = Color(0xFFE0E3E7);

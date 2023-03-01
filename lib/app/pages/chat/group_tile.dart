@@ -53,27 +53,32 @@ class _GroupTileState extends State<GroupTile> {
           i = i.toString().split("_userName")[0];
           if (i != FirebaseAuth.instance.currentUser!.uid) {
             owneruid = i;
-            FirebaseFirestore.instance
-                .collection("Users")
-                .doc(i)
-                .get()
-                .then((value) {
-              print('ttttt${i}');
-              setState(() {
-                profileimage = value.get("profileImage");
+            try {
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(i)
+                  .get()
+                  .then((value) {
+                print('ttttt${i}');
+                setState(() {
+                  profileimage = value.get("profileImage");
+                });
               });
-            });
-            FirebaseFirestore.instance
-                .collection("groups")
-                .doc(widget.groupId)
-                .get()
-                .then((value) {
-              print('ttttt${i}');
-              setState(() {
-                recentmessage = value.get("recentMessage");
-                recentmessagesendby = value.get("recentMessageSender");
+              FirebaseFirestore.instance
+                  .collection("groups")
+                  .doc(widget.groupId)
+                  .get()
+                  .then((value) {
+                print('ttttt${i}');
+                setState(() {
+                  recentmessage = value.get("recentMessage");
+                  recentmessagesendby = value.get("recentMessageSender");
+                });
               });
-            });
+            } catch (e) {
+              print("group tile error: ${e}");
+            }
+
             try {
               FirebaseFirestore.instance
                   .collection("groups")
@@ -108,15 +113,25 @@ class _GroupTileState extends State<GroupTile> {
   Widget build(BuildContext context) {
     print("oifjoiejf");
     return GestureDetector(
-      onTap: () {
-        nextScreen(
-            context,
-            ChatPage(
-                owneruid: owneruid,
-                groupId: widget.groupId,
-                groupName: widget.groupName,
-                userName: widget.userName,
-                profileImage: profileimage));
+      onTap: () async {
+        try {
+          Future.delayed(Duration(milliseconds: 10), () async {
+            var bcount = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ChatPage(
+                        owneruid: owneruid,
+                        groupId: widget.groupId,
+                        groupName: widget.groupName,
+                        userName: widget.userName,
+                        profileImage: profileimage)));
+            setState(() {
+              count = bcount;
+            });
+          });
+        } catch (e) {
+          print("grouptilenavigationerror: ${e}");
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),

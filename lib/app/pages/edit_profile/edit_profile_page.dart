@@ -17,6 +17,7 @@ import 'package:take/app/globar_variables/globals.dart' as globals;
 import '../../Widgets/image_upload_card.dart';
 import '../../Widgets/loader_image_property_edit.dart';
 import '../../Widgets/uploading_image_property_image.dart';
+import '../list_property/flutter_flow/flutter_flow_theme.dart';
 import '../list_property/list_provider.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -366,1247 +367,995 @@ class _EditProfilePageState extends State<EditProfilePage> {
     var width = MediaQuery.of(context).size.width;
     return ChangeNotifierProvider(
       create: (context) => ListProvider(),
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            elevation: 0,
-            centerTitle: true,
-            backgroundColor: Theme.of(context).primaryColor,
-            title: const Text(
-              "Edit Property",
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 27,
+      child: Scaffold(
+        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+        body: Container(
+          margin: EdgeInsets.symmetric(
+              vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 20,
               ),
-            ),
-          ),
-          body: Container(
-            margin: EdgeInsets.symmetric(
-                vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),
-            child: ListView(
-              children: [
-                const SizedBox(
-                  height: 20,
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  Owner's name",
-                              border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: name,
-                          keyboardType: TextInputType.name,
-                          onChanged: (value) {
-                            name.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: "  Name"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                // SizedBox(
-                //   width: MediaQuery.of(context).size.width * 0.8,
-                //   height: 60,
-                //   child: TextFormField(
-                //     // enabled: edit,
-                //     controller: name,
-                //     validator: (value) {
-                //       if (value.toString().isEmpty) {
-                //         return 'Please enter Name';
-                //       }
-
-                //       if (value.toString().length < 3) {
-                //         return 'name cannot be less than 3 character';
-                //       }
-                //     },
-                //     keyboardType: TextInputType.name,
-                //     decoration: const InputDecoration(
-                //       // hintText: "Name",
-                //       hintText: "",
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.all(
-                //           Radius.circular(50),
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  Email", border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: email,
-                          keyboardType: TextInputType.emailAddress,
-                          onChanged: (value) {
-                            email.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: "  Email"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  Phone", border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: phone,
-                          keyboardType: TextInputType.phone,
-                          onChanged: (value) {
-                            phone.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: "  Phone"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  Whatsapp", border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: whatsapp,
-                          keyboardType: TextInputType.phone,
-                          onChanged: (value) {
-                            whatsapp.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: "  Whatsapp"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                propertyon == "Sell property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Sell property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 140,
-                              child: DropdownButton(
-                                hint: const Text("  Adv. money"),
-                                icon: const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                ),
-                                isExpanded: true,
-                                underline: Container(),
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                dropdownColor: Colors.white,
-                                iconEnabledColor: Colors.black,
-                                items: advanceMoney.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    advanvemoney.text = newValue!;
-                                  });
-                                },
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                enabled: false,
-                                controller: advanvemoney,
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
-                                  advanvemoney.text = value;
-                                },
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  Advance money"),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  Amount", border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: amount,
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            amount.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: "  Amount"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                propertyon == "Sell property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Sell property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(
-                              width: 140,
-                              child: TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                    hintText: "  area of land",
-                                    border: InputBorder.none),
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                controller: areaofland,
-                                keyboardType: TextInputType.number,
-                                onChanged: (value) {
-                                  areaofland.text = value;
-                                },
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  area of land"),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  description",
-                              border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: discription,
-                          keyboardType: TextInputType.text,
-                          onChanged: (value) {
-                            discription.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "  description"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                propertyon == "Rent property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Rent property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 140,
-                              child: DropdownButton(
-                                hint: const Text("  Food service"),
-                                icon: const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                ),
-                                isExpanded: true,
-                                underline: Container(),
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                dropdownColor: Colors.white,
-                                iconEnabledColor: Colors.black,
-                                items: food.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    foodservice.text = newValue!;
-                                  });
-                                },
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                enabled: false,
-                                controller: foodservice,
-                                onChanged: (value) {
-                                  foodservice.text = value;
-                                },
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  Food service"),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                propertyon == "Sell property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Sell property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(
-                              width: 140,
-                              child: TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                    hintText: "  No. of floors",
-                                    border: InputBorder.none),
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                enabled: false,
-                                controller: numberoffloors,
-                                onChanged: (value) {
-                                  numberoffloors.text = value;
-                                },
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  No. of floors"),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 140,
-                        child: DropdownButton(
-                          hint: const Text("  No. of rooms"),
-                          icon: const Padding(
-                            padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                            child: Icon(Icons.keyboard_arrow_down),
-                          ),
-                          isExpanded: true,
-                          underline: Container(),
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.black),
-                          dropdownColor: Colors.white,
-                          iconEnabledColor: Colors.black,
-                          items: rooms.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              numberofrooms.text = newValue!;
-                            });
-                          },
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          enabled: false,
-                          controller: numberofrooms,
-                          keyboardType: TextInputType.phone,
-                          onChanged: (value) {
-                            numberofrooms.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "  Number of rooms"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                propertyon == "Rent property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Rent property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 140,
-                              child: DropdownButton(
-                                hint: const Text("  Pay duration"),
-                                icon: const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                ),
-                                isExpanded: true,
-                                underline: Container(),
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                dropdownColor: Colors.white,
-                                iconEnabledColor: Colors.black,
-                                items: tenor.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    paymentduration.text = newValue!;
-                                  });
-                                },
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                enabled: false,
-                                controller: paymentduration,
-                                keyboardType: TextInputType.phone,
-                                onChanged: (value) {
-                                  paymentduration.text = value;
-                                },
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  Payment duration"),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  Pincode", border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: pincode,
-                          keyboardType: TextInputType.phone,
-                          onChanged: (value) {
-                            pincode.text = value;
-                          },
-                          decoration: const InputDecoration(
-                              border: InputBorder.none, hintText: "  Pincode"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                propertyon == "Sell property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Sell property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            const SizedBox(
-                              width: 140,
-                              child: TextField(
-                                enabled: false,
-                                decoration: InputDecoration(
-                                    hintText: "  Property name",
-                                    border: InputBorder.none),
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                controller: propertyname,
-                                keyboardType: TextInputType.phone,
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  Property name"),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                propertyon == "Rent property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Rent property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 140,
-                              child: DropdownButton(
-                                hint: const Text("  Service type"),
-                                icon: const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                ),
-                                isExpanded: true,
-                                underline: Container(),
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                dropdownColor: Colors.white,
-                                iconEnabledColor: Colors.black,
-                                items: servicetypelist.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    servicetype.text = newValue!;
-                                  });
-                                },
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                enabled: false,
-                                controller: servicetype,
-                                keyboardType: TextInputType.phone,
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  Service type"),
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                propertyon == "Rent property"
-                    ? const SizedBox(
-                        height: 20,
-                      )
-                    : const SizedBox(),
-                propertyon == "Rent property"
-                    ? Container(
-                        height: 55,
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              width: 140,
-                              child: DropdownButton(
-                                hint: const Text("  Sharing"),
-                                icon: const Padding(
-                                  padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
-                                  child: Icon(Icons.keyboard_arrow_down),
-                                ),
-                                isExpanded: true,
-                                underline: Container(),
-                                style: const TextStyle(
-                                    fontSize: 16, color: Colors.black),
-                                dropdownColor: Colors.white,
-                                iconEnabledColor: Colors.black,
-                                items: sharinglist.map((String items) {
-                                  return DropdownMenuItem(
-                                    value: items,
-                                    child: Text(items),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    sharing.text = newValue!;
-                                  });
-                                },
-                              ),
-                            ),
-                            const Text(
-                              "|",
-                              style: TextStyle(fontSize: 30),
-                            ),
-                            Expanded(
-                              child: TextField(
-                                enabled: false,
-                                controller: sharing,
-                                keyboardType: TextInputType.phone,
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: "  Sharing"),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : const SizedBox(),
-                const SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  height: 55,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 140,
-                        child: TextField(
-                          enabled: false,
-                          decoration: InputDecoration(
-                              hintText: "  Complete Address",
-                              border: InputBorder.none),
-                        ),
-                      ),
-                      const Text(
-                        "|",
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          controller: streetaddress,
-                          keyboardType: TextInputType.name,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "  Complete address"),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Consumer<ListProvider>(builder: (context, provider, child) {
-                  return SizedBox(
-                    height: 136.0,
-                    child: InkWell(
-                      onTap: () {
-                        setState(
-                          () {
-                            initImageList = provider.imagelistvalue;
-                            print(initImageList);
-                          },
-                        );
-                      },
-                      child: ListView(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          if (true)
-                            ...(initImageList).map(
-                              (e) {
-                                return oldimagedelete(
-                                    e,
-                                    widget.valuedata['city'],
-                                    widget.valuedata['propertyId'],
-                                    context);
-                              },
-                            ),
-                        ],
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  Owner's name",
+                            border: InputBorder.none),
                       ),
                     ),
-                  );
-                }),
-                listImage.isNotEmpty
-                    ? Consumer<ListProvider>(
-                        builder: (context, provider, child) {
-                          return SizedBox(
-                            height: 136.0,
-                            child: InkWell(
-                              onTap: () {
-                                setState(
-                                  () {
-                                    Future.delayed(const Duration(seconds: 1),
-                                        () {
-                                      listImage = provider.uploadimagelist;
-                                      print(listImage);
-                                      if (listImage.isEmpty) {
-                                        setState(() {
-                                          heightImage = false;
-                                        });
-                                      }
-                                    });
-                                  },
-                                );
-                              },
-                              child: ListView(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                children: [
-                                  if (listImage != [])
-                                    ...listImage.map(
-                                      (e) {
-                                        return newpropertyimage(e);
-                                      },
-                                    ),
-                                ],
-                              ),
-                            ),
-                          );
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: name,
+                        keyboardType: TextInputType.name,
+                        onChanged: (value) {
+                          name.text = value;
                         },
-                      )
-                    : Container(),
-                const SizedBox(
-                  height: 20,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "  Name"),
+                      ),
+                    )
+                  ],
                 ),
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      builder: ((builder) => bottomSheet()),
-                    );
-                  },
-                  child: ImageUploadCard(null),
+              ),
+              // SizedBox(
+              //   width: MediaQuery.of(context).size.width * 0.8,
+              //   height: 60,
+              //   child: TextFormField(
+              //     // enabled: edit,
+              //     controller: name,
+              //     validator: (value) {
+              //       if (value.toString().isEmpty) {
+              //         return 'Please enter Name';
+              //       }
+
+              //       if (value.toString().length < 3) {
+              //         return 'name cannot be less than 3 character';
+              //       }
+              //     },
+              //     keyboardType: TextInputType.name,
+              //     decoration: const InputDecoration(
+              //       // hintText: "Name",
+              //       hintText: "",
+              //       border: OutlineInputBorder(
+              //         borderRadius: BorderRadius.all(
+              //           Radius.circular(50),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      InkWell(
-                        onTap: () async {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text(''),
-                              content: const Text(
-                                  'Are you sure you want to delete this property?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context, 'No'),
-                                  child: const Text('No'),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    // ignore: use_build_context_synchronously
-                                    Navigator.pop(context, 'Yes');
-                                    await deleteProperty();
-                                  },
-                                  child: const Text('Yes'),
-                                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  Email", border: InputBorder.none),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: email,
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: (value) {
+                          email.text = value;
+                        },
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "  Email"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  Phone", border: InputBorder.none),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: phone,
+                        keyboardType: TextInputType.phone,
+                        onChanged: (value) {
+                          phone.text = value;
+                        },
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "  Phone"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  Whatsapp", border: InputBorder.none),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: whatsapp,
+                        keyboardType: TextInputType.phone,
+                        onChanged: (value) {
+                          whatsapp.text = value;
+                        },
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "  Whatsapp"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              propertyon == "Sell property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Sell property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 140,
+                            child: DropdownButton(
+                              hint: const Text("  Adv. money"),
+                              icon: const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: Icon(Icons.keyboard_arrow_down),
+                              ),
+                              isExpanded: true,
+                              underline: Container(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.black,
+                              items: advanceMoney.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  advanvemoney.text = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: advanvemoney,
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) {
+                                advanvemoney.text = value;
+                              },
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  Advance money"),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  Amount", border: InputBorder.none),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: amount,
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          amount.text = value;
+                        },
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "  Amount"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              propertyon == "Sell property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Sell property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 140,
+                            child: TextField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                  hintText: "  area of land",
+                                  border: InputBorder.none),
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: areaofland,
+                              keyboardType: TextInputType.number,
+                              onChanged: (value) {
+                                areaofland.text = value;
+                              },
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  area of land"),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  description",
+                            border: InputBorder.none),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: discription,
+                        keyboardType: TextInputType.text,
+                        onChanged: (value) {
+                          discription.text = value;
+                        },
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "  description"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              propertyon == "Rent property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Rent property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 140,
+                            child: DropdownButton(
+                              hint: const Text("  Food service"),
+                              icon: const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: Icon(Icons.keyboard_arrow_down),
+                              ),
+                              isExpanded: true,
+                              underline: Container(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.black,
+                              items: food.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  foodservice.text = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: foodservice,
+                              onChanged: (value) {
+                                foodservice.text = value;
+                              },
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  Food service"),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              propertyon == "Sell property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Sell property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 140,
+                            child: TextField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                  hintText: "  No. of floors",
+                                  border: InputBorder.none),
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: numberoffloors,
+                              onChanged: (value) {
+                                numberoffloors.text = value;
+                              },
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  No. of floors"),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 140,
+                      child: DropdownButton(
+                        hint: const Text("  No. of rooms"),
+                        icon: const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                          child: Icon(Icons.keyboard_arrow_down),
+                        ),
+                        isExpanded: true,
+                        underline: Container(),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.black),
+                        dropdownColor: Colors.white,
+                        iconEnabledColor: Colors.black,
+                        items: rooms.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            numberofrooms.text = newValue!;
+                          });
+                        },
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        enabled: false,
+                        controller: numberofrooms,
+                        keyboardType: TextInputType.phone,
+                        onChanged: (value) {
+                          numberofrooms.text = value;
+                        },
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "  Number of rooms"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              propertyon == "Rent property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Rent property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 140,
+                            child: DropdownButton(
+                              hint: const Text("  Pay duration"),
+                              icon: const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: Icon(Icons.keyboard_arrow_down),
+                              ),
+                              isExpanded: true,
+                              underline: Container(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.black,
+                              items: tenor.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  paymentduration.text = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: paymentduration,
+                              keyboardType: TextInputType.phone,
+                              onChanged: (value) {
+                                paymentduration.text = value;
+                              },
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  Payment duration"),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  Pincode", border: InputBorder.none),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: pincode,
+                        keyboardType: TextInputType.phone,
+                        onChanged: (value) {
+                          pincode.text = value;
+                        },
+                        decoration: const InputDecoration(
+                            border: InputBorder.none, hintText: "  Pincode"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              propertyon == "Sell property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Sell property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 140,
+                            child: TextField(
+                              enabled: false,
+                              decoration: InputDecoration(
+                                  hintText: "  Property name",
+                                  border: InputBorder.none),
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              controller: propertyname,
+                              keyboardType: TextInputType.phone,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  Property name"),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              propertyon == "Rent property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Rent property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 140,
+                            child: DropdownButton(
+                              hint: const Text("  Service type"),
+                              icon: const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: Icon(Icons.keyboard_arrow_down),
+                              ),
+                              isExpanded: true,
+                              underline: Container(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.black,
+                              items: servicetypelist.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  servicetype.text = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: servicetype,
+                              keyboardType: TextInputType.phone,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  Service type"),
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              propertyon == "Rent property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : const SizedBox(),
+              propertyon == "Rent property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 140,
+                            child: DropdownButton(
+                              hint: const Text("  Sharing"),
+                              icon: const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: Icon(Icons.keyboard_arrow_down),
+                              ),
+                              isExpanded: true,
+                              underline: Container(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.black,
+                              items: sharinglist.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  sharing.text = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: sharing,
+                              keyboardType: TextInputType.phone,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  Sharing"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 55,
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 140,
+                      child: TextField(
+                        enabled: false,
+                        decoration: InputDecoration(
+                            hintText: "  Complete Address",
+                            border: InputBorder.none),
+                      ),
+                    ),
+                    const Text(
+                      "|",
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Expanded(
+                      child: TextField(
+                        controller: streetaddress,
+                        keyboardType: TextInputType.name,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "  Complete address"),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Consumer<ListProvider>(builder: (context, provider, child) {
+                return SizedBox(
+                  height: 136.0,
+                  child: InkWell(
+                    onTap: () {
+                      setState(
+                        () {
+                          initImageList = provider.imagelistvalue;
+                          print(initImageList);
+                        },
+                      );
+                    },
+                    child: ListView(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        if (true)
+                          ...(initImageList).map(
+                            (e) {
+                              return oldimagedelete(e, widget.valuedata['city'],
+                                  widget.valuedata['propertyId'], context);
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+              listImage.isNotEmpty
+                  ? Consumer<ListProvider>(
+                      builder: (context, provider, child) {
+                        return SizedBox(
+                          height: 136.0,
+                          child: InkWell(
+                            onTap: () {
+                              setState(
+                                () {
+                                  Future.delayed(const Duration(seconds: 1),
+                                      () {
+                                    listImage = provider.uploadimagelist;
+                                    print(listImage);
+                                    if (listImage.isEmpty) {
+                                      setState(() {
+                                        heightImage = false;
+                                      });
+                                    }
+                                  });
+                                },
+                              );
+                            },
+                            child: ListView(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                if (listImage != [])
+                                  ...listImage.map(
+                                    (e) {
+                                      return newpropertyimage(e);
+                                    },
+                                  ),
                               ],
                             ),
-                          );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: width < 800 ? width * 0.3 : width * 0.2,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    // Color(0xFF8A2387),
-                                    Color(0xFFF27121),
-                                    Color(0xFFF27121),
-                                  ])),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: loadingdelete
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ))
-                                : const Text(
-                                    'Delete',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
                           ),
+                        );
+                      },
+                    )
+                  : Container(),
+              const SizedBox(
+                height: 20,
+              ),
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: ((builder) => bottomSheet()),
+                  );
+                },
+                child: ImageUploadCard(null),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text(''),
+                            content: const Text(
+                                'Are you sure you want to delete this property?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () => Navigator.pop(context, 'No'),
+                                child: const Text('No'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pop(context, 'Yes');
+                                  await deleteProperty();
+                                },
+                                child: const Text('Yes'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: width < 800 ? width * 0.3 : width * 0.2,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  // Color(0xFF8A2387),
+                                  FlutterFlowTheme.of(context).alternate,
+                                  FlutterFlowTheme.of(context).alternate,
+                                ])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: loadingdelete
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ))
+                              : const Text(
+                                  'Delete',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () async {
-                          setState(() {
-                            loading = true;
-                          });
-                          print('this is start');
-                          try {
-                            if (widget.valuedata['wantto'] == 'Sell property') {
-                              if (name.text != '' && name.text != 'null') {
-                                if (pincode.text != '' &&
-                                    pincode.text != 'null' &&
-                                    _isNumeric(pincode.text)) {
-                                  if (propertyname.text != '' &&
-                                      propertyname.text != 'null') {
-                                    if (streetaddress.text != '' &&
-                                        streetaddress.text != 'null') {
-                                      if (whatsapp.text != '' &&
-                                          whatsapp.text != 'null' &&
-                                          _isNumeric(whatsapp.text
-                                              .toString()
-                                              .split('+')[1])) {
-                                        if (numberoffloors.text != '' &&
-                                            numberoffloors.text != 'null' &&
-                                            _isNumeric(numberoffloors.text)) {
-                                          if (numberofrooms.text != '' &&
-                                              numberofrooms.text != 'null' &&
-                                              numberofrooms.text !=
-                                                  "How many rooms does your property have?") {
-                                            if (phone.text != '' &&
-                                                phone.text != 'null' &&
-                                                _isNumeric(phone.text
-                                                    .toString()
-                                                    .split('+')[1])) {
-                                              if (email.text != '' &&
-                                                  email.text != 'null' &&
-                                                  emailvalidation
-                                                      .hasMatch(email.text)) {
-                                                if (areaofland.text != '' &&
-                                                    areaofland.text != 'null' &&
-                                                    _isNumeric(
-                                                        areaofland.text)) {
-                                                  if (amount.text != '' &&
-                                                      amount.text != 'null' &&
-                                                      _isNumeric(amount.text)) {
-                                                    if (advanvemoney.text !=
-                                                            '' &&
-                                                        advanvemoney.text !=
-                                                            'null' &&
-                                                        advanvemoney.text !=
-                                                            'Any Advance Money?') {
-                                                      try {
-                                                        var uid = FirebaseAuth
-                                                            .instance
-                                                            .currentUser!
-                                                            .uid;
-                                                        print('4');
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('City')
-                                                            .doc(widget
-                                                                    .valuedata[
-                                                                'propertyId'])
-                                                            .update({
-                                                          "advancemoney":
-                                                              advanvemoney.text,
-                                                          "amount": amount.text,
-                                                          'areaofland':
-                                                              areaofland.text,
-                                                          'description':
-                                                              discription.text,
-                                                          'email': email.text,
-                                                          'mobilenumber':
-                                                              phone.text,
-                                                          'numberofrooms':
-                                                              numberofrooms
-                                                                  .text,
-                                                          'ownername':
-                                                              name.text,
-                                                          'numberoffloors':
-                                                              numberoffloors
-                                                                  .text,
-                                                          'pincode':
-                                                              pincode.text,
-                                                          'propertyname':
-                                                              propertyname.text,
-                                                          'streetaddress':
-                                                              streetaddress
-                                                                  .text,
-                                                          'whatsappnumber':
-                                                              whatsapp.text,
-                                                        }).whenComplete(() => {
-                                                                  // showToast("")
-                                                                });
-                                                        print('7');
-                                                        print('8');
-                                                        List listdatalink =
-                                                            await uploadImage(
-                                                                listImage);
-                                                        if (listdatalink !=
-                                                            null) {
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'City')
-                                                              .doc(widget
-                                                                      .valuedata[
-                                                                  'propertyId'])
-                                                              .update({
-                                                            'propertyimage':
-                                                                FieldValue
-                                                                    .arrayUnion(
-                                                                        listdatalink),
-                                                          });
-                                                        }
-                                                        setState(() {
-                                                          loading = false;
-                                                        });
-                                                        Navigator.pop(context);
-                                                        // ignore: use_build_context_synchronously
-                                                        // Navigator
-                                                        //     .pushReplacement(
-                                                        //   context,
-                                                        // MaterialPageRoute(
-                                                        //     builder: (context) =>
-                                                        //         CustomBottomNavigation(
-                                                        //             "",
-                                                        //             "",
-                                                        //             "profile")),
-                                                        // );
-                                                      } catch (e) {
-                                                        setState(() {
-                                                          loading = false;
-                                                        });
-                                                        print(
-                                                            "this is the error: ${e.toString()}");
-                                                      }
-                                                    } else {
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                      showToast(
-                                                          context: context,
-                                                          "Advance money field not selected!");
-                                                    }
-                                                  } else {
-                                                    setState(() {
-                                                      loading = false;
-                                                    });
-                                                    showToast(
-                                                        context: context,
-                                                        "Amount mentioned is invalid!");
-                                                  }
-                                                } else {
-                                                  setState(() {
-                                                    loading = false;
-                                                  });
-                                                  showToast(
-                                                      context: context,
-                                                      "Area of land field is invalid!");
-                                                }
-                                              } else {
-                                                setState(() {
-                                                  loading = false;
-                                                });
-                                                showToast(
-                                                    context: context,
-                                                    "Email is invalid!");
-                                              }
-                                            } else {
-                                              setState(() {
-                                                loading = false;
-                                              });
-                                              showToast(
-                                                  context: context,
-                                                  "Phone is invalid!");
-                                            }
-                                          } else {
-                                            setState(() {
-                                              loading = false;
-                                            });
-                                            showToast(
-                                                context: context,
-                                                "Number of rooms field not selected!");
-                                          }
-                                        } else {
-                                          setState(() {
-                                            loading = false;
-                                          });
-                                          showToast(
-                                              context: context,
-                                              "Number of floor field not selected!");
-                                        }
-                                      } else {
-                                        setState(() {
-                                          loading = false;
-                                        });
-                                        showToast(
-                                            context: context,
-                                            "What's app number field is invalid!");
-                                      }
-                                    } else {
-                                      setState(() {
-                                        loading = false;
-                                      });
-                                      showToast(
-                                          context: context,
-                                          "Complete address field is invalid!");
-                                    }
-                                  } else {
-                                    setState(() {
-                                      loading = false;
-                                    });
-                                    showToast(
-                                        context: context,
-                                        "Property name field is invalid!");
-                                  }
-                                } else {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  showToast(
-                                      context: context,
-                                      "Pincode field is invalid!");
-                                }
-                              } else {
-                                setState(() {
-                                  loading = false;
-                                });
-                                showToast(
-                                    context: context, "Name field is invalid!");
-                              }
-                            }
-                          } catch (e) {
-                            print("this is the kinga error: ${e.toString()}");
-                            showToast(context: context, e.toString());
-                            setState(() {
-                              loading = false;
-                            });
-                          }
-                          // showToast(context: context,"Advance money field not selected!");
-
-                          //rent property
-                          try {
-                            if (widget.valuedata['wantto'] == 'Rent property') {
-                              if (name.text != '' && name.text != 'null') {
-                                if (paymentduration.text != '' &&
-                                    paymentduration.text != 'null') {
-                                  if (pincode.text != '' &&
-                                      pincode.text != 'null' &&
-                                      _isNumeric(pincode.text)) {
-                                    if (streetaddress.text != '' &&
-                                        streetaddress.text != 'null') {
-                                      if (whatsapp.text != '' &&
-                                          whatsapp.text != 'null' &&
-                                          _isNumeric(whatsapp.text
-                                              .toString()
-                                              .split('+')[1])) {
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        setState(() {
+                          loading = true;
+                        });
+                        print('this is start');
+                        try {
+                          if (widget.valuedata['wantto'] == 'Sell property') {
+                            if (name.text != '' && name.text != 'null') {
+                              if (pincode.text != '' &&
+                                  pincode.text != 'null' &&
+                                  _isNumeric(pincode.text)) {
+                                if (propertyname.text != '' &&
+                                    propertyname.text != 'null') {
+                                  if (streetaddress.text != '' &&
+                                      streetaddress.text != 'null') {
+                                    if (whatsapp.text != '' &&
+                                        whatsapp.text != 'null' &&
+                                        _isNumeric(whatsapp.text
+                                            .toString()
+                                            .split('+')[1])) {
+                                      if (numberoffloors.text != '' &&
+                                          numberoffloors.text != 'null' &&
+                                          _isNumeric(numberoffloors.text)) {
                                         if (numberofrooms.text != '' &&
                                             numberofrooms.text != 'null' &&
                                             numberofrooms.text !=
@@ -1620,141 +1369,94 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                 email.text != 'null' &&
                                                 emailvalidation
                                                     .hasMatch(email.text)) {
-                                              if (amount.text != '' &&
-                                                  amount.text != 'null' &&
-                                                  _isNumeric(amount.text)) {
-                                                if (advanvemoney.text != '' &&
-                                                    advanvemoney.text !=
-                                                        'null' &&
-                                                    advanvemoney.text !=
-                                                        'Any Advance Money?') {
-                                                  if (foodservice.text != '' &&
-                                                      foodservice.text !=
+                                              if (areaofland.text != '' &&
+                                                  areaofland.text != 'null' &&
+                                                  _isNumeric(areaofland.text)) {
+                                                if (amount.text != '' &&
+                                                    amount.text != 'null' &&
+                                                    _isNumeric(amount.text)) {
+                                                  if (advanvemoney.text != '' &&
+                                                      advanvemoney.text !=
                                                           'null' &&
-                                                      foodservice.text !=
-                                                          'Food service?') {
-                                                    if (servicetype.text !=
-                                                            '' &&
-                                                        servicetype.text !=
-                                                            'null' &&
-                                                        servicetype.text !=
-                                                            'Which of the following is your property type?') {
-                                                      if (sharing.text != '' &&
-                                                          sharing.text !=
-                                                              'null' &&
-                                                          sharing.text !=
-                                                              'Number of sharing?') {
-                                                        try {
-                                                          var uid = FirebaseAuth
-                                                              .instance
-                                                              .currentUser!
-                                                              .uid;
-                                                          print('4');
-                                                          await FirebaseFirestore
-                                                              .instance
-                                                              .collection(
-                                                                  'City')
-                                                              .doc(widget
-                                                                      .valuedata[
-                                                                  'propertyId'])
-                                                              .update({
-                                                            "advancemoney":
-                                                                advanvemoney
-                                                                    .text,
-                                                            "amount":
-                                                                amount.text,
-                                                            'description':
-                                                                discription
-                                                                    .text,
-                                                            'servicetype':
-                                                                servicetype
-                                                                    .text,
-                                                            'paymentduration':
-                                                                paymentduration
-                                                                    .text,
-                                                            'foodservice':
-                                                                foodservice
-                                                                    .text,
-                                                            'email': email.text,
-                                                            'sharing':
-                                                                sharing.text,
-                                                            'mobilenumber':
-                                                                phone.text,
-                                                            'numberofrooms':
-                                                                numberofrooms
-                                                                    .text,
-                                                            'ownername':
-                                                                name.text,
-                                                            'pincode':
-                                                                pincode.text,
-                                                            'streetaddress':
-                                                                streetaddress
-                                                                    .text,
-                                                            'whatsappnumber':
-                                                                whatsapp.text,
-                                                          }).whenComplete(
-                                                                  () => {
-                                                                        // showToast("")
-                                                                      });
-                                                          print('7');
-                                                          print('8');
-                                                          List listdatalink =
-                                                              await uploadImage(
-                                                                  listImage);
-                                                          if (listdatalink !=
-                                                              null) {
-                                                            await FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'City')
-                                                                .doc(widget
-                                                                        .valuedata[
-                                                                    'propertyId'])
-                                                                .update({
-                                                              'propertyimage':
-                                                                  FieldValue
-                                                                      .arrayUnion(
-                                                                          listdatalink),
-                                                            });
-                                                          }
-
-                                                          setState(() {
-                                                            loading = false;
-                                                          });
-                                                          // ignore: use_build_context_synchronously
-                                                          Navigator.pop(
-                                                              context);
-                                                          // Navigator
-                                                          //     .pushReplacement(
-                                                          //   context,
-                                                          //   MaterialPageRoute(
-                                                          //     builder: (context) =>
-                                                          //     Navigator.pop(context),
-                                                          //         // CustomBottomNavigation("","","profile"),
-                                                          //   ),
-                                                          // );
-                                                        } catch (e) {
-                                                          setState(() {
-                                                            loading = false;
-                                                          });
-                                                          print(
-                                                              "this is the error: ${e.toString()}");
-                                                        }
-                                                      } else {
-                                                        setState(() {
-                                                          loading = false;
+                                                      advanvemoney.text !=
+                                                          'Any Advance Money?') {
+                                                    try {
+                                                      var uid = FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid;
+                                                      print('4');
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection('City')
+                                                          .doc(widget.valuedata[
+                                                              'propertyId'])
+                                                          .update({
+                                                        "advancemoney":
+                                                            advanvemoney.text,
+                                                        "amount": amount.text,
+                                                        'areaofland':
+                                                            areaofland.text,
+                                                        'description':
+                                                            discription.text,
+                                                        'email': email.text,
+                                                        'mobilenumber':
+                                                            phone.text,
+                                                        'numberofrooms':
+                                                            numberofrooms.text,
+                                                        'ownername': name.text,
+                                                        'numberoffloors':
+                                                            numberoffloors.text,
+                                                        'pincode': pincode.text,
+                                                        'propertyname':
+                                                            propertyname.text,
+                                                        'streetaddress':
+                                                            streetaddress.text,
+                                                        'whatsappnumber':
+                                                            whatsapp.text,
+                                                      }).whenComplete(() => {
+                                                                // showToast("")
+                                                              });
+                                                      print('7');
+                                                      print('8');
+                                                      List listdatalink =
+                                                          await uploadImage(
+                                                              listImage);
+                                                      if (listdatalink !=
+                                                          null) {
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection('City')
+                                                            .doc(widget
+                                                                    .valuedata[
+                                                                'propertyId'])
+                                                            .update({
+                                                          'propertyimage':
+                                                              FieldValue.arrayUnion(
+                                                                  listdatalink),
                                                         });
-                                                        showToast(
-                                                            context: context,
-                                                            "Sharing field not selected!");
                                                       }
-                                                    } else {
                                                       setState(() {
                                                         loading = false;
                                                       });
-                                                      showToast(
-                                                          context: context,
-                                                          "Service type field not selected!");
+                                                      Navigator.pop(context);
+                                                      // ignore: use_build_context_synchronously
+                                                      // Navigator
+                                                      //     .pushReplacement(
+                                                      //   context,
+                                                      // MaterialPageRoute(
+                                                      //     builder: (context) =>
+                                                      //         CustomBottomNavigation(
+                                                      //             "",
+                                                      //             "",
+                                                      //             "profile")),
+                                                      // );
+                                                    } catch (e) {
+                                                      setState(() {
+                                                        loading = false;
+                                                      });
+                                                      print(
+                                                          "this is the error: ${e.toString()}");
                                                     }
                                                   } else {
                                                     setState(() {
@@ -1762,7 +1464,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                     });
                                                     showToast(
                                                         context: context,
-                                                        "Food service field not selected!");
+                                                        "Advance money field not selected!");
                                                   }
                                                 } else {
                                                   setState(() {
@@ -1770,7 +1472,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                   });
                                                   showToast(
                                                       context: context,
-                                                      "Advance money field not selected!");
+                                                      "Amount mentioned is invalid!");
                                                 }
                                               } else {
                                                 setState(() {
@@ -1778,7 +1480,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                 });
                                                 showToast(
                                                     context: context,
-                                                    "Amount mentioned is invalid!");
+                                                    "Area of land field is invalid!");
                                               }
                                             } else {
                                               setState(() {
@@ -1810,7 +1512,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         });
                                         showToast(
                                             context: context,
-                                            "What's app number field is invalid!");
+                                            "Number of floor field not selected!");
                                       }
                                     } else {
                                       setState(() {
@@ -1818,7 +1520,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       });
                                       showToast(
                                           context: context,
-                                          "Complete address field is invalid!");
+                                          "What's app number field is invalid!");
                                     }
                                   } else {
                                     setState(() {
@@ -1826,7 +1528,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     });
                                     showToast(
                                         context: context,
-                                        "Pincode field is invalid!");
+                                        "Complete address field is invalid!");
                                   }
                                 } else {
                                   setState(() {
@@ -1834,63 +1536,321 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   });
                                   showToast(
                                       context: context,
-                                      "Payment duration field not selected!");
+                                      "Property name field is invalid!");
                                 }
                               } else {
                                 setState(() {
                                   loading = false;
                                 });
                                 showToast(
-                                    context: context, "Name field is invalid!");
+                                    context: context,
+                                    "Pincode field is invalid!");
                               }
+                            } else {
+                              setState(() {
+                                loading = false;
+                              });
+                              showToast(
+                                  context: context, "Name field is invalid!");
                             }
-                          } catch (e) {
-                            print("dddd--: ${e.toString()}");
-                            showToast(context: context, e.toString());
-                            setState(() {
-                              loading = false;
-                            });
                           }
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: width < 800 ? width * 0.3 : width * 0.2,
-                          height: 50,
-                          decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    // Color(0xFF8A2387),
-                                    Color(0xFFF27121),
-                                    Color(0xFFF27121),
-                                  ])),
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: loading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
+                        } catch (e) {
+                          print("this is the kinga error: ${e.toString()}");
+                          showToast(context: context, e.toString());
+                          setState(() {
+                            loading = false;
+                          });
+                        }
+                        // showToast(context: context,"Advance money field not selected!");
+
+                        //rent property
+                        try {
+                          if (widget.valuedata['wantto'] == 'Rent property') {
+                            if (name.text != '' && name.text != 'null') {
+                              if (paymentduration.text != '' &&
+                                  paymentduration.text != 'null') {
+                                if (pincode.text != '' &&
+                                    pincode.text != 'null' &&
+                                    _isNumeric(pincode.text)) {
+                                  if (streetaddress.text != '' &&
+                                      streetaddress.text != 'null') {
+                                    if (whatsapp.text != '' &&
+                                        whatsapp.text != 'null' &&
+                                        _isNumeric(whatsapp.text
+                                            .toString()
+                                            .split('+')[1])) {
+                                      if (numberofrooms.text != '' &&
+                                          numberofrooms.text != 'null' &&
+                                          numberofrooms.text !=
+                                              "How many rooms does your property have?") {
+                                        if (phone.text != '' &&
+                                            phone.text != 'null' &&
+                                            _isNumeric(phone.text
+                                                .toString()
+                                                .split('+')[1])) {
+                                          if (email.text != '' &&
+                                              email.text != 'null' &&
+                                              emailvalidation
+                                                  .hasMatch(email.text)) {
+                                            if (amount.text != '' &&
+                                                amount.text != 'null' &&
+                                                _isNumeric(amount.text)) {
+                                              if (advanvemoney.text != '' &&
+                                                  advanvemoney.text != 'null' &&
+                                                  advanvemoney.text !=
+                                                      'Any Advance Money?') {
+                                                if (foodservice.text != '' &&
+                                                    foodservice.text !=
+                                                        'null' &&
+                                                    foodservice.text !=
+                                                        'Food service?') {
+                                                  if (servicetype.text != '' &&
+                                                      servicetype.text !=
+                                                          'null' &&
+                                                      servicetype.text !=
+                                                          'Which of the following is your property type?') {
+                                                    if (sharing.text != '' &&
+                                                        sharing.text !=
+                                                            'null' &&
+                                                        sharing.text !=
+                                                            'Number of sharing?') {
+                                                      try {
+                                                        var uid = FirebaseAuth
+                                                            .instance
+                                                            .currentUser!
+                                                            .uid;
+                                                        print('4');
+                                                        await FirebaseFirestore
+                                                            .instance
+                                                            .collection('City')
+                                                            .doc(widget
+                                                                    .valuedata[
+                                                                'propertyId'])
+                                                            .update({
+                                                          "advancemoney":
+                                                              advanvemoney.text,
+                                                          "amount": amount.text,
+                                                          'description':
+                                                              discription.text,
+                                                          'servicetype':
+                                                              servicetype.text,
+                                                          'paymentduration':
+                                                              paymentduration
+                                                                  .text,
+                                                          'foodservice':
+                                                              foodservice.text,
+                                                          'email': email.text,
+                                                          'sharing':
+                                                              sharing.text,
+                                                          'mobilenumber':
+                                                              phone.text,
+                                                          'numberofrooms':
+                                                              numberofrooms
+                                                                  .text,
+                                                          'ownername':
+                                                              name.text,
+                                                          'pincode':
+                                                              pincode.text,
+                                                          'streetaddress':
+                                                              streetaddress
+                                                                  .text,
+                                                          'whatsappnumber':
+                                                              whatsapp.text,
+                                                        }).whenComplete(() => {
+                                                                  // showToast("")
+                                                                });
+                                                        print('7');
+                                                        print('8');
+                                                        List listdatalink =
+                                                            await uploadImage(
+                                                                listImage);
+                                                        if (listdatalink !=
+                                                            null) {
+                                                          await FirebaseFirestore
+                                                              .instance
+                                                              .collection(
+                                                                  'City')
+                                                              .doc(widget
+                                                                      .valuedata[
+                                                                  'propertyId'])
+                                                              .update({
+                                                            'propertyimage':
+                                                                FieldValue
+                                                                    .arrayUnion(
+                                                                        listdatalink),
+                                                          });
+                                                        }
+
+                                                        setState(() {
+                                                          loading = false;
+                                                        });
+                                                        // ignore: use_build_context_synchronously
+                                                        Navigator.pop(context);
+                                                        // Navigator
+                                                        //     .pushReplacement(
+                                                        //   context,
+                                                        //   MaterialPageRoute(
+                                                        //     builder: (context) =>
+                                                        //     Navigator.pop(context),
+                                                        //         // CustomBottomNavigation("","","profile"),
+                                                        //   ),
+                                                        // );
+                                                      } catch (e) {
+                                                        setState(() {
+                                                          loading = false;
+                                                        });
+                                                        print(
+                                                            "this is the error: ${e.toString()}");
+                                                      }
+                                                    } else {
+                                                      setState(() {
+                                                        loading = false;
+                                                      });
+                                                      showToast(
+                                                          context: context,
+                                                          "Sharing field not selected!");
+                                                    }
+                                                  } else {
+                                                    setState(() {
+                                                      loading = false;
+                                                    });
+                                                    showToast(
+                                                        context: context,
+                                                        "Service type field not selected!");
+                                                  }
+                                                } else {
+                                                  setState(() {
+                                                    loading = false;
+                                                  });
+                                                  showToast(
+                                                      context: context,
+                                                      "Food service field not selected!");
+                                                }
+                                              } else {
+                                                setState(() {
+                                                  loading = false;
+                                                });
+                                                showToast(
+                                                    context: context,
+                                                    "Advance money field not selected!");
+                                              }
+                                            } else {
+                                              setState(() {
+                                                loading = false;
+                                              });
+                                              showToast(
+                                                  context: context,
+                                                  "Amount mentioned is invalid!");
+                                            }
+                                          } else {
+                                            setState(() {
+                                              loading = false;
+                                            });
+                                            showToast(
+                                                context: context,
+                                                "Email is invalid!");
+                                          }
+                                        } else {
+                                          setState(() {
+                                            loading = false;
+                                          });
+                                          showToast(
+                                              context: context,
+                                              "Phone is invalid!");
+                                        }
+                                      } else {
+                                        setState(() {
+                                          loading = false;
+                                        });
+                                        showToast(
+                                            context: context,
+                                            "Number of rooms field not selected!");
+                                      }
+                                    } else {
+                                      setState(() {
+                                        loading = false;
+                                      });
+                                      showToast(
+                                          context: context,
+                                          "What's app number field is invalid!");
+                                    }
+                                  } else {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    showToast(
+                                        context: context,
+                                        "Complete address field is invalid!");
+                                  }
+                                } else {
+                                  setState(() {
+                                    loading = false;
+                                  });
+                                  showToast(
+                                      context: context,
+                                      "Pincode field is invalid!");
+                                }
+                              } else {
+                                setState(() {
+                                  loading = false;
+                                });
+                                showToast(
+                                    context: context,
+                                    "Payment duration field not selected!");
+                              }
+                            } else {
+                              setState(() {
+                                loading = false;
+                              });
+                              showToast(
+                                  context: context, "Name field is invalid!");
+                            }
+                          }
+                        } catch (e) {
+                          print("dddd--: ${e.toString()}");
+                          showToast(context: context, e.toString());
+                          setState(() {
+                            loading = false;
+                          });
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: width < 800 ? width * 0.3 : width * 0.2,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(50)),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  // Color(0xFF8A2387),
+                                  FlutterFlowTheme.of(context).alternate,
+                                  FlutterFlowTheme.of(context).alternate,
+                                ])),
+                        child: Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: loading
+                              ? const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                  ))
+                              : const Text(
+                                  'Update',
+                                  style: TextStyle(
                                       color: Colors.white,
-                                    ))
-                                : const Text(
-                                    'Update',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                          ),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

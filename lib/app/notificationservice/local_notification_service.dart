@@ -42,7 +42,7 @@ class LocalNotificationService {
           icon: "noticon",
           "pushnotificationapp",
           "runforrent",
-          importance: Importance.max,
+          importance: Importance.high,
           priority: Priority.high,
         ),
       );
@@ -53,7 +53,7 @@ class LocalNotificationService {
         message.notification!.title,
         message.notification!.body,
         notificationDetails,
-        payload: message.data['_id'],
+        payload: message.data['ownerId'],
       );
       print("sddsd4");
     } on Exception catch (e) {

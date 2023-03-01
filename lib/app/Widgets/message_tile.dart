@@ -80,7 +80,7 @@ class _MessageTileState extends State<MessageTile> {
                         ),
               color: widget.sentByMe
                   ? FlutterFlowTheme.of(context).secondaryBackground
-                  : FlutterFlowTheme.of(context).primaryColor),
+                  : FlutterFlowTheme.of(context).greenColor),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -4,9 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_autoupdate/flutter_autoupdate.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:version/version.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:take/app/globar_variables/globals.dart';
 import 'package:take/app/pages/chat/group_list.dart';
@@ -16,6 +20,7 @@ import 'package:take/app/pages/signin_page/phone_login.dart';
 import 'package:take/app/providers/base_providers.dart';
 import '../firebase_functions/firebase_fun.dart';
 import '../notificationservice/local_notification_service.dart';
+import '../pages/chat/chat_page.dart';
 import '../pages/list_property/flutter_flow/flutter_flow_theme.dart';
 import '../pages/list_property/flutter_flow/lat_lng.dart';
 import '../pages/list_property/home_page/home_page_widget.dart';
@@ -62,6 +67,8 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   void initState() {
     super.initState();
     getuser();
+    locationcheck();
+    initPlatformState();
     // locationcheck();
     CurrentLocation().getCurrentPosition();
     calculateMessageCount();
@@ -75,15 +82,20 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
           print("FirebaseMessaging.instance.getInitialMessage");
           if (message != null) {
             print("New Notification");
-            // if (message.data['_id'] != null) {
-            //   Navigator.of(context).push(
-            //     MaterialPageRoute(
-            //       builder: (context) => DemoScreen(
-            //         id: message.data['_id'],
-            //       ),
-            //     ),
-            //   );
-            // }
+            if (message.data['navigator'] == '') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    groupId: message.data['groupId'],
+                    groupName: message.data['groupName'],
+                    userName: message.data['userName'],
+                    profileImage: message.data['profileImage'],
+                    owneruid: message.data['ownerId'],
+                  ),
+                ),
+              );
+            }
           }
         } catch (e) {
           print("messaging error: ${e.toString()}");
@@ -93,14 +105,28 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
 
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
-      (message) {
+      (RemoteMessage message) {
         try {
-          print("FirebaseMessaging.onMessage.listen");
+          print("FirebaseMessaging.onMessage.listen${message.data}");
           if (message.notification != null) {
             print(message.notification!.title);
-            print(message.notification!.body);
-            print("message.data11 ${message.data}");
+            print(message.data);
+            print("message1 ${message.data}");
             LocalNotificationService.createanddisplaynotification(message);
+            if (message.data['navigator'] == '') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    groupId: message.data['groupId'],
+                    groupName: message.data['groupName'],
+                    userName: message.data['userName'],
+                    profileImage: message.data['profileImage'],
+                    owneruid: message.data['ownerId'],
+                  ),
+                ),
+              );
+            }
           }
         } catch (e) {
           print("firebasemessaging error: ${e.toString()}");
@@ -116,13 +142,93 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
           if (message.notification != null) {
             print(message.notification!.title);
             print(message.notification!.body);
-            print("message.data22 ${message.data['_id']}");
+            print("message.data22 ${message.data}");
+            if (message.data['navigator'] == '') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    groupId: message.data['groupId'],
+                    groupName: message.data['groupName'],
+                    userName: message.data['userName'],
+                    profileImage: message.data['profileImage'],
+                    owneruid: message.data['ownerId'],
+                  ),
+                ),
+              );
+            }
           }
         } catch (e) {
           print("messaging error: ${e.toString()}");
         }
       },
     );
+  }
+
+  UpdateResult? _result;
+  DownloadProgress? _download;
+  var _startTime = DateTime.now().millisecondsSinceEpoch;
+  var _bytesPerSec = 0;
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    UpdateResult? result;
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    if (Platform.isAndroid || Platform.isIOS) {
+      var status = await Permission.storage.status;
+      if (status.isDenied) {
+        await Permission.storage.request();
+      }
+    }
+
+    var versionUrl;
+    if (Platform.isAndroid) {
+      versionUrl =
+          'https://storage.googleapis.com/download-dev.feedmepos.com/version_android_sample.json';
+    } else if (Platform.isWindows) {
+      versionUrl =
+          'https://storage.googleapis.com/download-dev.feedmepos.com/version_windows_sample.json';
+    }
+
+    /// Android/Windows
+    var manager = UpdateManager(versionUrl: versionUrl);
+
+    /// iOS
+    // var manager = UpdateManager(appId: 1500009417, countryCode: 'my');
+    print("started kkklll");
+    try {
+      result = await manager.fetchUpdates();
+      setState(() {
+        _result = result;
+      });
+      if (Version.parse('3.3.0+13') < result?.latestVersion) {
+        var controller = await result?.initializeUpdate();
+        print("latest version kk:${result?.latestVersion}");
+        controller?.stream.listen((event) async {
+          setState(() {
+            if (DateTime.now().millisecondsSinceEpoch - _startTime >= 1000) {
+              _startTime = DateTime.now().millisecondsSinceEpoch;
+              _bytesPerSec = event.receivedBytes - _bytesPerSec;
+            }
+            _download = event;
+          });
+          if (event.completed) {
+            print("Downloaded completed");
+            await controller.close();
+            await result?.runUpdate(event.path, autoExit: true);
+          }
+        });
+      } else {
+        print("latest version:${result?.latestVersion}");
+      }
+    } on Exception catch (e) {
+      print("sdjflksd${e}");
+    }
   }
 
   updatedeviceid() async {
@@ -132,8 +238,9 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
           .collection("Users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .update({"devicetoken": fcmToken});
+      print("fcmToken: ${fcmToken}");
     } catch (e) {
-      print(e.toString());
+      print("fmcToken: ${e.toString()}");
     }
     return;
   }
@@ -141,6 +248,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   calculateMessageCount() async {
     try {
       var groupidlist = [];
+      var countchat = 0;
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -168,7 +276,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
               }
             }
             if (count > 0) {
-              totalchatcount += 1;
+              countchat += 1;
               count = 0;
             }
           });
@@ -177,7 +285,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         }
       }
       setState(() {
-        totalchatcount;
+        totalchatcount = countchat;
       });
     } catch (e) {
       print(e.toString());
@@ -259,8 +367,6 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                       }
                       pageIndex = 0;
                     });
-                    totalchatcount = 0;
-                    calculateMessageCount();
                   },
                   icon: Column(
                     children: [
@@ -304,6 +410,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                           } else {
                             pageIndex = 1;
                           }
+                          totalchatcount = 0;
                         });
                       },
                       icon: Column(
@@ -329,38 +436,40 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                   ),
                 ),
                 pageIndex != 1
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
-                        child: Align(
-                            alignment: AlignmentDirectional(-10, -0.7),
-                            child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0, 0, 0, 0),
-                                child: Container(
-                                  width: 16,
-                                  height: 16,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context)
-                                        .alternate,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  alignment: AlignmentDirectional(0, 0),
-                                  child: Align(
-                                    alignment: AlignmentDirectional(0, 0),
-                                    child: Text(
-                                      '$totalchatcount',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyText1
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255),
-                                            fontSize: 11,
-                                          ),
-                                    ),
-                                  ),
-                                ))),
-                      )
+                    ? totalchatcount == 0
+                        ? SizedBox()
+                        : Padding(
+                            padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
+                            child: Align(
+                                alignment: AlignmentDirectional(-10, -0.7),
+                                child: Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 0),
+                                    child: Container(
+                                      width: 16,
+                                      height: 16,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .alternate,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      alignment: AlignmentDirectional(0, 0),
+                                      child: Align(
+                                        alignment: AlignmentDirectional(0, 0),
+                                        child: Text(
+                                          '$totalchatcount',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyText1
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                fontSize: 11,
+                                              ),
+                                        ),
+                                      ),
+                                    ))),
+                          )
                     : Container()
               ]),
               Container(
@@ -382,8 +491,6 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                         pageIndex = 2;
                       }
                     });
-                    totalchatcount = 0;
-                    calculateMessageCount();
                   },
                   icon: Column(
                     children: [
@@ -424,8 +531,6 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                         pageIndex = 3;
                       }
                     });
-                    totalchatcount = 0;
-                    calculateMessageCount();
                   },
                   icon: Column(
                     children: [

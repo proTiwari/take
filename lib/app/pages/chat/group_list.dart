@@ -183,27 +183,35 @@ class _GroupListPageState extends State<GroupListPage> {
 
   getprofile(groupId) async {
     print("oifjoiejf");
-    await FirebaseFirestore.instance
-        .collection("groups")
-        .doc(groupId)
-        .get()
-        .then((value) {
-      var list = value.get("members");
-      print(list);
-      for (var i in list) {
-        if (i != FirebaseAuth.instance.currentUser!.uid) {
-          FirebaseFirestore.instance
-              .collection("Users")
-              .doc(i)
-              .get()
-              .then((value) {
-            String profileimage = value.get("profileImage");
-            print("this is profile image: ${profileimage}");
-            return profileimage;
-          });
+    try {
+      await FirebaseFirestore.instance
+          .collection("groups")
+          .doc(groupId)
+          .get()
+          .then((value) {
+        var list = value.get("members");
+        print(list);
+        for (var i in list) {
+          if (i != FirebaseAuth.instance.currentUser!.uid) {
+            try {
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(i)
+                  .get()
+                  .then((value) {
+                String profileimage = value.get("profileImage");
+                print("this is profile image: ${profileimage}");
+                return profileimage;
+              });
+            } catch (e) {
+              print("error In group list:: $e");
+            }
+          }
         }
-      }
-    });
+      });
+    } catch (e) {
+      print("group_list:: $e");
+    }
   }
 
   groupList() {
@@ -228,7 +236,8 @@ class _GroupListPageState extends State<GroupListPage> {
                     itemBuilder: (context, index) {
                       int reverseIndex =
                           snapshot.data['groups'].length - index - 1;
-                      print("7777777777777: ${snapshot.data['groups'][reverseIndex]}");
+                      print(
+                          "7777777777777: ${snapshot.data['groups'][reverseIndex]}");
                       // return Text(getId(snapshot.data['groups'][reverseIndex]));}
                       var profileimage =
                           getprofile(snapshot.data['groups'][reverseIndex]);

@@ -35,7 +35,6 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   Stream<QuerySnapshot>? chats;
   TextEditingController messageController = TextEditingController();
-  ScrollController listScrollController = ScrollController();
   String admin = "";
   var valuedata;
   var profileimage;
@@ -45,13 +44,6 @@ class _ChatPageState extends State<ChatPage> {
     getownerdata(widget.owneruid);
     changestatus();
     getChatandAdmin();
-    Timer(const Duration(milliseconds: 1000), () {
-      listScrollController.animateTo(
-        listScrollController.position.maxScrollExtent,
-        curve: Curves.easeOut,
-        duration: const Duration(milliseconds: 750),
-      );
-    });
 
     super.initState();
   }
@@ -136,7 +128,7 @@ class _ChatPageState extends State<ChatPage> {
             padding: EdgeInsets.all(8.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(0);
               },
               child: Icon(
                 Icons.arrow_back,
@@ -203,77 +195,83 @@ class _ChatPageState extends State<ChatPage> {
           // ),
         ],
       ),
-      body: Container(
-        color: Color.fromARGB(255, 230, 229, 229),
-        margin: EdgeInsets.symmetric(
-            vertical: 0, horizontal: width < 800 ? 0 : width * 0.24),
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              // chat messages here
-              chatMessages(),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0,0,0,6),
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  width: MediaQuery.of(context).size.width,
+      body: WillPopScope(
+        onWillPop: () async {
+          Navigator.of(context).pop(0);
+          return false;
+        },
+        child: Container(
+          color: Color.fromARGB(255, 230, 229, 229),
+          margin: EdgeInsets.symmetric(
+              vertical: 0, horizontal: width < 800 ? 0 : width * 0.24),
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                // chat messages here
+                chatMessages(),
+                SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(3, 0, 3, 6),
                   child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 0.1,
-                          offset: Offset(0, 0),
-                        )
-                      ],
-                    ),
-                    height: 60,
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(17, 0, 17, 0),
-                      child: Row(children: [
-                        Expanded(
-                            child: TextFormField(
-                          maxLines: 30,
-                          minLines: 1,
-                          controller: messageController,
-                          style: const TextStyle(
-                              color: Color.fromARGB(255, 0, 0, 0)),
-                          decoration: const InputDecoration(
-                            hintText: "Send a message...",
-                            hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16),
-                            border: InputBorder.none,
-                          ),
-                        )),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            print("sendmessage");
-                            sendMessage();
-                          },
-                          child: const Center(
-                              child: Icon(
-                            Icons.send,
-                            color: Color.fromARGB(255, 182, 190, 184),
+                    alignment: Alignment.bottomCenter,
+                    width: MediaQuery.of(context).size.width,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                        boxShadow: [
+                          BoxShadow(
+                            blurRadius: 0.1,
+                            offset: Offset(0, 0),
+                          )
+                        ],
+                      ),
+                      height: 60,
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Row(children: [
+                          Expanded(
+                              child: TextFormField(
+                            maxLines: 30,
+                            minLines: 1,
+                            controller: messageController,
+                            style: const TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0)),
+                            decoration: const InputDecoration(
+                              hintText: "Send a message...",
+                              hintStyle: TextStyle(
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 16),
+                              border: InputBorder.none,
+                            ),
                           )),
-                        )
-                      ]),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              print("sendmessage");
+                              sendMessage();
+                            },
+                            child: const Center(
+                                child: Icon(
+                              Icons.send,
+                              color: Color.fromARGB(255, 182, 190, 184),
+                            )),
+                          )
+                        ]),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              // SizedBox(
-              //   height: 80,
-              // ),
-            ],
+                // SizedBox(
+                //   height: 80,
+                // ),
+              ],
+            ),
           ),
         ),
       ),
@@ -288,13 +286,6 @@ class _ChatPageState extends State<ChatPage> {
       child: StreamBuilder(
         stream: chats,
         builder: (context, AsyncSnapshot snapshot) {
-          Timer(const Duration(milliseconds: 100), () {
-            listScrollController.animateTo(
-              listScrollController.position.maxScrollExtent,
-              curve: Curves.easeOut,
-              duration: const Duration(milliseconds: 750),
-            );
-          });
           int reverseIndex;
           return snapshot.hasData
               ? ListView.builder(
@@ -355,7 +346,17 @@ class _ChatPageState extends State<ChatPage> {
         "status": false
       };
 
-      DatabaseService("sdf").sendMessage(widget.groupId, chatMessageMap);
+      Map<String, dynamic> payload = {
+        "ownerId": widget.owneruid,
+        "groupName": widget.groupName,
+        "userName": widget.userName,
+        "profileImage": widget.profileImage,
+        "navigator":"",
+        "groupId":widget.groupId
+      };
+
+
+      DatabaseService("sdf").sendMessage(widget.groupId, chatMessageMap, payload);
       setState(() {
         messageController.clear();
       });

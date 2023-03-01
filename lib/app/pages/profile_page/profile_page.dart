@@ -599,9 +599,6 @@ class _ProfilePageState extends State<ProfilePage>
                                                 ),
                                                 InkWell(
                                                   onTap: () async {
-                                                    setState(() {
-                                                      saveloading = true;
-                                                    });
                                                     print('1');
                                                     setState(() {
                                                       loading = true;
@@ -628,6 +625,7 @@ class _ProfilePageState extends State<ProfilePage>
                                                               .text
                                                               .toString(),
                                                         }).whenComplete(() => {
+                                                          showToast(context: context, "sucessfully updated"),
                                                                   setState(() {
                                                                     globals.name = name
                                                                         .text
@@ -689,19 +687,20 @@ class _ProfilePageState extends State<ProfilePage>
                                                                   Color(
                                                                       0xFFFF5963),
                                                                 ])),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              12.0),
-                                                      child: loading
+                                                    child: loading
                                                           ? const SizedBox(
-                                                              height: 40,
+                                                              height: 20,
+                                                              width: 20,
                                                               child:
                                                                   CircularProgressIndicator(
                                                                 color: Colors
                                                                     .white,
                                                               ))
-                                                          : const Text(
+                                                          : Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              12.0),
+                                                      child: const Text(
                                                               'Save',
                                                               style: TextStyle(
                                                                   color: Colors

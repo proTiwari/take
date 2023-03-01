@@ -82,8 +82,17 @@ class DatabaseService extends ChangeNotifier {
         "status": false
       };
 
+      Map<String, dynamic> payload = {
+        "ownerId": detail["uid"],
+        "groupName": detail["ownername"],
+        "userName": globals.userdata['name'],
+        "profileImage": detail["profileImage"],
+        "navigator": "",
+        "groupId": groupid
+      };
+
       await DatabaseService("sdf")
-          .sendMessage(groupDocumentReference.id, chatMessageMap);
+          .sendMessage(groupDocumentReference.id, chatMessageMap, payload);
 
       print("3${groupid}");
       groupid = groupDocumentReference.id;
@@ -189,7 +198,8 @@ class DatabaseService extends ChangeNotifier {
   }
 
   // send message
-  sendMessage(String groupId, Map<String, dynamic> chatMessageData) async {
+  sendMessage(
+      String groupId, Map<String, dynamic> chatMessageData, payload) async {
     var devicetoken;
     var userid;
     var username;
@@ -205,31 +215,31 @@ class DatabaseService extends ChangeNotifier {
     //send notification
     print('send notification');
 
-    await groupCollection.doc(groupId).get().then((value) {
+    await groupCollection.doc(groupId).get().then((value) async {
       var user1 = value.get("members")[0].toString().split("_")[0];
       var user2 = value.get("members")[1].toString().split("_")[0];
       if (user1 != FirebaseAuth.instance.currentUser!.uid) {
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("Users")
             .doc(value.get("members")[0].toString().split("_")[0])
             .get()
             .then((value) {
           devicetoken = value.get("devicetoken");
           username = value.get('name');
-          sendchatnotification(devicetoken, username, message);
+          sendchatnotification(devicetoken, username, message, payload);
         });
       }
 
       print("user1 ${user1}");
       if (user2 != FirebaseAuth.instance.currentUser!.uid) {
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("Users")
             .doc(user2)
             .get()
             .then((value) {
           devicetoken = value.get("devicetoken");
           username = value.get('name');
-          sendchatnotification(devicetoken, username, message);
+          sendchatnotification(devicetoken, username, message, payload);
         });
       }
       print('user2 $user2');
@@ -239,7 +249,7 @@ class DatabaseService extends ChangeNotifier {
     print("sfoeiendendendend");
   }
 
-  sendchatnotification(token, username, message) async {
+  sendchatnotification(token, username, message, payload) async {
     var headers = {
       'Content-Type': 'application/json',
       'Authorization':
@@ -248,12 +258,17 @@ class DatabaseService extends ChangeNotifier {
     var request =
         http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
     request.body = json.encode({
-      "registration_ids": ["$token"],
+      "registration_ids": [
+        "fm0V3zFkRVq9uzhBOyqD2C:APA91bF0S1drqiXFIAeoAc8XO1FdMccRVEXpalE5w_TH3ogelt7HuALac8KQsbyc7iUhw1DDemVxxR8DrrueaHcON2p5-JeeBnVEKy-VHr4DWw_gMx4UFkc33EZ9D6zRt64oO0JKORQF"
+      ],
+      "data": payload,
       "notification": {
+        "image": payload['profileImage'],
         "body": "$message",
         "title": "$username",
         "android_channel_id": "runforrent",
-        "sound": false
+        "alert": "true",
+        "sound": "true",
       }
     });
     request.headers.addAll(headers);
@@ -265,6 +280,32 @@ class DatabaseService extends ChangeNotifier {
     } else {
       print(response.reasonPhrase);
     }
+    // var headers = {
+    //   'Content-Type': 'application/json',
+    //   'Authorization':
+    //       'key=AAAAgUaarWA:APA91bFA_mb9x7x4RiOq30zOtB60GgLzeYszCSibCuZnMfpzvBpFOziTpoy_Prw_3JeQVatC9Jxw0JgfPFtXtcOPpXgQNT2-l_ccf_2L_STiBKmOzBzMp4cbOfVTg7BAcB37D588KZlg'
+    // };
+    // var request =
+    //     http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
+    // request.body = json.encode({
+    //   "registration_ids": ["$token"],
+    //   "data": "payload",
+    //   "notification": {
+    //     "body": "$message",
+    //     "title": "$username",
+    //     "android_channel_id": "runforrent",
+    //     "sound": "true",
+    //   }
+    // });
+    // request.headers.addAll(headers);
+
+    // http.StreamedResponse response = await request.send();
+
+    // if (response.statusCode == 200) {
+    //   print(await response.stream.bytesToString());
+    // } else {
+    //   print(response.reasonPhrase);
+    // }
     //   try {
     //     final uri = Uri.parse('https://fcm.googleapis.com/fcm/send');
     //     final headers = {

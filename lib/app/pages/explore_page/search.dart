@@ -277,6 +277,18 @@ class _SearchState extends river.ConsumerState<Search> {
         return false;
       },
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight:5,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          // systemOverlayStyle: SystemUiOverlayStyle(
+          //   statusBarIconBrightness:
+          //       Brightness.dark, //<-- For Android SEE HERE (dark icons)
+          //   statusBarBrightness:
+          //       Brightness.dark, //<-- For iOS SEE HERE (dark icons)
+          // ),
+        ),
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: Center(
           child: Stack(children: [
@@ -605,9 +617,8 @@ class _SearchState extends river.ConsumerState<Search> {
                                           padding: const EdgeInsets.only(
                                               bottom: 0.0),
                                           child: Padding(
-                                            padding:
-                                                const EdgeInsets.fromLTRB(
-                                                    8.0, 8, 8, 1),
+                                            padding: const EdgeInsets.fromLTRB(
+                                                8.0, 8, 8, 1),
                                             child: Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -620,9 +631,8 @@ class _SearchState extends river.ConsumerState<Search> {
                                                   ),
                                                 ),
                                                 const Padding(
-                                                  padding:
-                                                      EdgeInsets.symmetric(
-                                                          horizontal: 10.0),
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 10.0),
                                                 ),
                                                 // Expanded(
                                                 //   child: Column(
