@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
               )
             });
 
-    delay();
+    // delay();
   }
 
   delay() async {
@@ -74,14 +74,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: SizedBox(
-              height: 320.0,
-              width: 320.0,
-              child: Image.asset('assets/runforrent1.png')),
+              height: 200.0,
+              width: 200.0,
+              child: Image.asset('assets/white_back_black_front.png')),
         ),
       ),
     );

@@ -33,13 +33,15 @@ class PlaceResults extends ChangeNotifier {
 class CurrentLocation extends ChangeNotifier {
   var _currentPosition;
   var _currentAddress;
-  var latlonglocation = LatLng(25.435801, 81.846313);
+  var latlonglocation = LatLng(0.0, 0.0);
   var pincode = "211011";
   var citylocation = "Prayagraj";
 
   Future<void> getCurrentPosition() async {
     try {
       print("hello we are here?");
+      FFAppState().lat = latlonglocation.latitude;
+      FFAppState().lon = latlonglocation.longitude;
       final hasPermission = await LocationService().handleLocationPermission();
       if (!hasPermission) return;
       try {
@@ -50,7 +52,9 @@ class CurrentLocation extends ChangeNotifier {
           latlonglocation = LatLng(position.latitude, position.longitude);
           notifyListeners();
           FFAppState().lat = latlonglocation.latitude;
+          notifyListeners();
           FFAppState().lon = latlonglocation.longitude;
+          notifyListeners();
           globals.latlong = latlonglocation;
           print("follopp ${latlonglocation}");
           await getAddressFromLatLng(position);
@@ -85,6 +89,7 @@ class CurrentLocation extends ChangeNotifier {
       }
       globals.postalcode = place.postalCode;
       pincode = place.postalCode!;
+      FFAppState().pincode = pincode;
       notifyListeners();
     }).catchError((e) {
       debugPrint(e);

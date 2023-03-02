@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:take/app/Widgets/bottom_nav_bar.dart';
 
 import '../../app_state.dart';
 import '../backend/backend.dart';
@@ -132,10 +133,36 @@ class _UploadPropertyState extends State<UploadProperty> {
                       scrollDirection: Axis.vertical,
                       itemCount: imagelist.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return CircleAvatar(
-                          radius: 50.0,
-                          backgroundImage: FileImage(File(imagelist[index])),
-                        );
+                        return Stack(children: [
+                          CircleAvatar(
+                            radius: 50.0,
+                            backgroundImage: FileImage(File(imagelist[index])),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(58.0, 58, 0, 0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 238, 235, 235),
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                height: 35,
+                                width: 35,
+                                child: GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      imagelist.removeAt(index);
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ]);
                         // Image.network(
                         //   'https://picsum.photos/seed/460/600',
                         //   width: 100,
@@ -306,6 +333,9 @@ class _UploadPropertyState extends State<UploadProperty> {
                                   showToast("Successfully uploaded",
                                       context: context);
                                 });
+                                context.pushNamed(
+                                  '_initialize',
+                                );
                               });
                             } else {
                               showToast("Atleast one image is necessary",

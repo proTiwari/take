@@ -6,6 +6,7 @@ import 'package:take/app/Widgets/contact_detail.dart';
 import 'package:take/app/Widgets/detail_button.dart';
 import 'package:take/app/Widgets/detail_card.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
+import 'package:take/app/pages/list_property/flutter_flow/flutter_flow_theme.dart';
 import '../../Widgets/Image_animation.dart';
 import '../../Widgets/google_map_card.dart';
 import '../../Widgets/profile_card.dart';
@@ -94,7 +95,7 @@ class _OwnersProfilePropertyState extends State<OwnersProfileProperty> {
     print(widget.list["uid"]);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: Container(
           margin: EdgeInsets.symmetric(
               vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),

@@ -1,3 +1,5 @@
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+
 import '../../app_state.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../globar_variables/globals.dart' as globals;
+import '../search_place_provider.dart';
 import 'home_page_model.dart';
 export 'home_page_model.dart';
 
@@ -60,6 +63,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
   void initState() {
     super.initState();
     //
+    // CurrentLocation().getCurrentPosition();
     _model = createModel(context, () => HomePageModel());
 
     _model.advamountController = TextEditingController();
@@ -70,8 +74,6 @@ class _ListPropertyPageState extends State<ListPropertyPage>
           !anim.applyInitialState),
       this,
     );
-    FFAppState().lat = globals.latlong.latitude;
-    FFAppState().lon = globals.latlong.longitude;
     FFAppState().amountrange = '2,000-5,000';
   }
 
@@ -122,7 +124,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                     borderRadius: BorderRadius.circular(50),
                                     border: Border.all(
                                       color: FlutterFlowTheme.of(context)
-                                                      .alternate,
+                                          .alternate,
                                     ),
                                   ),
                                   child: Stack(
@@ -677,7 +679,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                   autofocus: false,
                                                   obscureText: false,
                                                   decoration: InputDecoration(
-                                                    hintText: 'Area of land',
+                                                    hintText: 'Area of land (optional)',
                                                     hintStyle: FlutterFlowTheme
                                                             .of(context)
                                                         .bodyText2
@@ -923,17 +925,25 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                               child: InkWell(
                                 onTap: () async {
                                   FocusScope.of(context).unfocus();
-                                  context.pushNamed(
-                                    'userdetailpage',
-                                    extra: <String, dynamic>{
-                                      kTransitionInfoKey: TransitionInfo(
-                                        hasTransition: true,
-                                        transitionType:
-                                            PageTransitionType.rightToLeft,
-                                        duration: Duration(milliseconds: 600),
-                                      ),
-                                    },
-                                  );
+
+                                  if (FFAppState().lat != 0.0 &&
+                                      FFAppState().lon != 0.0) {
+                                    context.pushNamed(
+                                      'userdetailpage',
+                                      extra: <String, dynamic>{
+                                        kTransitionInfoKey: TransitionInfo(
+                                          hasTransition: true,
+                                          transitionType:
+                                              PageTransitionType.rightToLeft,
+                                          duration: Duration(milliseconds: 600),
+                                        ),
+                                      },
+                                    );
+                                  } else {
+                                    showToast(
+                                        context: context,
+                                        "Tap on the current location Icon (on the top of this screen) or select location on map by tapping on the map icon!");
+                                  }
                                 },
                                 child: Container(
                                   width:

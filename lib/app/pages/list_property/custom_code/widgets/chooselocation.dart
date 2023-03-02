@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:take/app/pages/app_state.dart';
-
+import 'package:google_maps_flutter/google_maps_flutter.dart' as latlon;
 import '../../../../services/location_services.dart';
 import '../../backend/backend.dart';
 import '../../flutter_flow/flutter_flow_theme.dart';
@@ -39,13 +39,13 @@ class _ChooselocationState extends ConsumerState<Chooselocation> {
   }
 
   Future<void> _navigateAndDisplaySelection(BuildContext context) async {
-    final result = await Navigator.push(
+    var result = await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => OnMap()),
     );
     setState(() {
       results = result;
-      globals.latlong = results;
+      print("are you kidding me: ${result}");
       print(result);
       FFAppState().lat = results.latitude;
       FFAppState().lon = results.longitude;
@@ -80,7 +80,7 @@ class _ChooselocationState extends ConsumerState<Chooselocation> {
 
   Position? _currentPosition;
   String? _currentAddress;
-  LatLng results = globals.latlong;
+  latlon.LatLng results = latlon.LatLng(0.0, 0.0);
 
   Future<void> _getCurrentPosition() async {
     final hasPermission = await LocationService().handleLocationPermission();
@@ -95,11 +95,10 @@ class _ChooselocationState extends ConsumerState<Chooselocation> {
         setState(() {
           print("wew");
           _currentPosition = position;
-          var res = LatLng(position.latitude, position.longitude);
+          var res = latlon.LatLng(position.latitude, position.longitude);
           _getAddressFromLatLng(position);
 
           results = res;
-          globals.latlong = results;
           FFAppState().lat = results.latitude;
           FFAppState().lon = results.longitude;
           print(results);
@@ -156,11 +155,17 @@ class _ChooselocationState extends ConsumerState<Chooselocation> {
   @override
   Widget build(BuildContext context) {
     var locationprovider = ref.watch(locationProvider);
+    var lat = FFAppState().lat;
+    var lon = FFAppState().lon;
+    setState(() {
+      lat;
+      lon;
+    });
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 22),
-          child: Text("${FFAppState().lat}, ${FFAppState().lon}"),
+          child: Text("${lat}, ${lon}"),
           // child: Text("$results"),
         ),
         IntrinsicHeight(

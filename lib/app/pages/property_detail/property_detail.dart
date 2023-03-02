@@ -11,6 +11,7 @@ import '../../Widgets/google_map_card.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import '../../Widgets/profile_card.dart';
 import '../../models/user_model.dart';
+import '../list_property/flutter_flow/flutter_flow_theme.dart';
 
 class Property extends StatefulWidget {
   var detail;
@@ -100,7 +101,7 @@ class _PropertyState extends State<Property> {
     print(widget.detail["uid"]);
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
         body: Container(
           margin: EdgeInsets.symmetric(
               vertical: 0, horizontal: width < 800 ? 10 : width * 0.24),

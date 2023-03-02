@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:take/app/pages/list_property/flutter_flow/flutter_flow_theme.dart';
 import '../pages/ownersprofile/owners_profile_page.dart';
 
 class OwnerProfileCard extends StatelessWidget {
@@ -24,13 +25,12 @@ class OwnerProfileCard extends StatelessWidget {
           boxShadow: const [
             BoxShadow(
                 color: Colors.grey,
-                offset: Offset(10, 15),
-                blurRadius: 15,
-                spreadRadius: 1)
+                blurRadius: 0,
+                spreadRadius: 0)
           ],
-          color: Colors.white,
+          color:FlutterFlowTheme.of(context).secondaryBackground,
           // color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.circular(50),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -52,9 +52,18 @@ class OwnerProfileCard extends StatelessWidget {
                           color: Colors.white, fontWeight: FontWeight.w500),
                     ),
                   ),
-                  title: Text(
-                    detail["ownername"],
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  title: Row(
+                    children: [
+                      Text(
+                        detail["ownername"],
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(width: 10,),
+                      Text(
+                        "",
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                    ],
                   ),
                   subtitle: detail['wantto'] == "Rent property"
                       ? const Text(
@@ -67,7 +76,7 @@ class OwnerProfileCard extends StatelessWidget {
                         ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(38, 20, 18, 18),
+                  padding: const EdgeInsets.fromLTRB(38, 20, 18, 0),
                   child: Row(
                     children: [
                       RichText(
@@ -101,7 +110,7 @@ class OwnerProfileCard extends StatelessWidget {
                 detail["description"] == "null"
                     ? detail["wantto"] == "Rent property"
                         ? Padding(
-                            padding: const EdgeInsets.fromLTRB(38, 20, 18, 18),
+                            padding: const EdgeInsets.fromLTRB(38, 0, 18, 18),
                             child: Row(
                               children: [
                                 RichText(
@@ -134,7 +143,7 @@ class OwnerProfileCard extends StatelessWidget {
                             ),
                           )
                         : Padding(
-                            padding: const EdgeInsets.fromLTRB(38, 20, 18, 18),
+                            padding: const EdgeInsets.fromLTRB(38, 0, 18, 18),
                             child: Row(
                               children: [
                                 RichText(

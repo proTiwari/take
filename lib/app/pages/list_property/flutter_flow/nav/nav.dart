@@ -9,6 +9,7 @@ import 'package:take/app/pages/profile_page/profile_page.dart';
 import '../../../splashscreen.dart';
 import '../../home_page/home_page_widget.dart';
 import '../../imageAndUpload.dart/imageandupload.dart';
+import '../../userdetailpage/userdetailpage2.dart';
 import '../../userdetailpage/userdetailpage_widget.dart';
 import '../flutter_flow_theme.dart';
 import '../../backend/backend.dart';
@@ -66,6 +67,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               builder: (context, params) => UploadProperty(),
             ),
             FFRoute(
+              name: 'userdetailpage2',
+              path: 'userdetailpage2',
+              builder: (context, params) => Userdetailpage2Widget(),
+            ),
+            FFRoute(
               name: 'userdetailpage',
               path: 'userdetailpage',
               builder: (context, params) => const UserdetailpageWidget(),
@@ -75,8 +81,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       ],
       urlPathStrategy: UrlPathStrategy.path,
     );
-
-  
 
 extension NavParamExtensions on Map<String, String?> {
   Map<String, String> get withoutNulls => Map.fromEntries(
