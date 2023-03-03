@@ -39,7 +39,7 @@ class LocalNotificationService {
       print("sddsd2");
       const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
-          icon: "ic_launcher",
+          icon: "ic_launcer",
           "pushnotificationapp",
           "runforrent",
           importance: Importance.high,
