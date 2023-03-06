@@ -52,8 +52,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController pincode = TextEditingController();
   TextEditingController propertyname = TextEditingController();
   TextEditingController sharing = TextEditingController();
+  TextEditingController floor = TextEditingController();
   TextEditingController streetaddress = TextEditingController();
   TextEditingController servicetype = TextEditingController();
+  TextEditingController areaoflandunit = TextEditingController();
   List listImage = [];
   List initImageList = [];
   List downloadUrl = [];
@@ -93,6 +95,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       initImageList = widget.valuedata['propertyimage'];
       print(initImageList);
       globals.initlistimages = widget.valuedata['propertyimage'];
+
+      floor.text = widget.valuedata['numberoffloors'];
     } catch (e) {
       print("ttttttttttttt");
       print(e.toString());
@@ -169,7 +173,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   uploadImage(List listImage) async {
     var uid = FirebaseAuth.instance.currentUser!.uid;
+    print(listImage.isEmpty);
     if (listImage.isNotEmpty) {
+      print("list image");
       try {
         print(listImage.length);
 
@@ -213,6 +219,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         loading = false;
       }
     } else {
+      print("listing");
       // loading = false;
       // showToast(
       //   "atleast one property image is needed!",
@@ -304,6 +311,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     '12 Room',
     'Many room',
   ];
+
   var advanceMoney = ['Any Advance Money?', 'Yes', 'No'];
   var sharinglist = [
     'Number of sharing?',
@@ -315,14 +323,573 @@ class _EditProfilePageState extends State<EditProfilePage> {
     'Many sharing',
     'Will be discussed',
   ];
+
+  var floorlist = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '29',
+    '30',
+    '31',
+    '32',
+    '33',
+    '34',
+    '35',
+    '36',
+    '37',
+    '38',
+    '39',
+    '40',
+    '41',
+    '42',
+    '43',
+    '44',
+    '45',
+    '46',
+    '47',
+    '48',
+    '49',
+    '50',
+    '51',
+    '52',
+    '53',
+    '54',
+    '55',
+    '56',
+    '57',
+    '58',
+    '59',
+    '60',
+    '61',
+    '62',
+    '63',
+    '64',
+    '65',
+    '66',
+    '67',
+    '68',
+    '69',
+    '70',
+    '71',
+    '72',
+    '73',
+    '74',
+    '75',
+    '76',
+    '77',
+    '78',
+    '79',
+    '80',
+    '81',
+    '82',
+    '83',
+    '84',
+    '85',
+    '86',
+    '87',
+    '88',
+    '89',
+    '90',
+    '91',
+    '92',
+    '93',
+    '94',
+    '95',
+    '96',
+    '97',
+    '98',
+    '99',
+    '100',
+    '101',
+    '102',
+    '103',
+    '104',
+    '105',
+    '106',
+    '107',
+    '108',
+    '109',
+    '110',
+    '111',
+    '112',
+    '113',
+    '114',
+    '115',
+    '116',
+    '117',
+    '118',
+    '119',
+    '120',
+    '121',
+    '122',
+    '123',
+    '124',
+    '125',
+    '126',
+    '127',
+    '128',
+    '129',
+    '130',
+    '131',
+    '132',
+    '133',
+    '134',
+    '135',
+    '136',
+    '137',
+    '138',
+    '139',
+    '140',
+    '141',
+    '142',
+    '143',
+    '144',
+    '145',
+    '146',
+    '147',
+    '148',
+    '149',
+    '150',
+    '151',
+    '152',
+    '153',
+    '154',
+    '155',
+    '156',
+    '157',
+    '158',
+    '159',
+    '160',
+    '161',
+    '162',
+    '163',
+    '164',
+    '165',
+    '166',
+    '167',
+    '168',
+    '169',
+    '170',
+    '171',
+    '172',
+    '173',
+    '174',
+    '175',
+    '176',
+    '177',
+    '178',
+    '179',
+    '180',
+    '181',
+    '182',
+    '183',
+    '184',
+    '185',
+    '186',
+    '187',
+    '188',
+    '189',
+    '190',
+    '191',
+    '192',
+    '193',
+    '194',
+    '195',
+    '196',
+    '197',
+    '198',
+    '199',
+    '200',
+    '201',
+    '202',
+    '203',
+    '204',
+    '205',
+    '206',
+    '207',
+    '208',
+    '209',
+    '210',
+    '211',
+    '212',
+    '213',
+    '214',
+    '215',
+    '216',
+    '217',
+    '218',
+    '219',
+    '220',
+    '221',
+    '222',
+    '223',
+    '224',
+    '225',
+    '226',
+    '227',
+    '228',
+    '229',
+    '230',
+    '231',
+    '232',
+    '233',
+    '234',
+    '235',
+    '236',
+    '237',
+    '238',
+    '239',
+    '240',
+    '241',
+    '242',
+    '243',
+    '244',
+    '245',
+    '246',
+    '247',
+    '248',
+    '249',
+    '250',
+    '251',
+    '252',
+    '253',
+    '254',
+    '255',
+    '256',
+    '257',
+    '258',
+    '259',
+    '260',
+    '261',
+    '262',
+    '263',
+    '264',
+    '265',
+    '266',
+    '267',
+    '268',
+    '269',
+    '270',
+    '271',
+    '272',
+    '273',
+    '274',
+    '275',
+    '276',
+    '277',
+    '278',
+    '279',
+    '280',
+    '281',
+    '282',
+    '283',
+    '284',
+    '285',
+    '286',
+    '287',
+    '288',
+    '289',
+    '290',
+    '291',
+    '292',
+    '293',
+    '294',
+    '295',
+    '296',
+    '297',
+    '298',
+    '299',
+    '300',
+    '301',
+    '302',
+    '303',
+    '304',
+    '305',
+    '306',
+    '307',
+    '308',
+    '309',
+    '310',
+    '311',
+    '312',
+    '313',
+    '314',
+    '315',
+    '316',
+    '317',
+    '318',
+    '319',
+    '320',
+    '321',
+    '322',
+    '323',
+    '324',
+    '325',
+    '326',
+    '327',
+    '328',
+    '329',
+    '330',
+    '331',
+    '332',
+    '333',
+    '334',
+    '335',
+    '336',
+    '337',
+    '338',
+    '339',
+    '340',
+    '341',
+    '342',
+    '343',
+    '344',
+    '345',
+    '346',
+    '347',
+    '348',
+    '349',
+    '350',
+    '351',
+    '352',
+    '353',
+    '354',
+    '355',
+    '356',
+    '357',
+    '358',
+    '359',
+    '360',
+    '361',
+    '362',
+    '363',
+    '364',
+    '365',
+    '366',
+    '367',
+    '368',
+    '369',
+    '370',
+    '371',
+    '372',
+    '373',
+    '374',
+    '375',
+    '376',
+    '377',
+    '378',
+    '379',
+    '380',
+    '381',
+    '382',
+    '383',
+    '384',
+    '385',
+    '386',
+    '387',
+    '388',
+    '389',
+    '390',
+    '391',
+    '392',
+    '393',
+    '394',
+    '395',
+    '396',
+    '397',
+    '398',
+    '399',
+    '400',
+    '401',
+    '402',
+    '403',
+    '404',
+    '405',
+    '406',
+    '407',
+    '408',
+    '409',
+    '410',
+    '411',
+    '412',
+    '413',
+    '414',
+    '415',
+    '416',
+    '417',
+    '418',
+    '419',
+    '420',
+    '421',
+    '422',
+    '423',
+    '424',
+    '425',
+    '426',
+    '427',
+    '428',
+    '429',
+    '430',
+    '431',
+    '432',
+    '433',
+    '434',
+    '435',
+    '436',
+    '437',
+    '438',
+    '439',
+    '440',
+    '441',
+    '442',
+    '443',
+    '444',
+    '445',
+    '446',
+    '447',
+    '448',
+    '449',
+    '450',
+    '451',
+    '452',
+    '453',
+    '454',
+    '455',
+    '456',
+    '457',
+    '458',
+    '459',
+    '460',
+    '461',
+    '462',
+    '463',
+    '464',
+    '465',
+    '466',
+    '467',
+    '468',
+    '469',
+    '470',
+    '471',
+    '472',
+    '473',
+    '474',
+    '475',
+    '476',
+    '477',
+    '478',
+    '479',
+    '480',
+    '481',
+    '482',
+    '483',
+    '484',
+    '485',
+    '486',
+    '487',
+    '488',
+    '489',
+    '490',
+    '491',
+    '492',
+    '493',
+    '494',
+    '495',
+    '496',
+    '497',
+    '498',
+    '499',
+    '500'
+  ];
+
+  var unit = [
+    "Bigha-Pucca",
+    "Bigha",
+    "Bigha-Kachha",
+    "Biswa-Pucca",
+    "Biswa",
+    "Biswa-Kaccha",
+    "Biswansi",
+    "Killa",
+    "Ghumaon",
+    "Kanal",
+    "Chatak",
+    "Decimal",
+    "Dhur",
+    "Kattha",
+    "Lecha",
+    "Ankanam",
+    "Cent",
+    "Ground",
+    "Guntha",
+    "Kuncham",
+    "Square meter",
+    "Square yard",
+    "Centimeter",
+    "Chain",
+    "Feet",
+    "Furlong",
+    "Gaj",
+    "Gattha",
+    "Hath"
+  ];
+
+  var amountList = [
+    '0-2,000',
+    '2,000-5,000',
+    '5,000-10,000',
+    '10,000-15,000',
+    '15,000-20,000',
+    '20,000-25,000',
+    '25,000-30,000',
+    '30,000-35,000',
+    '40,000-45,000',
+    '45,000-50,000',
+    '50,000-55,000',
+    '55,000-60,000',
+    '60,000-65,000',
+    '65,000-70,000',
+    '70,000-75,000',
+    '75,000-80,000',
+    '85,000-90,000',
+    '90,000-95,000',
+    '1,00,000',
+    'Will be discussed'
+  ];
+
   var tenor = [
     'Payment Duration',
-    'per hour',
-    'per month',
-    'per year',
-    'per day',
+    'Per Hour',
+    'Per day',
+    'Per Month',
+    'Per Year',
     'one time payment',
-    'will be discussed'
+    'Will be discussed'
   ];
   var servicetypelist = [
     'Which of the following is your property type?',
@@ -332,7 +899,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     'Apartment',
     'Flat',
     'Home',
-    'Building floor'
+    'Building floor',
+    'Marrige hall',
   ];
 
   @override
@@ -624,12 +1192,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 ),
                 child: Row(
                   children: [
-                    const SizedBox(
+                    SizedBox(
                       width: 140,
-                      child: TextField(
-                        enabled: false,
-                        decoration: InputDecoration(
-                            hintText: "  Amount", border: InputBorder.none),
+                      child: DropdownButton(
+                        hint: const Text("  Amount"),
+                        icon: const Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                          child: Icon(Icons.keyboard_arrow_down),
+                        ),
+                        isExpanded: true,
+                        underline: Container(),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.black),
+                        dropdownColor: Colors.white,
+                        iconEnabledColor: Colors.black,
+                        items: amountList.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            amount.text = newValue!;
+                          });
+                        },
                       ),
                     ),
                     const Text(
@@ -638,6 +1225,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     Expanded(
                       child: TextField(
+                        enabled: false,
                         controller: amount,
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
@@ -655,44 +1243,114 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       height: 20,
                     )
                   : const SizedBox(),
-              propertyon == "Sell property"
-                  ? Container(
-                      height: 55,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1, color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 140,
-                            child: TextField(
-                              enabled: false,
-                              decoration: InputDecoration(
-                                  hintText: "  area of land",
-                                  border: InputBorder.none),
+              Row(
+                children: [
+                  propertyon == "Sell property"
+                      ? Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 55,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                const SizedBox(
+                                  width: 90,
+                                  child: TextField(
+                                    enabled: false,
+                                    decoration: InputDecoration(
+                                        hintText: "  area of land",
+                                        border: InputBorder.none),
+                                  ),
+                                ),
+                                const Text(
+                                  "|",
+                                  style: TextStyle(fontSize: 30),
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    controller: areaofland,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      areaofland.text = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "  area of land"),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                          const Text(
-                            "|",
-                            style: TextStyle(fontSize: 30),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              controller: areaofland,
-                              keyboardType: TextInputType.number,
-                              onChanged: (value) {
-                                areaofland.text = value;
-                              },
-                              decoration: const InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "  area of land"),
+                        )
+                      : const SizedBox(),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  propertyon == "Sell property"
+                      ? Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 55,
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          )
-                        ],
-                      ),
-                    )
-                  : const SizedBox(),
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 90,
+                                  child: DropdownButton(
+                                    hint: const Text("  Unit"),
+                                    icon: const Padding(
+                                      padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                      child: Icon(Icons.keyboard_arrow_down),
+                                    ),
+                                    isExpanded: true,
+                                    underline: Container(),
+                                    style: const TextStyle(
+                                        fontSize: 16, color: Colors.black),
+                                    dropdownColor: Colors.white,
+                                    iconEnabledColor: Colors.black,
+                                    items: unit.map((String items) {
+                                      return DropdownMenuItem(
+                                        value: items,
+                                        child: Text(items),
+                                      );
+                                    }).toList(),
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        areaoflandunit.text = newValue!;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                const Text(
+                                  "|",
+                                  style: TextStyle(fontSize: 30),
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    controller: areaoflandunit,
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      areaoflandunit.text = value;
+                                    },
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "  unit"),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
+              ),
+
               const SizedBox(
                 height: 20,
               ),
@@ -812,7 +1470,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             child: TextField(
                               enabled: false,
                               decoration: InputDecoration(
-                                  hintText: "  No. of floors",
+                                  hintText: "  Number of floor",
                                   border: InputBorder.none),
                             ),
                           ),
@@ -829,7 +1487,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               },
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
-                                  hintText: "  No. of floors"),
+                                  hintText: "  Number of floor"),
                             ),
                           )
                         ],
@@ -1151,6 +1809,64 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ),
                     )
                   : const SizedBox(),
+              propertyon != "Rent property"
+                  ? const SizedBox(
+                      height: 20,
+                    )
+                  : SizedBox(),
+              propertyon != "Rent property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 140,
+                            child: DropdownButton(
+                              hint: const Text("  Number of Floor"),
+                              icon: const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: Icon(Icons.keyboard_arrow_down),
+                              ),
+                              isExpanded: true,
+                              underline: Container(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.black,
+                              items: floorlist.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  floor.text = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: floor,
+                              keyboardType: TextInputType.phone,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none, hintText: "  1"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
               const SizedBox(
                 height: 20,
               ),
@@ -1392,6 +2108,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                           .doc(widget.valuedata[
                                                               'propertyId'])
                                                           .update({
+                                                        "areaoflandunit":
+                                                            areaoflandunit.text,
                                                         "advancemoney":
                                                             advanvemoney.text,
                                                         "amount": amount.text,
@@ -1418,24 +2136,39 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                                 // showToast("")
                                                               });
                                                       print('7');
-                                                      print('8');
-                                                      List listdatalink =
-                                                          await uploadImage(
-                                                              listImage);
-                                                      if (listdatalink !=
-                                                          null) {
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('City')
-                                                            .doc(widget
-                                                                    .valuedata[
-                                                                'propertyId'])
-                                                            .update({
-                                                          'propertyimage':
-                                                              FieldValue.arrayUnion(
-                                                                  listdatalink),
-                                                        });
+                                                      print('8 ee');
+                                                      if (listImage.isEmpty) {
+                                                        showToast(
+                                                            context: context,
+                                                            "Updated Successfully");
+                                                      } else {
+                                                        List listdatalink =
+                                                            await uploadImage(
+                                                                listImage);
+                                                        print('8 ee');
+                                                        if (listdatalink !=
+                                                            null) {
+                                                          print('9 ee');
+                                                          try {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'City')
+                                                                .doc(widget
+                                                                        .valuedata[
+                                                                    'propertyId'])
+                                                                .update({
+                                                              'propertyimage':
+                                                                  FieldValue
+                                                                      .arrayUnion(
+                                                                          listdatalink),
+                                                            });
+                                                          } catch (e) {
+                                                            print(e.toString());
+                                                          }
+                                                        }
                                                       }
+
                                                       setState(() {
                                                         loading = false;
                                                       });
@@ -1456,7 +2189,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                         loading = false;
                                                       });
                                                       print(
-                                                          "this is the error: ${e.toString()}");
+                                                          "this is the error 1:  ${e.toString()}");
                                                     }
                                                   } else {
                                                     setState(() {
@@ -1700,7 +2433,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                           loading = false;
                                                         });
                                                         print(
-                                                            "this is the error: ${e.toString()}");
+                                                            "this is the error 2: ${e.toString()}");
                                                       }
                                                     } else {
                                                       setState(() {

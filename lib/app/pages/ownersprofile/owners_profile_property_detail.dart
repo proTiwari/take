@@ -109,7 +109,7 @@ class _OwnersProfilePropertyState extends State<OwnersProfileProperty> {
                 // OwnerProfileCard(widget.detail, profileimage, valuedata),
                 DetailCard(widget.list),
                 ContactDetail(widget.list),
-                GoogleMapCard(widget.list)
+                GoogleMapCard(widget.list, 200.0)
               ],
             ),
           ),

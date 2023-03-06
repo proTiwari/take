@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,9 +26,11 @@ import 'app/notificationservice/local_notification_service.dart';
 import 'app/pages/app_state.dart';
 import 'app/pages/list_property/flutter_flow/flutter_flow_theme.dart';
 import 'app/pages/list_property/flutter_flow/internationalization.dart';
-import 'app/pages/list_property/flutter_flow/nav/nav.dart';
+import 'app/pages/nav/nav.dart';
 import 'app/pages/responsive_layout.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import 'app/services/deeplink_service.dart';
 
 final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -42,6 +45,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  CachedNetworkImage.logLevel = CacheManagerLogLevel.debug;
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     RemoteNotification? notification = message.notification;
     print(notification);
@@ -74,6 +78,7 @@ void main() async {
   Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  DeepLinkService.instance?.handleDynamicLinks();
   await FirebaseAppCheck.instance.activate();
   LocalNotificationService.initialize();
   try {

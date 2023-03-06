@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -328,12 +329,10 @@ class _ProfilePageState extends State<ProfilePage>
                                             const SizedBox(
                                               height: 50,
                                             ),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.8,
-                                              height: 60,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      13.0, 0, 13, 0),
                                               child: TextFormField(
                                                 enabled: edit,
                                                 controller: name,
@@ -369,12 +368,10 @@ class _ProfilePageState extends State<ProfilePage>
                                             const SizedBox(
                                               height: 12,
                                             ),
-                                            SizedBox(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.8,
-                                              height: 60,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      13.0, 0, 13, 0),
                                               child: TextFormField(
                                                 enabled: edit,
                                                 controller: emailfield,
@@ -391,10 +388,6 @@ class _ProfilePageState extends State<ProfilePage>
                                                 keyboardType:
                                                     TextInputType.emailAddress,
                                                 decoration: InputDecoration(
-                                                    suffix: const Icon(
-                                                      FontAwesomeIcons.envelope,
-                                                      color: Colors.red,
-                                                    ),
                                                     hintText: globals.email ==
                                                             ""
                                                         ? "${userProvider.getUser.email}"
@@ -412,13 +405,10 @@ class _ProfilePageState extends State<ProfilePage>
                                               height: 12,
                                             ),
                                             addressnotexist
-                                                ? SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.8,
-                                                    height: 60,
+                                                ? Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        13.0, 0, 13, 0),
                                                     child: TextFormField(
                                                       enabled: edit,
                                                       controller: address,
@@ -451,13 +441,10 @@ class _ProfilePageState extends State<ProfilePage>
                                                               )),
                                                     ),
                                                   )
-                                                : SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.8,
-                                                    height: 60,
+                                                : Padding(
+                                                    padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                        13.0, 0, 13, 0),
                                                     child: TextFormField(
                                                       enabled: edit,
                                                       controller: address,
@@ -468,13 +455,6 @@ class _ProfilePageState extends State<ProfilePage>
                                                           TextInputType.text,
                                                       decoration:
                                                           InputDecoration(
-                                                              suffix:
-                                                                  const Icon(
-                                                                FontAwesomeIcons
-                                                                    .solidAddressCard,
-                                                                color:
-                                                                    Colors.red,
-                                                              ),
                                                               hintText: globals
                                                                           .address ==
                                                                       ""
@@ -502,41 +482,34 @@ class _ProfilePageState extends State<ProfilePage>
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       27.0, 0, 0, 0),
-                                              child: SizedBox(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width *
-                                                    0.8,
-                                                height: 60,
-                                                child: TextFormField(
-                                                  readOnly: true,
-                                                  controller: _phoneController,
-                                                  validator: (value) {
-                                                    return null;
-                                                    // if (value.toString().isEmpty) {
-                                                    //   return 'Please enter phone number';
-                                                    // }
-                                                    //
-                                                    // if (value.toString().length < 10) {
-                                                    //   return 'Please enter a valid phone number';
-                                                    // }
-                                                  },
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  // ignore: prefer_const_constructors
-                                                  decoration: InputDecoration(
-                                                    enabled: false,
-                                                    suffix: const Icon(
-                                                      FontAwesomeIcons.phone,
-                                                      color: Colors.red,
-                                                    ),
-                                                    labelText:
-                                                        "${userProvider.getUser.phone}",
-                                                    // border: const OutlineInputBorder(
-                                                    //   borderRadius: BorderRadius.all(
-                                                    //       Radius.circular(50)),
-                                                    // ),
+                                              child: TextFormField(
+                                                readOnly: true,
+                                                controller: _phoneController,
+                                                validator: (value) {
+                                                  return null;
+                                                  // if (value.toString().isEmpty) {
+                                                  //   return 'Please enter phone number';
+                                                  // }
+                                                  //
+                                                  // if (value.toString().length < 10) {
+                                                  //   return 'Please enter a valid phone number';
+                                                  // }
+                                                },
+                                                keyboardType:
+                                                    TextInputType.number,
+                                                // ignore: prefer_const_constructors
+                                                decoration: InputDecoration(
+                                                  enabled: false,
+                                                  suffix: const Icon(
+                                                    FontAwesomeIcons.phone,
+                                                    color: Colors.red,
                                                   ),
+                                                  labelText:
+                                                      "${userProvider.getUser.phone}",
+                                                  // border: const OutlineInputBorder(
+                                                  //   borderRadius: BorderRadius.all(
+                                                  //       Radius.circular(50)),
+                                                  // ),
                                                 ),
                                               ),
                                             ),
@@ -625,8 +598,13 @@ class _ProfilePageState extends State<ProfilePage>
                                                               .text
                                                               .toString(),
                                                         }).whenComplete(() => {
-                                                          showToast(context: context, "sucessfully updated"),
+                                                                  showToast(
+                                                                      context:
+                                                                          context,
+                                                                      "sucessfully updated"),
                                                                   setState(() {
+                                                                    edit =
+                                                                        false;
                                                                     globals.name = name
                                                                         .text
                                                                         .toString();
@@ -688,19 +666,19 @@ class _ProfilePageState extends State<ProfilePage>
                                                                       0xFFFF5963),
                                                                 ])),
                                                     child: loading
-                                                          ? const SizedBox(
-                                                              height: 20,
-                                                              width: 20,
-                                                              child:
-                                                                  CircularProgressIndicator(
-                                                                color: Colors
-                                                                    .white,
-                                                              ))
-                                                          : Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              12.0),
-                                                      child: const Text(
+                                                        ? const SizedBox(
+                                                            height: 20,
+                                                            width: 20,
+                                                            child:
+                                                                CircularProgressIndicator(
+                                                              color:
+                                                                  Colors.white,
+                                                            ))
+                                                        : Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(12.0),
+                                                            child: const Text(
                                                               'Save',
                                                               style: TextStyle(
                                                                   color: Colors
@@ -710,7 +688,7 @@ class _ProfilePageState extends State<ProfilePage>
                                                                       FontWeight
                                                                           .bold),
                                                             ),
-                                                    ),
+                                                          ),
                                                   ),
                                                 ),
                                               ],
@@ -833,10 +811,16 @@ class _ProfilePageState extends State<ProfilePage>
                                                         BorderRadius.circular(
                                                             20.0),
                                                     image: DecorationImage(
-                                                      image: NetworkImage(list[
-                                                              index]
-                                                          ['propertyimage'][0]),
                                                       fit: BoxFit.cover,
+                                                      image:
+                                                          CachedNetworkImageProvider(
+                                                        list[index][
+                                                            'propertyimage'][0],
+                                                      ),
+                                                      // image: NetworkImage(list[
+                                                      //         index]
+                                                      //     ['propertyimage'][0]),
+                                                      // fit: BoxFit.cover,
                                                     ),
                                                   ),
                                                   child: Padding(

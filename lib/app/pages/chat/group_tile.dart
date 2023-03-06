@@ -117,14 +117,16 @@ class _GroupTileState extends State<GroupTile> {
         try {
           Future.delayed(Duration(milliseconds: 10), () async {
             var bcount = await Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ChatPage(
-                        owneruid: owneruid,
-                        groupId: widget.groupId,
-                        groupName: widget.groupName,
-                        userName: widget.userName,
-                        profileImage: profileimage)));
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatPage(
+                    owneruid: owneruid,
+                    groupId: widget.groupId,
+                    groupName: widget.groupName,
+                    userName: widget.userName,
+                    profileImage: profileimage),
+              ),
+            );
             setState(() {
               count = bcount;
             });

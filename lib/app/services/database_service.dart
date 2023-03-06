@@ -69,6 +69,12 @@ class DatabaseService extends ChangeNotifier {
               ["${uid}_$userName", "${detail["uid"]}_userName"]),
           "groupId": groupDocumentReference.id,
         });
+        await FirebaseFirestore.instance
+            .collection("City")
+            .doc(detail['propertyId'])
+            .update({
+          'groupid': FieldValue.arrayUnion(["${groupDocumentReference.id}"])
+        });
       } catch (e) {
         print(e.toString());
       }

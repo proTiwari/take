@@ -32,7 +32,8 @@ class _ServiceTypeState extends State<ServiceType> {
     'Apartment',
     'Flat',
     'Home',
-    'Building floor'
+    'Building floor',
+    'Marrige hall'
   ];
 
   @override

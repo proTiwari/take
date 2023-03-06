@@ -207,16 +207,18 @@ class DetailCard extends StatelessWidget {
                   ),
                 ],
               ),
-              detail["description"] == "null"
-                  ? const SizedBox()
-                  : const SizedBox(
-                      height: 10,
-                    ),
+              // detail["description"] == "null"
+              //     ? const SizedBox()
+              //     : const SizedBox(
+              //         height: 10,
+              //       ),
               rent
-                  ? const SizedBox(
-                      height: 10,
-                    )
-                  : const SizedBox(),
+                      ? const SizedBox(
+                          height: 10,
+                        )
+                      : const SizedBox(
+                          height: 0,
+                        ),
               rent
                   ? Row(
                       children: [
@@ -406,35 +408,8 @@ class DetailCard extends StatelessWidget {
                       height: 10,
                     )
                   : const SizedBox(),
-              Row(
-                children: [
-                  RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      text: "State",
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                      text: "${detail["state"]}",
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
+
+              
 
               // SingleChildScrollView(
               //   scrollDirection: Axis.horizontal,

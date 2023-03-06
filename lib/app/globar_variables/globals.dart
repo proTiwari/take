@@ -12,6 +12,7 @@ var latlong;
 var recentmessagetemp;
 var logintoken;
 var list;
+var dynamiclink = '';
 var city = 'Allahabad';
 var secondcall;
 List imageList = [];

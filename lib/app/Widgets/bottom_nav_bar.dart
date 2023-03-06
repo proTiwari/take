@@ -8,6 +8,7 @@ import 'package:flutter_autoupdate/flutter_autoupdate.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:version/version.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -27,6 +28,7 @@ import '../pages/list_property/home_page/home_page_widget.dart';
 import '../pages/list_property/search_place_provider.dart';
 import '../pages/profile_page/profile_page.dart';
 import '../globar_variables/globals.dart' as globals;
+import '../services/deeplink_service.dart';
 import '../services/location_services.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
@@ -69,8 +71,9 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
     getuser();
     locationcheck();
     initPlatformState();
+    deeplink();
     // locationcheck();
-    CurrentLocation().getCurrentPosition();
+
     calculateMessageCount();
 
     // 1. This method call when app in terminated state and you get a notification
@@ -106,31 +109,31 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
-        try {
-          print("FirebaseMessaging.onMessage.listen${message.data}");
-          if (message.notification != null) {
-            print(message.notification!.title);
-            print(message.data);
-            print("message1 ${message.data}");
-            LocalNotificationService.createanddisplaynotification(message);
-            if (message.data['navigator'] == '') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    groupId: message.data['groupId'],
-                    groupName: message.data['groupName'],
-                    userName: message.data['userName'],
-                    profileImage: message.data['profileImage'],
-                    owneruid: message.data['ownerId'],
-                  ),
-                ),
-              );
-            }
-          }
-        } catch (e) {
-          print("firebasemessaging error: ${e.toString()}");
-        }
+        // try {
+        //   print("FirebaseMessaging.onMessage.listen${message.data}");
+        //   if (message.notification != null) {
+        //     print(message.notification!.title);
+        //     print(message.data);
+        //     print("message1 ${message.data}");
+        //     LocalNotificationService.createanddisplaynotification(message);
+        //     if (message.data['navigator'] == '') {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //           builder: (context) => ChatPage(
+        //             groupId: message.data['groupId'],
+        //             groupName: message.data['groupName'],
+        //             userName: message.data['userName'],
+        //             profileImage: message.data['profileImage'],
+        //             owneruid: message.data['ownerId'],
+        //           ),
+        //         ),
+        //       );
+        //     }
+        //   }
+        // } catch (e) {
+        //   print("firebasemessaging error: ${e.toString()}");
+        // }
       },
     );
 
@@ -163,6 +166,15 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         }
       },
     );
+  }
+
+  var referralCode;
+
+  void deeplink() async {
+    final deepLinkRepo = await DeepLinkService.instance;
+    referralCode = await deepLinkRepo?.referrerCode.value;
+    print(
+        "sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${referralCode}");
   }
 
   UpdateResult? _result;
@@ -305,11 +317,43 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
     }
   }
 
-  void _moveToScreen2(BuildContext context) => Navigator.pushReplacement(
+  // void _moveToScreen2(BuildContext context) => Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => CustomBottomNavigation(globals.city, "", "")));
+
+  void _moveToScreen2(BuildContext context) {
+    try {
+      if (pageIndex != 0) {
+        setState(() {
+          pageIndex = 0;
+        });
+      } else {
+        exit(0);
+      }
+
+      // context.pushNamed('customnav');
+      // Navigator.pushReplacement(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) =>
+      //             CustomBottomNavigation(globals.city, "", "")));
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  navigatefun(BuildContext context) => Navigator.pushReplacement(
       context,
       MaterialPageRoute(
           builder: (context) => CustomBottomNavigation(globals.city, "", "")));
 
+  // onWillPop: () async {
+  //   _moveToScreen2(
+  //     context,
+  //   );
+  //   return false;
+  // },
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -358,8 +402,11 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                 ),
                 child: IconButton(
                   enableFeedback: false,
-                  onPressed: () {
+                  onPressed: () async {
+                    final deepLinkRepo = await DeepLinkService.instance;
+                    referralCode = await deepLinkRepo?.referrerCode.value;
                     setState(() {
+                      print(referralCode);
                       print(
                           "hello there: ${FirebaseAuth.instance.currentUser}");
                       if (FirebaseAuth.instance.currentUser != null) {

@@ -11,14 +11,22 @@ xmlns:tools="http://schemas.android.com/tools"
    <application
         android:label="RunForRent"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:icon="@mipmap/ic_launcher">
 
         <meta-data
           android:name="com.google.firebase.messaging.default_notification_icon"
           android:resource="@mipmap/launcher_icon" />
 
 
-
+<provider
+    android:name="androidx.core.content.FileProvider"
+    android:authorities="${applicationId}.provider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+    <meta-data
+        android:name="android.support.FILE_PROVIDER_PATHS"
+        android:resource="@xml/provider_paths"/>
+</provider>
         <!-- Provider -->
 <provider
     android:name="androidx.core.content.FileProvider"

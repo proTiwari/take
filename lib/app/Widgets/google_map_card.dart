@@ -7,7 +7,8 @@ import '../pages/property_detail/singleloc_googlemap.dart';
 
 class GoogleMapCard extends StatefulWidget {
   var detail;
-  GoogleMapCard(this.detail, {Key? key}) : super(key: key);
+  var height;
+  GoogleMapCard(this.detail, this.height, {Key? key}) : super(key: key);
 
   @override
   State<GoogleMapCard> createState() => _GoogleMapCardState();
@@ -87,7 +88,7 @@ class _GoogleMapCardState extends State<GoogleMapCard> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+        margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           boxShadow: const [
@@ -103,7 +104,7 @@ class _GoogleMapCardState extends State<GoogleMapCard> {
         ),
         child: SizedBox(
           width: MediaQuery.of(context).size.width,
-          height: 200,
+          height: widget.height,
           child: GoogleMap(
             mapType: MapType.normal,
             markers: _markers,

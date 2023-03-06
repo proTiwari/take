@@ -679,7 +679,8 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                   autofocus: false,
                                                   obscureText: false,
                                                   decoration: InputDecoration(
-                                                    hintText: 'Area of land (optional)',
+                                                    hintText:
+                                                        'Area of land (optional)',
                                                     hintStyle: FlutterFlowTheme
                                                             .of(context)
                                                         .bodyText2
@@ -928,6 +929,9 @@ class _ListPropertyPageState extends State<ListPropertyPage>
 
                                   if (FFAppState().lat != 0.0 &&
                                       FFAppState().lon != 0.0) {
+                                    if (FFAppState().cityname == '' || FFAppState().cityname == null) {
+                                      FFAppState().cityname = 'Prayagraj';
+                                    }
                                     context.pushNamed(
                                       'userdetailpage',
                                       extra: <String, dynamic>{

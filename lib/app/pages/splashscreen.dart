@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
 import 'list_property/flutter_flow/flutter_flow_util.dart';
+import 'list_property/search_place_provider.dart';
 
 // optional distance parameter. Default is 1.0
 
@@ -20,6 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    CurrentLocation().getCurrentPosition();
     Timer(
         Duration(seconds: 0),
         () => {

@@ -6,16 +6,17 @@ import 'package:page_transition/page_transition.dart';
 import 'package:take/app/Widgets/bottom_nav_bar.dart';
 import 'package:take/app/globar_variables/globals.dart';
 import 'package:take/app/pages/profile_page/profile_page.dart';
-import '../../../splashscreen.dart';
-import '../../home_page/home_page_widget.dart';
-import '../../imageAndUpload.dart/imageandupload.dart';
-import '../../userdetailpage/userdetailpage2.dart';
-import '../../userdetailpage/userdetailpage_widget.dart';
-import '../flutter_flow_theme.dart';
-import '../../backend/backend.dart';
+import '../property_detail/property_detail.dart';
+import '../splashscreen.dart';
+import '../list_property/home_page/home_page_widget.dart';
+import '../list_property/imageAndUpload.dart/imageandupload.dart';
+import '../list_property/userdetailpage/userdetailpage2.dart';
+import '../list_property/userdetailpage/userdetailpage_widget.dart';
+import '../list_property/flutter_flow/flutter_flow_theme.dart';
+import '../list_property/backend/backend.dart';
 
-import '../lat_lng.dart';
-import '../place.dart';
+import '../list_property/flutter_flow/lat_lng.dart';
+import '../list_property/flutter_flow/place.dart';
 import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
@@ -55,6 +56,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   params.getParam('city', ParamType.String),
                   params.getParam("secondcall", ParamType.String),
                   params.getParam("profile", ParamType.String)),
+            ),
+            FFRoute(
+              name: 'property',
+              path: 'property',
+              builder: (context, params) =>Property(detail: params.getParam("detail", ParamType.Document)),
             ),
             FFRoute(
               name: 'HomePage',

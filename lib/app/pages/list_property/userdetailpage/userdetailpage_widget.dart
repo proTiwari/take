@@ -550,6 +550,27 @@ class _UserdetailpageWidgetState extends State<UserdetailpageWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
                     child: InkWell(
                       onTap: () async {
+                        bool move = true;
+                        FFAppState().selleramount =
+                            _model.selleramountController.text;
+                        if (FFAppState().sellerform == true) {
+                          if (FFAppState().selleramount == '') {
+                            setState(() {
+                              move = false;
+                            });
+                            showToast(
+                                context: context, "amount field is empty");
+                          } else {
+                            if (!isNumeric(FFAppState().selleramount)) {
+                              setState(() {
+                                move = false;
+                              });
+                              showToast(
+                                  context: context,
+                                  "amount should be in integer formet");
+                            }
+                          }
+                        }
                         if (_model.pincodeController.text == '' &&
                             !isNumeric(_model.pincodeController.text)) {
                           showToast(
@@ -563,17 +584,20 @@ class _UserdetailpageWidgetState extends State<UserdetailpageWidget> {
                             if (_model.nameController.text == '') {
                               showToast(context: context, "Please enter name");
                             } else {
-                              context.pushNamed(
-                                'userdetailpage2',
-                                extra: <String, dynamic>{
-                                  kTransitionInfoKey: const TransitionInfo(
-                                    hasTransition: true,
-                                    transitionType:
-                                        PageTransitionType.rightToLeft,
-                                    duration: Duration(milliseconds: 600),
-                                  ),
-                                },
-                              );
+                              FFAppState().name = _model.nameController.text;
+                              if (move) {
+                                context.pushNamed(
+                                  'userdetailpage2',
+                                  extra: <String, dynamic>{
+                                    kTransitionInfoKey: const TransitionInfo(
+                                      hasTransition: true,
+                                      transitionType:
+                                          PageTransitionType.rightToLeft,
+                                      duration: Duration(milliseconds: 600),
+                                    ),
+                                  },
+                                );
+                              }
                             }
                           }
                         }

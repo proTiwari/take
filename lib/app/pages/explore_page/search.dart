@@ -23,6 +23,7 @@ import '../../models/auto_complete_result.dart';
 import '../../services/map_services.dart';
 import '../list_property/flutter_flow/flutter_flow_theme.dart';
 import '../list_property/search_place_provider.dart';
+import '../property_detail/property_detail.dart';
 
 class Search extends river.ConsumerStatefulWidget {
   String city;
@@ -183,6 +184,7 @@ class _SearchState extends river.ConsumerState<Search> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getdynamiclink();
     getavailablecityname();
     stream = FirebaseFirestore.instance.collection("City").snapshots();
     setState(() {
@@ -274,11 +276,11 @@ class _SearchState extends river.ConsumerState<Search> {
           searchToggle = false;
           CitySelector = false;
         });
-        return false;
+        return true;
       },
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight:5,
+          toolbarHeight: 5,
           backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           elevation: 0,
           automaticallyImplyLeading: false,
@@ -315,23 +317,24 @@ class _SearchState extends river.ConsumerState<Search> {
                       child: TextFormField(
                         controller: searchController,
                         decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 15.0),
-                            border: InputBorder.none,
-                            hintText: 'Search',
-                            suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    searchToggle = false;
-
-                                    searchController.text = '';
-                                    // _markers = {};
-                                    if (searchFlag.searchToggle) {
-                                      searchFlag.toggleSearch();
-                                    }
-                                  });
-                                },
-                                icon: const Icon(Icons.close))),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 15.0),
+                          border: InputBorder.none,
+                          hintText: 'Search',
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                searchToggle = false;
+                                searchController.text = '';
+                                // _markers = {};
+                                if (searchFlag.searchToggle) {
+                                  searchFlag.toggleSearch();
+                                }
+                              });
+                            },
+                            icon: const Icon(Icons.close),
+                          ),
+                        ),
                         onChanged: (value) {
                           if (_debounce?.isActive ?? false) {
                             _debounce?.cancel();
@@ -744,16 +747,6 @@ class _SearchState extends river.ConsumerState<Search> {
                                   finalList.clear();
                                   list.clear();
                                   for (var i in selectedUserList!) {
-                                    // list = documents.where((element) {
-                                    //   return element
-                                    //       .get("wantto")
-                                    //       .toString()
-                                    //       .toLowerCase()
-                                    //       .contains(
-                                    //         i.avatar.toString().toLowerCase(),
-                                    //       );
-                                    // }).toList();
-
                                     for (var j in initList) {
                                       if (j['wantto']
                                               .toString()
@@ -803,8 +796,8 @@ class _SearchState extends river.ConsumerState<Search> {
                                 print(
                                     "we are here ${locationprovider.latlonglocation.latitude} ${locationprovider.latlonglocation.longitude}");
                                 // ignore: unnecessary_new
-                                if (FFAppState().lat != 25.435801 &&
-                                    FFAppState().lon != 81.846313) {
+                                if (FFAppState().lat != 0.0 &&
+                                    FFAppState().lon != 0.0) {
                                   // case when location permission is enabled
                                   if (selectedUserList!.isNotEmpty) {
                                     // case when filter is enabled
@@ -822,11 +815,11 @@ class _SearchState extends river.ConsumerState<Search> {
                                             0, 180, 0, 0),
                                         child: Container(
                                           child: Column(children: [
-                                            const Padding(
+                                            Padding(
                                               padding: EdgeInsets.fromLTRB(
                                                   0, 0, 0, 18),
                                               child: Text(
-                                                  "There is no property avalible near your location"),
+                                                  "There is no property avalible in ${FFAppState().cityname}"),
                                             ),
                                             GestureDetector(
                                               onTap: () {
@@ -902,8 +895,9 @@ class _SearchState extends river.ConsumerState<Search> {
                 ? allSearchResults.allReturnedResults.isNotEmpty
                     ? Stack(children: [
                         Positioned(
-                            top: 60.0,
-                            left: 24.0,
+                            top: 68.0,
+                            left: 15.0,
+                            right: 15,
                             child: Container(
                               height: 300.0,
                               width: screenWidth - 30.0,
@@ -1122,7 +1116,7 @@ class _SearchState extends river.ConsumerState<Search> {
 
   Widget buildListItem(AutoCompleteResult placeItem, searchFlag) {
     return Padding(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(0.0),
       child: GestureDetector(
         onTapDown: (_) {
           FocusManager.instance.primaryFocus?.unfocus();
@@ -1184,6 +1178,25 @@ class _SearchState extends river.ConsumerState<Search> {
       print("hhhhhhhhhhhhh: ${e.toString()}");
     }
   }
+
+  getdynamiclink() async {
+    if (globals.dynamiclink != '') {
+      await FirebaseFirestore.instance
+          .collection('City')
+          .doc(globals.dynamiclink)
+          .get()
+          .then((value) {
+        print("sijofoeijieiwoe");
+        print(value.data());
+        print(value.data().runtimeType);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Property(detail: value.data())),
+        );
+      });
+    }
+  }
 }
 
 class User {
@@ -1205,12 +1218,13 @@ List<User> userList = [
   // User(name: "Within 10km", avatar: "user.png"),
   // User(name: "Within 5km", avatar: "user.png"),
   // User(name: "Within 1km", avatar: "user.png"),
-  User(name: "Property On Sale", avatar: "Sell property"), //
-  User(name: "Property On Rent", avatar: "Rent property"), //
+  User(name: "Seller Property", avatar: "Sell property"), //
+  User(name: "Rental Property", avatar: "Rent property"), //
   User(name: "Hotel Service", avatar: "Hotel"), //
   User(name: "PG Service", avatar: "PG"), //
   User(name: "Hostel Service", avatar: "Hostel"), //
   User(name: "Home Service", avatar: "Home"),
+  User(name: "Marrige hall", avatar: "Marrige hall"),
 ];
 
 List<City> cityList = [];

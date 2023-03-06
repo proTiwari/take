@@ -25,7 +25,14 @@ class DurationWidget extends StatefulWidget {
 }
 
 class _DurationWidgetState extends State<DurationWidget> {
-  var duration = ['Per Hour', 'Per Month', 'Per Year', 'Will be discussed'];
+  var duration = [
+    'Per Hour',
+    'Per day',
+    'Per Month',
+    'Per Year',
+    'one time payment',
+    'Will be discussed'
+  ];
   @override
   void initState() {
     // TODO: implement initState

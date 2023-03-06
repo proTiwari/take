@@ -9,7 +9,7 @@ class LocalNotificationService {
     // initializationSettings  for Android
     const InitializationSettings initializationSettings =
         InitializationSettings(
-      android: AndroidInitializationSettings("@mipmap/ic_launcher"),
+      android: AndroidInitializationSettings("assets/white_back_black_front.png"),
     );
 
     _notificationsPlugin.initialize(
@@ -39,7 +39,7 @@ class LocalNotificationService {
       print("sddsd2");
       const NotificationDetails notificationDetails = NotificationDetails(
         android: AndroidNotificationDetails(
-          icon: "ic_launcer",
+          icon: "ic_launcher",
           "pushnotificationapp",
           "runforrent",
           importance: Importance.high,

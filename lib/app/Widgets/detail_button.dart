@@ -83,8 +83,7 @@ class _DetailButtonState extends State<DetailButton> {
             print("this is the error: ${e.toString()}");
           }
           if (!groupexist) {
-         
-
+            
             await DatabaseService(
                     uid: FirebaseAuth.instance.currentUser!.uid, widget.detail)
                 .createGroup("userName", FirebaseAuth.instance.currentUser!.uid,

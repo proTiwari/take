@@ -452,6 +452,11 @@ class _Userdetailpage2WidgetState extends State<Userdetailpage2Widget> {
                                   context: context,
                                   "enter valid whats app number");
                             } else {
+                              FFAppState().email = _model.emailController.text;
+                              FFAppState().phone =
+                                  _model.phonenumberController.text;
+                              FFAppState().altphone =
+                                  _model.alternatephoneController.text;
                               context.pushNamed(
                                 'uploadproperty',
                                 extra: <String, dynamic>{
