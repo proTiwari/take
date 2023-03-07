@@ -39,8 +39,13 @@ class _CardsWidgetState extends State<CardsWidget> {
 
     final referCode =
         await CodeGenerator().generateCode('refer', id.toString());
+
     referLink = await DeepLinkService.instance
         ?.createReferLink(referCode, widget.property);
+
+    setState(() {
+      referLink;
+    });
   }
 
   var firstpropertyimage;
@@ -216,7 +221,9 @@ class _CardsWidgetState extends State<CardsWidget> {
             padding: const EdgeInsets.all(13.0),
             child: GestureDetector(
               onTap: () async {
-                await share();
+                if (referLink != '') {
+                  await share();
+                }
               },
               child: Container(
                   height: 30,

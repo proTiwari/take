@@ -8,10 +8,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:flutter/services.dart' as rootBundle;
 import 'package:geolocator/geolocator.dart';
 import 'package:georange/georange.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart'
+    as googlemapflutter;
 import 'package:flutter/services.dart' show ByteData, Uint8List;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:take/app/pages/app_state.dart';
 import 'package:take/app/pages/list_property/search_place_provider.dart';
 import 'package:take/app/pages/property_detail/property_detail.dart';
 import '../../../app/Widgets/filter_card.dart';
@@ -47,12 +49,13 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   List<Location>? selectedlocationList = [];
   List serarchlocationlist = [];
   List? stateCity;
-  final Completer<GoogleMapController> _controller = Completer();
-  final Set<Circle> _circles = <Circle>{};
-  final Set<Circle> _circles2 = <Circle>{};
-  Set<Marker> _markers = <Marker>{};
-  Set<Marker> nearmarker = <Marker>{};
-  Set<Marker> searchedmarker = <Marker>{};
+  final Completer<googlemapflutter.GoogleMapController> _controller =
+      Completer();
+  final Set<googlemapflutter.Circle> _circles = <googlemapflutter.Circle>{};
+  final Set<googlemapflutter.Circle> _circles2 = <googlemapflutter.Circle>{};
+  Set<googlemapflutter.Marker> _markers = <googlemapflutter.Marker>{};
+  Set<googlemapflutter.Marker> nearmarker = <googlemapflutter.Marker>{};
+  Set<googlemapflutter.Marker> searchedmarker = <googlemapflutter.Marker>{};
   bool cardList = false;
   bool cir = false;
   bool cis = false;
@@ -65,8 +68,9 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   var tappedPoint;
   Timer? _debounce;
   TextEditingController searchController = TextEditingController();
-  CameraPosition _kGooglePlex = const CameraPosition(
-    target: LatLng(25.435801, 81.846313),
+  googlemapflutter.CameraPosition _kGooglePlex =
+      googlemapflutter.CameraPosition(
+    target: googlemapflutter.LatLng(25.435801, 81.846313),
     zoom: 14.4746,
   );
 
@@ -134,7 +138,8 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   }
 
   bool CitySelector = false;
-  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+  googlemapflutter.BitmapDescriptor markerIcon =
+      googlemapflutter.BitmapDescriptor.defaultMarker;
 
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.rootBundle.load(path);
@@ -154,9 +159,9 @@ class _GooglemapState extends ConsumerState<Googlemap> {
     if (widget.calledin == 'search') {
       snapshotnearproperty();
       for (var i in widget.citylist) {
-        _setMarkerProperty(LatLng(i['lat'], i['lon']), i);
-        _kGooglePlex = CameraPosition(
-          target: LatLng(i['lat'], i['lon']),
+        _setMarkerProperty(googlemapflutter.LatLng(i['lat'], i['lon']), i);
+        _kGooglePlex = googlemapflutter.CameraPosition(
+          target: googlemapflutter.LatLng(i['lat'], i['lon']),
           zoom: 14.4746,
         );
       }
@@ -171,21 +176,27 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   settingIcon() async {
     print('hjhjhjjjhh');
     try {
+      print("ksjfsj: 1");
       final Uint8List markIcons =
           await getBytesFromAsset("assets/hhh.png", 100);
-      marker = Marker(
-        markerId: const MarkerId('marker_user'),
-        position: globals.latlong,
+      print("wwew: 2");
+      marker = googlemapflutter.Marker(
+        markerId: const googlemapflutter.MarkerId('marker_user'),
+        position: googlemapflutter.LatLng(FFAppState().lat, FFAppState().lon),
         onTap: () {},
-        icon: BitmapDescriptor.fromBytes(markIcons),
+        icon: googlemapflutter.BitmapDescriptor.fromBytes(markIcons),
       );
-      _kGooglePlex = CameraPosition(
-        target: globals.latlong,
+      print("ijiwek: 3");
+      _kGooglePlex = googlemapflutter.CameraPosition(
+        target: googlemapflutter.LatLng(FFAppState().lat, FFAppState().lon),
         zoom: 14.4746,
       );
+      print("wefwf: 4");
       setState(() {
         _markers.add(marker);
+        print("uiwiiu: 1");
         nearmarker.add(marker);
+        print("opopopop: 1");
       });
     } catch (e) {
       print("kllklklklkl${e.toString()}");
@@ -194,16 +205,16 @@ class _GooglemapState extends ConsumerState<Googlemap> {
 
   bool isReviews = true;
   bool nearboolmarker = false;
-  late Marker marker;
+  late googlemapflutter.Marker marker;
 
   void _setMarkerProperty(point, i) {
     print("this is setmarkerpropertylist ${i}    ${i.runtimeType}");
     var counter = markerIdCounter++;
     // _setCircle(point, counter);
-    marker = Marker(
-        markerId: MarkerId('marker_$counter'),
+    marker = googlemapflutter.Marker(
+        markerId: googlemapflutter.MarkerId('marker_$counter'),
         position: point,
-        infoWindow: InfoWindow(title: i['streetaddress']),
+        infoWindow: googlemapflutter.InfoWindow(title: i['streetaddress']),
         onTap: () {
           Navigator.push(
             context,
@@ -212,9 +223,10 @@ class _GooglemapState extends ConsumerState<Googlemap> {
             ),
           );
         },
-        icon: BitmapDescriptor.defaultMarker);
+        icon: googlemapflutter.BitmapDescriptor.defaultMarker);
 
-    CameraPosition _kGooglePlex = CameraPosition(
+    googlemapflutter.CameraPosition _kGooglePlex =
+        googlemapflutter.CameraPosition(
       target: point,
       zoom: 14.4746,
     );
@@ -227,15 +239,16 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   void _setMarker(point) {
     var counter = markerIdCounter++;
     // _setCircle(point, counter);
-    marker = Marker(
-        markerId: MarkerId('marker_$counter'),
+    marker = googlemapflutter.Marker(
+        markerId: googlemapflutter.MarkerId('marker_$counter'),
         position: point,
         onTap: () {
           print(point);
         },
-        icon: BitmapDescriptor.defaultMarker);
+        icon: googlemapflutter.BitmapDescriptor.defaultMarker);
 
-    CameraPosition _kGooglePlex = CameraPosition(
+    googlemapflutter.CameraPosition _kGooglePlex =
+        googlemapflutter.CameraPosition(
       target: point,
       zoom: 14.4746,
     );
@@ -251,8 +264,8 @@ class _GooglemapState extends ConsumerState<Googlemap> {
     print("sdfsdlsdfml");
     try {
       var counter = markerIdCounter++;
-      marker = Marker(
-          markerId: MarkerId('marker_$counter'),
+      marker = googlemapflutter.Marker(
+          markerId: googlemapflutter.MarkerId('marker_$counter'),
           position: point,
           onTap: () {
             Navigator.push(
@@ -262,7 +275,7 @@ class _GooglemapState extends ConsumerState<Googlemap> {
               ),
             );
           },
-          icon: BitmapDescriptor.defaultMarker);
+          icon: googlemapflutter.BitmapDescriptor.defaultMarker);
 
       searchedmarker.add(marker);
       searchedmarker.addAll(nearmarker);
@@ -276,8 +289,8 @@ class _GooglemapState extends ConsumerState<Googlemap> {
     print("sdfsdlsdfml");
     try {
       var counter = markerIdCounter++;
-      marker = Marker(
-          markerId: MarkerId('marker_$counter'),
+      marker = googlemapflutter.Marker(
+          markerId: googlemapflutter.MarkerId('marker_$counter'),
           position: point,
           onTap: () {
             Navigator.push(
@@ -287,7 +300,7 @@ class _GooglemapState extends ConsumerState<Googlemap> {
               ),
             );
           },
-          icon: BitmapDescriptor.defaultMarker);
+          icon: googlemapflutter.BitmapDescriptor.defaultMarker);
       nearmarker.add(marker);
       print("nearboolmarker${nearboolmarker}");
     } catch (e) {
@@ -295,15 +308,16 @@ class _GooglemapState extends ConsumerState<Googlemap> {
     }
   }
 
-  final GoogleMapController? controller = null;
+  final googlemapflutter.GoogleMapController? controller = null;
 
-  void _setCircle(LatLng point, dynamic n, {double? radius}) async {
+  void _setCircle(googlemapflutter.LatLng point, dynamic n,
+      {double? radius}) async {
     if (cir == false) {
-      controller?.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: point, zoom: 12)));
+      controller?.animateCamera(googlemapflutter.CameraUpdate.newCameraPosition(
+          googlemapflutter.CameraPosition(target: point, zoom: 12)));
       setState(() {
-        _circles.add(Circle(
-            circleId: CircleId("$n"),
+        _circles.add(googlemapflutter.Circle(
+            circleId: googlemapflutter.CircleId("$n"),
             center: point,
             fillColor: Colors.blue.withOpacity(0.1),
             radius: radius ?? radiusValue,
@@ -316,13 +330,14 @@ class _GooglemapState extends ConsumerState<Googlemap> {
     }
   }
 
-  void _sCircle(LatLng point, dynamic n, {double? radius}) async {
+  void _sCircle(googlemapflutter.LatLng point, dynamic n,
+      {double? radius}) async {
     if (cir == true) {
-      controller?.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: point, zoom: 12)));
+      controller?.animateCamera(googlemapflutter.CameraUpdate.newCameraPosition(
+          googlemapflutter.CameraPosition(target: point, zoom: 12)));
       setState(() {
-        _circles2.add(Circle(
-            circleId: CircleId("$n"),
+        _circles2.add(googlemapflutter.Circle(
+            circleId: googlemapflutter.CircleId("$n"),
             center: point,
             fillColor: Colors.blue.withOpacity(0.1),
             radius: radius ?? radiusValue,
@@ -368,7 +383,7 @@ class _GooglemapState extends ConsumerState<Googlemap> {
             globals.latlong.longitude, i['lat'], i['lon']);
         if (valuedistance < 30) {
           locationList.add(i);
-          _setNearMarker(LatLng(i['lat'], i['lon']), i);
+          _setNearMarker(googlemapflutter.LatLng(i['lat'], i['lon']), i);
         }
       }
       // data.docs.map((e) {
@@ -393,6 +408,8 @@ class _GooglemapState extends ConsumerState<Googlemap> {
     try {
       var data = await FirebaseFirestore.instance.collection("City").get();
       print("thyyhjy${data.docs}");
+      print(placelat);
+      print(placelon);
       var listdata = data.docs;
       locationList.clear();
       for (var i in listdata) {
@@ -403,7 +420,7 @@ class _GooglemapState extends ConsumerState<Googlemap> {
             locationList.add(i);
           });
 
-          _searchedMarker(LatLng(i['lat'], i['lon']), i);
+          _searchedMarker(googlemapflutter.LatLng(i['lat'], i['lon']), i);
         }
       }
       setState(() {
@@ -422,7 +439,7 @@ class _GooglemapState extends ConsumerState<Googlemap> {
       // });
     } catch (e) {
       print('jhb');
-      print(e.toString());
+      print("here: ${e.toString()}");
     }
   }
 
@@ -453,11 +470,11 @@ class _GooglemapState extends ConsumerState<Googlemap> {
               SizedBox(
                 height: screenHeight,
                 width: screenWidth,
-                child: GoogleMap(
+                child: googlemapflutter.GoogleMap(
                   zoomControlsEnabled: false,
                   compassEnabled: false,
                   mapToolbarEnabled: false,
-                  mapType: MapType.normal,
+                  mapType: googlemapflutter.MapType.normal,
                   markers: searchproperty
                       ? searchedmarker
                       : nearboolmarker
@@ -465,7 +482,8 @@ class _GooglemapState extends ConsumerState<Googlemap> {
                           : _markers,
                   // circles: cir ? _circles2 : _circles,
                   initialCameraPosition: _kGooglePlex,
-                  onMapCreated: (GoogleMapController controller) {
+                  onMapCreated:
+                      (googlemapflutter.GoogleMapController controller) {
                     _controller.complete(controller);
                   },
                   onTap: (point) {
@@ -971,15 +989,17 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   }
 
   Future<void> gotoSearchedPlace(double lat, double lng) async {
-    final GoogleMapController controller = await _controller.future;
+    final googlemapflutter.GoogleMapController controller =
+        await _controller.future;
 
-    controller.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(lat, lng), zoom: 12)));
+    controller.animateCamera(googlemapflutter.CameraUpdate.newCameraPosition(
+        googlemapflutter.CameraPosition(
+            target: googlemapflutter.LatLng(lat, lng), zoom: 12)));
 
     // _setMarker(LatLng(lat, lng));
   }
 
-  Future<void> _getAddressFromLatLng(LatLng position) async {
+  Future<void> _getAddressFromLatLng(googlemapflutter.LatLng position) async {
     await placemarkFromCoordinates(position!.latitude, position!.longitude)
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
@@ -1031,8 +1051,9 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   }
 
   Widget cardwid(e) {
-    controller?.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(e['lat'], e['lon']), zoom: 12)));
+    controller?.animateCamera(googlemapflutter.CameraUpdate.newCameraPosition(
+        googlemapflutter.CameraPosition(
+            target: googlemapflutter.LatLng(e['lat'], e['lon']), zoom: 12)));
     // controller!.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
     //     target: LatLng(review, review2),
     //     zoom: 14.0,
@@ -1391,14 +1412,16 @@ class _GooglemapState extends ConsumerState<Googlemap> {
   }
 
   Future<void> goToTappedPlace(review, review2) async {
-    final GoogleMapController controller = await _controller.future;
+    final googlemapflutter.GoogleMapController controller =
+        await _controller.future;
     _markers = {};
 
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(review, review2),
-        zoom: 14.0,
-        bearing: 45.0,
-        tilt: 45.0)));
+    controller.animateCamera(googlemapflutter.CameraUpdate.newCameraPosition(
+        googlemapflutter.CameraPosition(
+            target: googlemapflutter.LatLng(review, review2),
+            zoom: 14.0,
+            bearing: 45.0,
+            tilt: 45.0)));
   }
 
   void getpropertydata() async {
@@ -1417,9 +1440,9 @@ class _GooglemapState extends ConsumerState<Googlemap> {
 
     snapshotnearproperty();
     for (var i in citylist) {
-      _setMarkerProperty(LatLng(i['lat'], i['lon']), i);
-      _kGooglePlex = CameraPosition(
-        target: LatLng(i['lat'], i['lon']),
+      _setMarkerProperty(googlemapflutter.LatLng(i['lat'], i['lon']), i);
+      _kGooglePlex = googlemapflutter.CameraPosition(
+        target: googlemapflutter.LatLng(i['lat'], i['lon']),
         zoom: 14.4746,
       );
     }

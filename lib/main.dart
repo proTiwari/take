@@ -20,7 +20,6 @@ import 'package:take/app/pages/splashscreen.dart';
 import 'package:take/app/providers/base_providers.dart';
 import 'package:take/app/services/database_service.dart';
 import 'package:take/app/firebase_functions/firebase_fun.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'app/models/user_model.dart';
 import 'app/notificationservice/local_notification_service.dart';
 import 'app/pages/app_state.dart';
@@ -45,6 +44,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   CachedNetworkImage.logLevel = CacheManagerLogLevel.debug;
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     RemoteNotification? notification = message.notification;
@@ -63,17 +63,6 @@ void main() async {
       statusBarColor: Colors.transparent,
     ),
   );
-  AwesomeNotifications().initialize(null, [
-    NotificationChannel(
-      channelKey: 'image',
-      channelName: 'runforrent',
-      channelDescription: "runforrent",
-      enableLights: true,
-      playSound: true,
-      locked: true,
-      defaultColor: Colors.green,
-    )
-  ]);
 
   Provider.debugCheckInvalidValueType = null;
   WidgetsFlutterBinding.ensureInitialized();

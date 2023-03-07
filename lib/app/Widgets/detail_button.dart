@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:take/app/globar_variables/globals.dart';
 import 'package:take/app/pages/list_property/flutter_flow/flutter_flow_theme.dart';
+import 'package:take/app/pages/list_property/flutter_flow/flutter_flow_util.dart';
 import 'package:take/app/pages/signin_page/phone_login.dart';
 import '../pages/chat/chat_page.dart';
+import '../pages/nav/serialization_util.dart';
 import '../services/database_service.dart';
 import '../../app/globar_variables/globals.dart' as globals;
 
@@ -83,7 +86,6 @@ class _DetailButtonState extends State<DetailButton> {
             print("this is the error: ${e.toString()}");
           }
           if (!groupexist) {
-            
             await DatabaseService(
                     uid: FirebaseAuth.instance.currentUser!.uid, widget.detail)
                 .createGroup("userName", FirebaseAuth.instance.currentUser!.uid,
@@ -117,7 +119,30 @@ class _DetailButtonState extends State<DetailButton> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () async {
-                      Navigator.pop(context, 'Okay');
+                      context.pushNamed(
+                        'customnav',
+                        queryParams: {
+                          'city': serializeParam(
+                            '${globals.city}',
+                            ParamType.String,
+                          ),
+                          'secondcall': serializeParam(
+                            'login',
+                            ParamType.String,
+                          ),
+                          'profile': serializeParam(
+                            'Prayagraj',
+                            ParamType.String,
+                          )
+                        }.withoutNulls,
+                        extra: <String, dynamic>{
+                          kTransitionInfoKey: const TransitionInfo(
+                            hasTransition: true,
+                            transitionType: PageTransitionType.rightToLeft,
+                            duration: Duration(milliseconds: 600),
+                          ),
+                        },
+                      );
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => LoginApp()),

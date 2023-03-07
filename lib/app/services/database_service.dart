@@ -80,7 +80,7 @@ class DatabaseService extends ChangeNotifier {
       }
 
       Map<String, dynamic> chatMessageMap = {
-        "message": "\n\n Hello, I'm Interested, can we chat?",
+        "message": "Hello, I'm Interested, can we chat?",
         "imageurl": detail['propertyimage'][0],
         "propertydata": "${detail['streetaddress']}, ${detail['pincode']}",
         "sender": FirebaseAuth.instance.currentUser!.uid,
@@ -203,10 +203,12 @@ class DatabaseService extends ChangeNotifier {
     }
   }
 
+  var profile;
   // send message
   sendMessage(
       String groupId, Map<String, dynamic> chatMessageData, payload) async {
     var devicetoken;
+
     var userid;
     var username;
     var message;
@@ -222,6 +224,14 @@ class DatabaseService extends ChangeNotifier {
     print('send notification');
 
     await groupCollection.doc(groupId).get().then((value) async {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((value) {
+        profile = value.get("profileImage");
+        username = value.get('name');
+      });
       var user1 = value.get("members")[0].toString().split("_")[0];
       var user2 = value.get("members")[1].toString().split("_")[0];
       if (user1 != FirebaseAuth.instance.currentUser!.uid) {
@@ -248,6 +258,7 @@ class DatabaseService extends ChangeNotifier {
           sendchatnotification(devicetoken, username, message, payload);
         });
       }
+
       print('user2 $user2');
     });
     print("user3");
@@ -264,12 +275,10 @@ class DatabaseService extends ChangeNotifier {
     var request =
         http.Request('POST', Uri.parse('https://fcm.googleapis.com/fcm/send'));
     request.body = json.encode({
-      "registration_ids": [
-        "fm0V3zFkRVq9uzhBOyqD2C:APA91bF0S1drqiXFIAeoAc8XO1FdMccRVEXpalE5w_TH3ogelt7HuALac8KQsbyc7iUhw1DDemVxxR8DrrueaHcON2p5-JeeBnVEKy-VHr4DWw_gMx4UFkc33EZ9D6zRt64oO0JKORQF"
-      ],
+      "registration_ids": ["$token"],
       "data": payload,
       "notification": {
-        "image": payload['profileImage'],
+        "image": profile,
         "body": "$message",
         "title": "$username",
         "android_channel_id": "runforrent",

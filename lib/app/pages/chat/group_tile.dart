@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,14 @@ class _GroupTileState extends State<GroupTile> {
                   .then((value) {
                 print('ttttt${i}');
                 setState(() {
-                  profileimage = value.get("profileImage");
+                  try {
+                    profileimage = value.get("profileImage");
+                    print("fwjeijwoeowjofjwoefjoiweofjw: ${profileimage}");
+                  } catch (e) {
+                    print("iweofjwioe$e");
+                    profileimage =
+                        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+                  }
                 });
               });
               FirebaseFirestore.instance
@@ -115,7 +123,7 @@ class _GroupTileState extends State<GroupTile> {
     return GestureDetector(
       onTap: () async {
         try {
-          Future.delayed(Duration(milliseconds: 10), () async {
+          Future.delayed(const Duration(milliseconds: 0), () async {
             var bcount = await Navigator.push(
               context,
               MaterialPageRoute(
@@ -140,8 +148,8 @@ class _GroupTileState extends State<GroupTile> {
         child: ListTile(
           leading: CircleAvatar(
             radius: 30,
-            backgroundColor: Theme.of(context).primaryColor,
-            backgroundImage: NetworkImage(profileimage),
+            backgroundColor: Colors.white,
+            backgroundImage: CachedNetworkImageProvider(profileimage),
             child: Text(
               widget.groupName.substring(0, 1).toUpperCase(),
               textAlign: TextAlign.center,

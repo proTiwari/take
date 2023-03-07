@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:take/app/globar_variables/globals.dart' as globals;
 import 'package:take/app/pages/edit_profile/edit_profile_page.dart';
+import 'package:take/app/pages/list_property/flutter_flow/flutter_flow_util.dart';
 import 'package:take/app/pages/splashscreen.dart';
 import 'package:take/app/providers/base_providers.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -23,6 +24,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import '../../models/property_model.dart';
 import '../list_property/flutter_flow/flutter_flow_theme.dart';
 import '../list_property/flutter_flow/upload_media.dart';
+import '../nav/serialization_util.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -769,15 +771,87 @@ class _ProfilePageState extends State<ProfilePage>
                                       }
 
                                       var documents = snapshot.data!.docs;
-                                      print(
-                                          "jnknkjnk: ${documents.first['uid']}");
+
+                                      if (documents.isEmpty) {
+                                        return Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 180, 0, 0),
+                                          child: Container(
+                                            child: Column(children: [
+                                              Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 0, 0, 18),
+                                                child: Text(
+                                                    "You have not uploaded any property Yet!"),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  context.pushNamed(
+                                                    'customnav',
+                                                    queryParams: {
+                                                      'city': serializeParam(
+                                                        '${globals.city}',
+                                                        ParamType.String,
+                                                      ),
+                                                      'secondcall':
+                                                          serializeParam(
+                                                        'uploadproperty',
+                                                        ParamType.String,
+                                                      ),
+                                                      'profile': serializeParam(
+                                                        'Prayagraj',
+                                                        ParamType.String,
+                                                      )
+                                                    }.withoutNulls,
+                                                  );
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.blue,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(30),
+                                                    ),
+                                                  ),
+                                                  width: 180.0,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16.0),
+                                                    child: Center(
+                                                      child: Column(
+                                                          children: const [
+                                                            Center(
+                                                              child: Text(
+                                                                "Upload Property",
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal),
+                                                              ),
+                                                            ),
+                                                          ]),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ]),
+                                          ),
+                                        );
+                                      }
+                                      ;
                                       var list;
                                       list = documents.where((doc) {
                                         return doc.get("uid").contains(
                                             FirebaseAuth
                                                 .instance.currentUser!.uid);
                                       }).toList();
-                                      print("lllll/: ${list}");
 
                                       if (snapshot.connectionState ==
                                           ConnectionState.active) {

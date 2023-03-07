@@ -223,7 +223,7 @@ class _ChatPageState extends State<ChatPage> {
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                         boxShadow: [
                           BoxShadow(
-                            blurRadius: 0.1,
+                            blurRadius: 0.0,
                             offset: Offset(0, 0),
                           )
                         ],
@@ -231,8 +231,11 @@ class _ChatPageState extends State<ChatPage> {
                       height: 60,
                       width: MediaQuery.of(context).size.width * 0.95,
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                        child: Row(children: [
+                        padding: const EdgeInsets.fromLTRB(16, 0, 5, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                          
                           Expanded(
                               child: TextFormField(
                             maxLines: 30,
@@ -256,11 +259,22 @@ class _ChatPageState extends State<ChatPage> {
                               print("sendmessage");
                               sendMessage();
                             },
-                            child: const Center(
-                                child: Icon(
-                              Icons.send,
-                              color: Color.fromARGB(255, 182, 190, 184),
-                            )),
+                            child: Container(
+                              
+                              height: 80,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                shape: BoxShape.rectangle
+                                
+                              ),
+                              child: Center(
+                                  child: Icon(
+                                Icons.send,
+                                color: FlutterFlowTheme.of(context).greenColor,
+                                
+                              )),
+                            ),
                           )
                         ]),
                       ),
@@ -295,6 +309,9 @@ class _ChatPageState extends State<ChatPage> {
                   itemBuilder: (context, index) {
                     reverseIndex = snapshot.data.docs.length - index - 1;
                     try {
+                      if (index == 0) {
+                        changestatus();
+                      }
                       print(reverseIndex);
                       print(snapshot.data.docs[reverseIndex]['message']);
                       print(snapshot.data.docs.length);
@@ -351,12 +368,12 @@ class _ChatPageState extends State<ChatPage> {
         "groupName": widget.groupName,
         "userName": widget.userName,
         "profileImage": widget.profileImage,
-        "navigator":"",
-        "groupId":widget.groupId
+        "navigator": "",
+        "groupId": widget.groupId
       };
 
-
-      DatabaseService("sdf").sendMessage(widget.groupId, chatMessageMap, payload);
+      DatabaseService("sdf")
+          .sendMessage(widget.groupId, chatMessageMap, payload);
       setState(() {
         messageController.clear();
       });

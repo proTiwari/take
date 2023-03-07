@@ -33,9 +33,10 @@ import '../services/location_services.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
   String profile;
+  var secondcall;
   CustomBottomNavigation(
     city,
-    secondcall,
+    this.secondcall,
     this.profile,
   );
 
@@ -73,108 +74,31 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
     initPlatformState();
     deeplink();
     // locationcheck();
-
     calculateMessageCount();
-
-    // 1. This method call when app in terminated state and you get a notification
-    // when you click on notification app open from terminated state and you can get notification data in this method
-
-    FirebaseMessaging.instance.getInitialMessage().then(
-      (message) {
-        try {
-          print("FirebaseMessaging.instance.getInitialMessage");
-          if (message != null) {
-            print("New Notification");
-            if (message.data['navigator'] == '') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    groupId: message.data['groupId'],
-                    groupName: message.data['groupName'],
-                    userName: message.data['userName'],
-                    profileImage: message.data['profileImage'],
-                    owneruid: message.data['ownerId'],
-                  ),
-                ),
-              );
-            }
-          }
-        } catch (e) {
-          print("messaging error: ${e.toString()}");
-        }
-      },
-    );
-
-    // 2. This method only call when App in forground it mean app must be opened
-    FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) {
-        // try {
-        //   print("FirebaseMessaging.onMessage.listen${message.data}");
-        //   if (message.notification != null) {
-        //     print(message.notification!.title);
-        //     print(message.data);
-        //     print("message1 ${message.data}");
-        //     LocalNotificationService.createanddisplaynotification(message);
-        //     if (message.data['navigator'] == '') {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //           builder: (context) => ChatPage(
-        //             groupId: message.data['groupId'],
-        //             groupName: message.data['groupName'],
-        //             userName: message.data['userName'],
-        //             profileImage: message.data['profileImage'],
-        //             owneruid: message.data['ownerId'],
-        //           ),
-        //         ),
-        //       );
-        //     }
-        //   }
-        // } catch (e) {
-        //   print("firebasemessaging error: ${e.toString()}");
-        // }
-      },
-    );
-
-    // 3. This method only call when App in background and not terminated(not closed)
-    FirebaseMessaging.onMessageOpenedApp.listen(
-      (message) {
-        try {
-          print("FirebaseMessaging.onMessageOpenedApp.listen");
-          if (message.notification != null) {
-            print(message.notification!.title);
-            print(message.notification!.body);
-            print("message.data22 ${message.data}");
-            if (message.data['navigator'] == '') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    groupId: message.data['groupId'],
-                    groupName: message.data['groupName'],
-                    userName: message.data['userName'],
-                    profileImage: message.data['profileImage'],
-                    owneruid: message.data['ownerId'],
-                  ),
-                ),
-              );
-            }
-          }
-        } catch (e) {
-          print("messaging error: ${e.toString()}");
-        }
-      },
-    );
+    if (widget.secondcall == "uploadproperty") {
+      setState(() {
+        pageIndex = 2;
+      });
+    }
+    if (widget.secondcall == "login") {
+      setState(() {
+        pageIndex = 4;
+      });
+    }
+    if (widget.profile == 'profile') {
+      setState(() {
+        pageIndex = 3;
+      });
+    }
   }
 
   var referralCode;
 
   void deeplink() async {
-    final deepLinkRepo = await DeepLinkService.instance;
-    referralCode = await deepLinkRepo?.referrerCode.value;
+    final deepLinkRepo = DeepLinkService.instance;
+    referralCode = deepLinkRepo?.referrerCode.value;
     print(
-        "sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${referralCode}");
+        "sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd $referralCode");
   }
 
   UpdateResult? _result;
@@ -366,7 +290,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
       },
       child: Scaffold(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        body: widget.profile == "profile" ? pages[3] : pages[pageIndex],
+        body: pages[pageIndex],
         bottomNavigationBar: Container(
           margin: EdgeInsets.symmetric(
               vertical: 0, horizontal: width < 800 ? 8 : width * 0.24),

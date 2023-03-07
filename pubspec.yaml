@@ -60,7 +60,6 @@ dependencies:
   flutter_autoupdate: ^1.0.0
   permission_handler: ^10.2.0
   dropdown_search: 5.0.5
-  awesome_notifications: ^0.7.4+1
   flutter_share: ^2.0.0
   firebase_dynamic_links: ^5.0.15
   cached_network_image: ^3.2.3

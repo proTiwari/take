@@ -946,7 +946,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                   } else {
                                     showToast(
                                         context: context,
-                                        "Tap on the current location Icon (on the top of this screen) or select location on map by tapping on the map icon!");
+                                        "Enable location in your phone. Than tap on the current location Icon (on the top of this screen) or select location on map by tapping on the map icon!");
                                   }
                                 },
                                 child: Container(

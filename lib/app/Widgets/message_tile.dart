@@ -101,7 +101,7 @@ class _MessageTileState extends State<MessageTile> {
                                         // Image radius
 
                                         child: Image.network(widget.imageurl,
-                                            fit: BoxFit.fill),
+                                            fit: BoxFit.cover),
                                       ),
                                     ),
                                   )
