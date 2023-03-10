@@ -31,6 +31,7 @@ class _PropertyState extends State<Property> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    globals.dynamiclink = '';
     //getprofilepic();
     try {
       currentUser = FirebaseAuth.instance.currentUser!.uid;
@@ -124,14 +125,19 @@ class _PropertyState extends State<Property> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => GoogleMapCard(widget.detail, 200.0)),
+                            builder: (context) =>
+                                GoogleMapCard(widget.detail, 200.0)),
                       );
                     },
                     child: Container(
                       color: Color.fromARGB(255, 255, 255, 255),
-                      child: Stack(children: [GoogleMapCard(widget.detail, 200.0),
-                      Container(color: Colors.transparent,
-                        height: 200,width: 400,)
+                      child: Stack(children: [
+                        GoogleMapCard(widget.detail, 200.0),
+                        Container(
+                          color: Colors.transparent,
+                          height: 200,
+                          width: 400,
+                        )
                       ]),
                     ))
               ],

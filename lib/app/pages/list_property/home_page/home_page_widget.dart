@@ -649,7 +649,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                       .size
                                                       .width *
                                                   0.4,
-                                              height: 40,
+                                              // height: 40,
                                               decoration: BoxDecoration(
                                                 color:
                                                     FlutterFlowTheme.of(context)
@@ -678,7 +678,9 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                   ),
                                                   autofocus: false,
                                                   obscureText: false,
+                                                  keyboardType: TextInputType.number,
                                                   decoration: InputDecoration(
+                                                    
                                                     hintText:
                                                         'Area of land (optional)',
                                                     hintStyle: FlutterFlowTheme
@@ -783,14 +785,13 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                       .size
                                                       .width *
                                                   0.4,
-                                              height: 70,
                                               child:
                                                   custom_widgets.AreaOfLandUnit(
                                                 width: MediaQuery.of(context)
                                                         .size
                                                         .width *
                                                     0.4,
-                                                height: 50,
+                                                height: 0,
                                               ),
                                             ),
                                           ],

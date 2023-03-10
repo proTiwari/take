@@ -74,8 +74,8 @@ class _AreaOfLandUnitState extends State<AreaOfLandUnit> {
       items: unit,
       dropdownDecoratorProps: const DropDownDecoratorProps(
         dropdownSearchDecoration: InputDecoration(
-          labelText: "Unit",
           hintText: "Square meter",
+          hintStyle: TextStyle(fontSize: 5)
         ),
       ),
       onChanged: (value) => FFAppState().areaoflandunit = value!,

@@ -78,13 +78,21 @@ class DetailCard extends StatelessWidget {
                     width: 10,
                   ),
                   RichText(
-                    text: TextSpan(
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                      ),
-                      text: "${detail["advancemoney"]}",
-                    ),
+                    text: detail["advancemoney"] == 'true'
+                        ? TextSpan(
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                            text: "Yes",
+                          )
+                        : TextSpan(
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                            text: "No",
+                          ),
                   ),
                 ],
               ),
@@ -173,7 +181,8 @@ class DetailCard extends StatelessWidget {
                               color: Colors.black,
                               fontSize: 16,
                             ),
-                            text: "${detail["areaofland"]}",
+                            text:
+                                "${detail["areaofland"]} ${detail["areaoflandunit"]}",
                           ),
                         ),
                       ],
@@ -213,12 +222,12 @@ class DetailCard extends StatelessWidget {
               //         height: 10,
               //       ),
               rent
-                      ? const SizedBox(
-                          height: 10,
-                        )
-                      : const SizedBox(
-                          height: 0,
-                        ),
+                  ? const SizedBox(
+                      height: 10,
+                    )
+                  : const SizedBox(
+                      height: 0,
+                    ),
               rent
                   ? Row(
                       children: [
@@ -236,13 +245,21 @@ class DetailCard extends StatelessWidget {
                           width: 10,
                         ),
                         RichText(
-                          text: TextSpan(
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            ),
-                            text: "${detail["foodservice"]}",
-                          ),
+                          text: detail["foodservice"] == 'true'
+                              ? TextSpan(
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                  text: "Yes",
+                                )
+                              : TextSpan(
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                  ),
+                                  text: "No",
+                                ),
                         ),
                       ],
                     )
@@ -408,8 +425,6 @@ class DetailCard extends StatelessWidget {
                       height: 10,
                     )
                   : const SizedBox(),
-
-              
 
               // SingleChildScrollView(
               //   scrollDirection: Axis.horizontal,

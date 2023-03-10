@@ -1,5 +1,6 @@
 // Automatic FlutterFlow imports
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:take/app/pages/app_state.dart';
@@ -85,6 +86,12 @@ class _ChooselocationState extends ConsumerState<Chooselocation> {
   Future<void> _getCurrentPosition() async {
     final hasPermission = await LocationService().handleLocationPermission();
     print("sd");
+    print(hasPermission);
+    if (hasPermission == false) {
+      showToast(
+          context: context,
+          "Please enable location(gps) option in your phone");
+    }
     if (!hasPermission) return;
     print("dsfs");
     try {
@@ -164,7 +171,7 @@ class _ChooselocationState extends ConsumerState<Chooselocation> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 22),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 15),
           child: Text("${lat}, ${lon}"),
           // child: Text("$results"),
         ),

@@ -129,7 +129,9 @@ class _UserdetailpageWidgetState extends State<UserdetailpageWidget> {
                                     },
                                   ),
                                   obscureText: false,
+                                  keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
+                                    
                                     labelStyle: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(

@@ -6,6 +6,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:take/app/Widgets/bottom_nav_bar.dart';
 import 'package:take/app/globar_variables/globals.dart';
 import 'package:take/app/pages/profile_page/profile_page.dart';
+import '../list_property/agreement_document.dart';
 import '../property_detail/property_detail.dart';
 import '../splashscreen.dart';
 import '../list_property/home_page/home_page_widget.dart';
@@ -66,6 +67,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'HomePage',
               path: 'homePage',
               builder: (context, params) => ListPropertyPage(),
+            ),
+            FFRoute(
+              name: 'policy',
+              path: 'policy',
+              builder: (context, params) => AgreementDocument(),
             ),
             FFRoute(
               name: 'uploadproperty',

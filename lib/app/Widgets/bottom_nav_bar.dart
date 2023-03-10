@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_autoupdate/flutter_autoupdate.dart';
+// import 'package:flutter_autoupdate/flutter_autoupdate.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:version/version.dart';
+// import 'package:version/version.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:take/app/globar_variables/globals.dart';
@@ -28,6 +28,7 @@ import '../pages/list_property/home_page/home_page_widget.dart';
 import '../pages/list_property/search_place_provider.dart';
 import '../pages/profile_page/profile_page.dart';
 import '../globar_variables/globals.dart' as globals;
+import '../pages/property_detail/property_detail.dart';
 import '../services/deeplink_service.dart';
 import '../services/location_services.dart';
 
@@ -71,7 +72,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
     super.initState();
     getuser();
     locationcheck();
-    initPlatformState();
+    // initPlatformState();
     deeplink();
     // locationcheck();
     calculateMessageCount();
@@ -101,71 +102,71 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         "sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd $referralCode");
   }
 
-  UpdateResult? _result;
-  DownloadProgress? _download;
+  // UpdateResult? _result;
+  // DownloadProgress? _download;
   var _startTime = DateTime.now().millisecondsSinceEpoch;
   var _bytesPerSec = 0;
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    UpdateResult? result;
+  // Future<void> initPlatformState() async {
+  //   UpdateResult? result;
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   if (!mounted) return;
 
-    if (Platform.isAndroid || Platform.isIOS) {
-      var status = await Permission.storage.status;
-      if (status.isDenied) {
-        await Permission.storage.request();
-      }
-    }
+  //   if (Platform.isAndroid || Platform.isIOS) {
+  //     var status = await Permission.storage.status;
+  //     if (status.isDenied) {
+  //       await Permission.storage.request();
+  //     }
+  //   }
 
-    var versionUrl;
-    if (Platform.isAndroid) {
-      versionUrl =
-          'https://storage.googleapis.com/download-dev.feedmepos.com/version_android_sample.json';
-    } else if (Platform.isWindows) {
-      versionUrl =
-          'https://storage.googleapis.com/download-dev.feedmepos.com/version_windows_sample.json';
-    }
+  //   var versionUrl;
+  //   if (Platform.isAndroid) {
+  //     versionUrl =
+  //         'https://storage.googleapis.com/download-dev.feedmepos.com/version_android_sample.json';
+  //   } else if (Platform.isWindows) {
+  //     versionUrl =
+  //         'https://storage.googleapis.com/download-dev.feedmepos.com/version_windows_sample.json';
+  //   }
 
-    /// Android/Windows
-    var manager = UpdateManager(versionUrl: versionUrl);
+  //   /// Android/Windows
+  //   var manager = UpdateManager(versionUrl: versionUrl);
 
-    /// iOS
-    // var manager = UpdateManager(appId: 1500009417, countryCode: 'my');
-    print("started kkklll");
-    try {
-      result = await manager.fetchUpdates();
-      setState(() {
-        _result = result;
-      });
-      if (Version.parse('3.3.0+13') < result?.latestVersion) {
-        var controller = await result?.initializeUpdate();
-        print("latest version kk:${result?.latestVersion}");
-        controller?.stream.listen((event) async {
-          setState(() {
-            if (DateTime.now().millisecondsSinceEpoch - _startTime >= 1000) {
-              _startTime = DateTime.now().millisecondsSinceEpoch;
-              _bytesPerSec = event.receivedBytes - _bytesPerSec;
-            }
-            _download = event;
-          });
-          if (event.completed) {
-            print("Downloaded completed");
-            await controller.close();
-            await result?.runUpdate(event.path, autoExit: true);
-          }
-        });
-      } else {
-        print("latest version:${result?.latestVersion}");
-      }
-    } on Exception catch (e) {
-      print("sdjflksd${e}");
-    }
-  }
+  //   /// iOS
+  //   // var manager = UpdateManager(appId: 1500009417, countryCode: 'my');
+  //   print("started kkklll");
+  //   try {
+  //     result = await manager.fetchUpdates();
+  //     setState(() {
+  //       _result = result;
+  //     });
+  //     if (Version.parse('1.1.0+15') < result?.latestVersion) {
+  //       var controller = await result?.initializeUpdate();
+  //       print("latest version kk:${result?.latestVersion}");
+  //       controller?.stream.listen((event) async {
+  //         setState(() {
+  //           if (DateTime.now().millisecondsSinceEpoch - _startTime >= 1000) {
+  //             _startTime = DateTime.now().millisecondsSinceEpoch;
+  //             _bytesPerSec = event.receivedBytes - _bytesPerSec;
+  //           }
+  //           _download = event;
+  //         });
+  //         if (event.completed) {
+  //           print("Downloaded completed");
+  //           await controller.close();
+  //           await result?.runUpdate(event.path, autoExit: true);
+  //         }
+  //       });
+  //     } else {
+  //       print("latest version:${result?.latestVersion}");
+  //     }
+  //   } on Exception catch (e) {
+  //     print("sdjflksd${e}");
+  //   }
+  // }
 
   updatedeviceid() async {
     try {
@@ -253,7 +254,25 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
           pageIndex = 0;
         });
       } else {
-        exit(0);
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: const Text(''),
+            content: const Text('Do You Want To Exit?'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'No'),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () async {
+                  exit(0);
+                },
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        );
       }
 
       // context.pushNamed('customnav');
@@ -292,6 +311,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         body: pages[pageIndex],
         bottomNavigationBar: Container(
+          
           margin: EdgeInsets.symmetric(
               vertical: 0, horizontal: width < 800 ? 8 : width * 0.24),
           height: 70,
@@ -354,7 +374,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                             color: pageIndex == 0
                                 ? Colors.white
                                 : const Color(0xfff24086a),
-                            fontSize: 9),
+                            fontSize: 8),
                       )
                     ],
                   ),
@@ -399,7 +419,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                                 color: pageIndex == 1
                                     ? Colors.white
                                     : const Color(0xfff24086a),
-                                fontSize: 9),
+                                fontSize: 8),
                           )
                         ],
                       ),
@@ -478,7 +498,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                             color: pageIndex == 2
                                 ? Colors.white
                                 : const Color(0xfff24086a),
-                            fontSize: 9),
+                            fontSize: 8),
                       )
                     ],
                   ),
@@ -518,7 +538,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                             color: pageIndex == 3
                                 ? Colors.white
                                 : const Color(0xfff24086a),
-                            fontSize: 9),
+                            fontSize: 8),
                       )
                     ],
                   ),

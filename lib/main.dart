@@ -157,6 +157,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp.router(
+        
         localizationsDelegates: [
           FFLocalizationsDelegate(),
           GlobalMaterialLocalizations.delegate,

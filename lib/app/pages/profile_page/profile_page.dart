@@ -180,28 +180,29 @@ class _ProfilePageState extends State<ProfilePage>
         flexibleSpace: const FlexibleSpaceBar(),
         elevation: 0,
         actions: [
-          IconButton(
-            onPressed: () async {
-              final Uri params = Uri(
-                  scheme: 'mailto',
-                  path: 'team@runforrent.com',
-                  query: 'subject=Query about App');
-              var mailurl = params.toString();
-              if (await canLaunch(mailurl)) {
-                await launch(mailurl);
-              } else {
-                throw 'Could not launch $mailurl';
-              }
-            },
-            icon: const Icon(
-              Icons.help,
-              color: Colors.black,
-            ),
-          ),
-          SizedBox(
-            width: width < 800 ? width * 0.74 : width * 0.90,
-          ),
-          IconButton(
+          
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                onPressed: () async {
+                  final Uri params = Uri(
+                      scheme: 'mailto',
+                      path: 'team@runforrent.com',
+                      query: 'subject=Query about App');
+                  var mailurl = params.toString();
+                  if (await canLaunch(mailurl)) {
+                    await launch(mailurl);
+                  } else {
+                    throw 'Could not launch $mailurl';
+                  }
+                },
+                icon: const Icon(
+                  Icons.help,
+                  color: Colors.black,
+                ),
+              ),
+              IconButton(
             onPressed: () {
               showDialog<String>(
                 context: context,
@@ -235,6 +236,12 @@ class _ProfilePageState extends State<ProfilePage>
               color: Colors.black,
             ),
           ),
+            ],
+          ),
+          // SizedBox(
+          //   width: width < 800 ? width * 0.74 : width * 0.90,
+          // ),
+          
         ],
         automaticallyImplyLeading: false,
       ),
