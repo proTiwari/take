@@ -114,9 +114,11 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
     );
+    
     Timer(
         Duration(seconds: 2),
         () => {
+
               context.pushNamed(
                 'customnav',
                 queryParams: {
@@ -168,14 +170,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 0, 0, 0),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: SizedBox(
-              height: 200.0,
-              width: 200.0,
-              child: Image.asset('assets/splashscreen.png')),
+              height: 150.0,
+              width: 150.0,
+              child: Image.asset('assets/RFR.png')),
         ),
       ),
     );

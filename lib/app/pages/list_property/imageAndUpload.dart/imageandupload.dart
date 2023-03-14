@@ -9,6 +9,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:take/app/Widgets/bottom_nav_bar.dart';
 
 import '../../app_state.dart';
+import '../agreement_document.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -33,7 +34,7 @@ class _UploadPropertyState extends State<UploadProperty> {
   String image = '';
   List imagelist = [];
   List<dynamic> downloadUrl = [];
-
+  bool agreement = false;
   bool isMediaUploading = false;
   FFUploadedFile uploadedLocalFile =
       FFUploadedFile(bytes: Uint8List.fromList([]));
@@ -267,6 +268,42 @@ class _UploadPropertyState extends State<UploadProperty> {
                       ),
                     ),
                   ),
+                  Row(
+                    children: <Widget>[
+                      const SizedBox(
+                        width: 10,
+                      ), //SizedBox
+                      Checkbox(
+                        value: agreement,
+                        onChanged: (value) {
+                          setState(() {
+                            agreement = value!;
+                          });
+                          print(agreement);
+                        },
+                      ),
+                      const SizedBox(width: 10),
+                      InkWell(
+                          child: const Text(
+                            'agree to terms and conditions',
+                            style: TextStyle(
+                                color: Colors.deepPurpleAccent, fontSize: 17.0),
+                          ),
+                          onTap: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        AgreementDocument(),
+                                  ),
+                                ),
+                              }),
+                      // Text(
+                      //   'agree to terms and conditions',
+                      //   style: TextStyle(fontSize: 17.0),
+                      // ), //Checkbox
+                    ], //<Widget>[]
+                  ),
                   Expanded(
                     child: Align(
                       alignment: AlignmentDirectional(0, 1),
@@ -275,7 +312,8 @@ class _UploadPropertyState extends State<UploadProperty> {
                         child: InkWell(
                           onTap: () async {
                             try {
-                              if (imagelist.isNotEmpty) {
+                              if(agreement == true){
+                                if (imagelist.isNotEmpty) {
                                 setState(() {
                                   loading = true;
                                 });
@@ -428,6 +466,11 @@ class _UploadPropertyState extends State<UploadProperty> {
                                 showToast("Atleast one image is necessary",
                                     context: context);
                               }
+                              }else {
+                                showToast("Please agree to the terms and conditions.",
+                                    context: context);
+                              }
+                              
                             } catch (e) {
                               print(e.toString());
                             }

@@ -38,6 +38,7 @@ class _DetailButtonState extends State<DetailButton> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
+    var name = '';
 
     return InkWell(
       onTap: () async {
@@ -49,6 +50,13 @@ class _DetailButtonState extends State<DetailButton> {
           var listproperties = [];
           Map groupidmap = {};
           try {
+            await FirebaseFirestore.instance
+                .collection("Users")
+                .doc(widget.detail['uid'])
+                .get()
+                .then((value) {
+              name = value.data()!['name'];
+            });
             widget.detail['propertyId'];
             var listofgroups = await FirebaseFirestore.instance
                 .collection("Users")
@@ -58,22 +66,28 @@ class _DetailButtonState extends State<DetailButton> {
             var count = 0;
             print("jjjjj: ${grouplist}");
             for (var i in grouplist) {
-              i = i.toString().split("_")[0];
-              await FirebaseFirestore.instance
-                  .collection("groups")
-                  .doc(i)
-                  .get()
-                  .then((value) {
-                try {
-                  print("printing ff: ${value.data()?.entries}");
-                  listproperties.add(value.data()?['propertyId']);
-                  groupidmap[value.data()?['propertyId']] =
-                      value.data()?['groupId'];
-                } catch (e) {
-                  print("error::::  ${i} ${e}");
-                }
-              });
+              try {
+                i = i.toString().split("_")[0];
+                await FirebaseFirestore.instance
+                    .collection("groups")
+                    .doc(i)
+                    .get()
+                    .then((value) {
+                  try {
+                    print("printing ff: ${value.data()?.entries}");
+                    listproperties.add(value.data()?['propertyId']);
+                    groupidmap[value.data()?['propertyId']] =
+                        value.data()?['groupId'];
+                    print("jsjweijeow");
+                  } catch (e) {
+                    print("error::::  ${i} ${e}");
+                  }
+                });
+              } catch (e) {
+                print("jjjjkllllk: ${e.toString()}");
+              }
             }
+
             groupexist = listproperties.contains(widget.detail["propertyId"]);
             print(groupexist);
 
@@ -86,6 +100,7 @@ class _DetailButtonState extends State<DetailButton> {
             print("this is the error: ${e.toString()}");
           }
           if (!groupexist) {
+            print("ijowieo");
             await DatabaseService(
                     uid: FirebaseAuth.instance.currentUser!.uid, widget.detail)
                 .createGroup("userName", FirebaseAuth.instance.currentUser!.uid,
@@ -93,22 +108,25 @@ class _DetailButtonState extends State<DetailButton> {
             setState(() {
               loading = false;
             });
+            print('fjoiejo');
           } else {
             setState(() {
               loading = false;
             });
+            print('efiwoefwe');
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ChatPage(
                   groupId: groupidmap[widget.detail["propertyId"]],
                   groupName: "${widget.detail["ownername"]}",
-                  userName: "${globals.userdata['name']}",
+                  userName: "$name",
                   profileImage: widget.detail['profileImage'],
                   owneruid: widget.detail['uid'],
                 ),
               ),
             );
+            print("iojeioowe");
           }
         } else {
           showDialog(

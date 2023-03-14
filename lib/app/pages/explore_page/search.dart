@@ -385,36 +385,28 @@ class _SearchState extends river.ConsumerState<Search> {
                                   initList = initListWithoutLocation;
                                 }
                                 if (initList.isNotEmpty ||
-                                    initListWithoutLocation
-                                        .isNotEmpty) {
+                                    initListWithoutLocation.isNotEmpty) {
                                   selectedUserList!.isNotEmpty
                                       ? Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (BuildContext
-                                                    context) =>
-                                                Googlemap(
-                                                    finalList,
-                                                    widget.city,
-                                                    "search"),
+                                            builder: (BuildContext context) =>
+                                                Googlemap(finalList,
+                                                    widget.city, "search"),
                                           ),
                                         )
                                       : Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                            builder: (BuildContext
-                                                    context) =>
-                                                Googlemap(
-                                                    initList,
-                                                    widget.city,
+                                            builder: (BuildContext context) =>
+                                                Googlemap(initList, widget.city,
                                                     "search"),
                                           ),
                                         );
                                 }
                               },
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                    9, 0, 9, 0),
+                                padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),
                                 height: 30,
                                 decoration: BoxDecoration(
                                   boxShadow: [
@@ -426,8 +418,7 @@ class _SearchState extends river.ConsumerState<Search> {
                                   ],
                                   color: Colors.white,
                                   // color: Theme.of(context).primaryColor,
-                                  borderRadius:
-                                      BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Center(
                                   child: InkWell(
@@ -439,8 +430,7 @@ class _SearchState extends river.ConsumerState<Search> {
                                                 color: Color.fromARGB(
                                                     115, 4, 122, 186),
                                                 fontSize: 13,
-                                                fontWeight:
-                                                    FontWeight.normal),
+                                                fontWeight: FontWeight.normal),
                                             text: "  Map  ",
                                           ),
                                         ],
@@ -482,8 +472,7 @@ class _SearchState extends river.ConsumerState<Search> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                    9, 0, 9, 0),
+                                padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),
                                 height: 30,
                                 decoration: BoxDecoration(
                                   boxShadow: [
@@ -494,12 +483,10 @@ class _SearchState extends river.ConsumerState<Search> {
                                         spreadRadius: 1)
                                   ],
                                   color: nearboolmarker
-                                      ? FlutterFlowTheme.of(context)
-                                          .alternate
+                                      ? FlutterFlowTheme.of(context).alternate
                                       : Colors.white,
                                   // color: Theme.of(context).primaryColor,
-                                  borderRadius:
-                                      BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Center(
                                   child: InkWell(
@@ -533,8 +520,7 @@ class _SearchState extends river.ConsumerState<Search> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                    9, 0, 9, 0),
+                                padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),
                                 height: 30,
                                 decoration: BoxDecoration(
                                   boxShadow: [
@@ -545,12 +531,10 @@ class _SearchState extends river.ConsumerState<Search> {
                                         spreadRadius: 1)
                                   ],
                                   color: FFAppState().cityname != ""
-                                      ? FlutterFlowTheme.of(context)
-                                          .alternate
+                                      ? FlutterFlowTheme.of(context).alternate
                                       : Colors.white,
                                   // color: Theme.of(context).primaryColor,
-                                  borderRadius:
-                                      BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Center(
                                   child: InkWell(
@@ -559,15 +543,12 @@ class _SearchState extends river.ConsumerState<Search> {
                                         children: [
                                           TextSpan(
                                             style: TextStyle(
-                                                color: FFAppState()
-                                                            .cityname !=
-                                                        ""
-                                                    ? Colors.white
-                                                    : Colors.black45,
+                                                color:
+                                                    FFAppState().cityname != ""
+                                                        ? Colors.white
+                                                        : Colors.black45,
                                                 fontSize: 13),
-                                            text: FFAppState()
-                                                        .cityname ==
-                                                    ""
+                                            text: FFAppState().cityname == ""
                                                 ? "Select City"
                                                 : FFAppState().cityname,
                                           ),
@@ -591,8 +572,7 @@ class _SearchState extends river.ConsumerState<Search> {
                                 });
                               },
                               child: Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                    9, 0, 9, 0),
+                                padding: const EdgeInsets.fromLTRB(9, 0, 9, 0),
                                 height: 30,
                                 decoration: BoxDecoration(
                                   boxShadow: [
@@ -603,12 +583,10 @@ class _SearchState extends river.ConsumerState<Search> {
                                         spreadRadius: 1)
                                   ],
                                   color: selectedUserList!.isNotEmpty
-                                      ? FlutterFlowTheme.of(context)
-                                          .alternate
+                                      ? FlutterFlowTheme.of(context).alternate
                                       : Colors.white,
                                   // color: Theme.of(context).primaryColor,
-                                  borderRadius:
-                                      BorderRadius.circular(8),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Center(
                                   child: InkWell(
@@ -617,28 +595,24 @@ class _SearchState extends river.ConsumerState<Search> {
                                         children: [
                                           TextSpan(
                                             style: TextStyle(
-                                                color: selectedUserList!
-                                                        .isNotEmpty
-                                                    ? Colors.white
-                                                    : Colors.black45,
+                                                color:
+                                                    selectedUserList!.isNotEmpty
+                                                        ? Colors.white
+                                                        : Colors.black45,
                                                 fontSize: 13),
-                                            text: selectedUserList!
-                                                    .isNotEmpty
+                                            text: selectedUserList!.isNotEmpty
                                                 ? "Filter ${selectedUserList!.length}"
                                                 : "Filter",
                                           ),
                                           WidgetSpan(
-                                            child: selectedUserList!
-                                                    .isNotEmpty
+                                            child: selectedUserList!.isNotEmpty
                                                 ? const Icon(
-                                                    Icons
-                                                        .arrow_drop_down,
+                                                    Icons.arrow_drop_down,
                                                     size: 14,
                                                     color: Colors.white,
                                                   )
                                                 : const Icon(
-                                                    Icons
-                                                        .arrow_drop_down,
+                                                    Icons.arrow_drop_down,
                                                     size: 14),
                                           ),
                                         ],
@@ -653,312 +627,362 @@ class _SearchState extends river.ConsumerState<Search> {
                       ),
                       CitySelector ? SearchCity(Changeboolfun) : Container(),
                       !CitySelector
-                          ? SingleChildScrollView(
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.74,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(8.0, 8, 8, 0),
-                                  child: StreamBuilder(
-                                    stream: stream,
-                                    builder: (context,
-                                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      // snapshot.connectionState == ConnectionState.waiting
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Shimmer.fromColors(
-                                          baseColor: Colors.grey.shade300,
-                                          highlightColor: Colors.white,
-                                          child: Center(
-                                            child: ListView.builder(
-                                              itemBuilder: (_, __) => Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 0.0),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          8.0, 8, 8, 1),
-                                                  child: Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      Center(
-                                                        child: Container(
-                                                          width: 350.0,
-                                                          height: 300.0,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      const Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    10.0),
-                                                      ),
-                                                      // Expanded(
-                                                      //   child: Column(
-                                                      //     crossAxisAlignment:
-                                                      //         CrossAxisAlignment.start,
-                                                      //     children: <Widget>[
-                                                      //       const Padding(
-                                                      //           padding: EdgeInsets.only(
-                                                      //               top: 5)),
-                                                      //       Container(
-                                                      //         width: double.infinity,
-                                                      //         height: 10.0,
-                                                      //         color: Colors.white,
-                                                      //       ),
-                                                      //       const Padding(
-                                                      //         padding: EdgeInsets.symmetric(
-                                                      //             vertical: 5.0),
-                                                      //       ),
-                                                      //       Container(
-                                                      //         width: double.infinity,
-                                                      //         height: 10.0,
-                                                      //         color: Colors.white,
-                                                      //       ),
-                                                      //       const Padding(
-                                                      //         padding: EdgeInsets.symmetric(
-                                                      //             vertical: 5.0),
-                                                      //       ),
-                                                      //       Container(
-                                                      //         width: 40.0,
-                                                      //         height: 8.0,
-                                                      //         color: Colors.white,
-                                                      //       ),
-                                                      //     ],
-                                                      //   ),
-                                                      // )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              // itemCount: 10,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      print("sdfskdfklsdf hello");
-
-                                      var documents = snapshot.data!.docs;
-                                      initListWithoutLocation =
-                                          documents.where((element) {
-                                        return element
-                                            .get("city")
-                                            .toString()
-                                            .contains("Prayagraj");
-                                      }).toList();
-                                      print(
-                                          "kkkkkkkkkkkkkkkkkkkk:  ${FFAppState().cityname}");
-
-                                      if (FFAppState().cityname != '') {
-                                        print("ppppppppppppppppppppppp");
-                                        try {
-                                          initList = documents.where((element) {
-                                            return element
-                                                .get("city")
-                                                .toString()
-                                                .contains(
-                                                    FFAppState().cityname);
-                                          }).toList();
-                                        } catch (e) {
-                                          print(e.toString());
-                                        }
-                                      } else {
-                                        try {
-                                          print("isejifoee");
-                                          initList.clear();
-                                          // this for loop filters the city collection on the bases of lat long
-                                          for (var e in documents) {
-                                            print("isejifeweoee");
-                                            var lat = e.get("lat");
-                                            var lon = e.get("lon");
-                                            print(
-                                                "sdjfosjfojwoiewew$lat $lon $initList");
-
-                                            var data = calculateDistance(
-                                                FFAppState().lat,
-                                                FFAppState().lon,
-                                                lat,
-                                                lon);
-
-                                            print("isejiw22foee");
-                                            if (data < 30) {
-                                              print("isejifo111ee");
-                                              initList.add(e);
-                                            }
-                                          }
-                                        } catch (e) {
-                                          print("dsdsdsddd");
-                                          // can use this space for toggling filter list on the basis of location permission
-                                          print(e.toString());
-                                        }
-                                      }
-
-                                      //todo Documents list added to filterTitle
-                                      finalList = [];
-
-                                      //get widget.city
-
-                                      //filter method starts from here
-                                      if (selectedUserList!.isNotEmpty) {
-                                        var list = [];
-                                        finalList.clear();
-                                        list.clear();
-                                        for (var i in selectedUserList!) {
-                                          for (var j in initList) {
-                                            if (j['wantto']
-                                                    .toString()
-                                                    .toLowerCase() ==
-                                                i.avatar
-                                                    .toString()
-                                                    .toLowerCase()) {
-                                              list.add(j);
-                                            }
-                                          }
-                                          finalList = List.from(finalList)
-                                            ..addAll(list);
-                                          // list = documents.where((element) {
-                                          //   return element
-                                          //       .get("servicetype")
-                                          //       .toString()
-                                          //       .toLowerCase()
-                                          //       .contains(
-                                          //         i.avatar.toString().toLowerCase(),
-                                          //       );
-                                          // }).toList();
-                                          list.clear();
-                                          for (var k in initList) {
-                                            if (k['servicetype']
-                                                    .toString()
-                                                    .toLowerCase() ==
-                                                i.avatar
-                                                    .toString()
-                                                    .toLowerCase()) {
-                                              list.add(k);
-                                            }
-                                          }
-                                          finalList = List.from(finalList)
-                                            ..addAll(list);
-                                        }
-                                        print("documents: ${documents}");
-                                      }
-
-                                      print("sdijj${snapshot.hasData}");
-                                      try {
-                                        snapshot.data!.docs.first["pincode"];
-                                      } catch (e) {
-                                        return const Padding(
-                                          padding:
-                                              EdgeInsets.fromLTRB(0, 40, 0, 0),
-                                          child: Center(
-                                            child: Text(
-                                                "There is no property available in this city!"),
-                                          ),
-                                        );
-                                      }
-                                      print(
-                                          "we are here ${locationprovider.latlonglocation.latitude} ${locationprovider.latlonglocation.longitude}");
-                                      // ignore: unnecessary_new
-                                      if (FFAppState().lat != 0.0 &&
-                                          FFAppState().lon != 0.0) {
-                                        // case when location permission is enabled
-                                        if (selectedUserList!.isNotEmpty) {
-                                          // case when filter is enabled
-                                          return ListView(
-                                            children:
-                                                getExpenseItemsdocs(finalList),
-                                          );
-                                        } else {
-                                          // case when filter is disabled
-                                          finalList.clear();
-                                          citylist.clear();
-                                          print("initList${initList}");
-                                          if (initList.isEmpty) {
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 180, 0, 0),
-                                              child: Container(
-                                                child: Column(children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            0, 0, 0, 18),
-                                                    child: Text(
-                                                        "There is no property available near you"),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      openCityDialog();
-                                                      setState(() {
-                                                        CitySelector = false;
-                                                      });
-                                                    },
-                                                    child: Container(
-                                                      height: 50,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Colors.blue,
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                          Radius.circular(30),
-                                                        ),
-                                                      ),
-                                                      width: 180.0,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16.0),
-                                                        child: Center(
-                                                          child: Column(
-                                                              children: const [
-                                                                Text(
-                                                                  "View Serviceable Cities",
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          16,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal),
+                          ? Center(
+                              child: SingleChildScrollView(
+                                child: Center(
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.74,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          8.0, 8, 8, 0),
+                                      child: Center(
+                                        child: StreamBuilder(
+                                          stream: stream,
+                                          builder: (context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            // snapshot.connectionState == ConnectionState.waiting
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              //  if (true) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        9, 0, 9, 0),
+                                                child: Center(
+                                                  child: Shimmer.fromColors(
+                                                    baseColor:
+                                                        Colors.grey.shade300,
+                                                    highlightColor:
+                                                        Colors.white,
+                                                    child: Center(
+                                                      child: ListView.builder(
+                                                        itemBuilder: (_, __) =>
+                                                            Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  bottom: 0.0),
+                                                          child: Center(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .fromLTRB(
+                                                                      0.0,
+                                                                      8,
+                                                                      0,
+                                                                      1),
+                                                              child: Center(
+                                                                child: Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  children: <
+                                                                      Widget>[
+                                                                    Center(
+                                                                      child:
+                                                                          Container(
+                                                                        // decoration: BoxDecoration(
+                                                                        //   borderRadius: BorderRadius.circular(8)
+                                                                        // ),
+                                                                        width:
+                                                                            550.0,
+                                                                        height:
+                                                                            270.0,
+                                                                        color: Colors
+                                                                            .white,
+                                                                      ),
+                                                                    ),
+                                                                    const Padding(
+                                                                      padding: EdgeInsets.symmetric(
+                                                                          horizontal:
+                                                                              10.0),
+                                                                    ),
+                                                                    // Expanded(
+                                                                    //   child: Column(
+                                                                    //     crossAxisAlignment:
+                                                                    //         CrossAxisAlignment.start,
+                                                                    //     children: <Widget>[
+                                                                    //       const Padding(
+                                                                    //           padding: EdgeInsets.only(
+                                                                    //               top: 5)),
+                                                                    //       Container(
+                                                                    //         width: double.infinity,
+                                                                    //         height: 10.0,
+                                                                    //         color: Colors.white,
+                                                                    //       ),
+                                                                    //       const Padding(
+                                                                    //         padding: EdgeInsets.symmetric(
+                                                                    //             vertical: 5.0),
+                                                                    //       ),
+                                                                    //       Container(
+                                                                    //         width: double.infinity,
+                                                                    //         height: 10.0,
+                                                                    //         color: Colors.white,
+                                                                    //       ),
+                                                                    //       const Padding(
+                                                                    //         padding: EdgeInsets.symmetric(
+                                                                    //             vertical: 5.0),
+                                                                    //       ),
+                                                                    //       Container(
+                                                                    //         width: 40.0,
+                                                                    //         height: 8.0,
+                                                                    //         color: Colors.white,
+                                                                    //       ),
+                                                                    //     ],
+                                                                    //   ),
+                                                                    // )
+                                                                  ],
                                                                 ),
-                                                              ]),
+                                                              ),
+                                                            ),
+                                                          ),
                                                         ),
+                                                        // itemCount: 10,
                                                       ),
                                                     ),
                                                   ),
-                                                ]),
-                                              ),
-                                            );
-                                          } else {
-                                            return ListView(
-                                              children:
-                                                  getExpenseItemsdocs(initList),
-                                            );
-                                          }
-                                        }
-                                      } else {
-                                        // case for handling list when filter is enabled
-                                        if (selectedUserList!.isNotEmpty) {
-                                          return ListView(
-                                            children:
-                                                getExpenseItemsdocs(finalList),
-                                          );
-                                        } else {
-                                          print(
-                                              "hjjhhjjjjjkkk${snapshot} $initListWithoutLocation");
-                                          // case for handling list when location permission is not given
-                                          return ListView(
-                                            children: getExpenseItemsdocs(
-                                                initListWithoutLocation),
-                                          );
-                                        }
-                                      }
-                                    },
+                                                ),
+                                              );
+                                            }
+                                            print("sdfskdfklsdf hello");
+
+                                            var documents = snapshot.data!.docs;
+                                            initListWithoutLocation =
+                                                documents.where((element) {
+                                              return element
+                                                  .get("city")
+                                                  .toString()
+                                                  .contains("Prayagraj");
+                                            }).toList();
+                                            print(
+                                                "kkkkkkkkkkkkkkkkkkkk:  ${FFAppState().cityname}");
+
+                                            if (FFAppState().cityname != '') {
+                                              print("ppppppppppppppppppppppp");
+                                              try {
+                                                initList =
+                                                    documents.where((element) {
+                                                  return element
+                                                      .get("city")
+                                                      .toString()
+                                                      .contains(FFAppState()
+                                                          .cityname);
+                                                }).toList();
+                                              } catch (e) {
+                                                print(e.toString());
+                                              }
+                                            } else {
+                                              try {
+                                                print("isejifoee");
+                                                initList.clear();
+                                                // this for loop filters the city collection on the bases of lat long
+                                                for (var e in documents) {
+                                                  print("isejifeweoee");
+                                                  var lat = e.get("lat");
+                                                  var lon = e.get("lon");
+                                                  // print(
+                                                  //     "sdjfosjfojwoiewew$lat $lon $initList");
+
+                                                  var data = calculateDistance(
+                                                      FFAppState().lat,
+                                                      FFAppState().lon,
+                                                      lat,
+                                                      lon);
+
+                                                  print("isejiw22foee");
+                                                  if (data < 30) {
+                                                    print("isejifo111ee");
+                                                    initList.add(e);
+                                                  }
+                                                }
+                                              } catch (e) {
+                                                print("dsdsdsddd");
+                                                // can use this space for toggling filter list on the basis of location permission
+                                                print(e.toString());
+                                              }
+                                            }
+
+                                            //todo Documents list added to filterTitle
+                                            finalList = [];
+
+                                            //get widget.city
+
+                                            //filter method starts from here
+                                            if (selectedUserList!.isNotEmpty) {
+                                              var list = [];
+                                              finalList.clear();
+                                              list.clear();
+                                              for (var i in selectedUserList!) {
+                                                for (var j in initList) {
+                                                  if (j['wantto']
+                                                          .toString()
+                                                          .toLowerCase() ==
+                                                      i.avatar
+                                                          .toString()
+                                                          .toLowerCase()) {
+                                                    list.add(j);
+                                                  }
+                                                }
+                                                finalList = List.from(finalList)
+                                                  ..addAll(list);
+                                                // list = documents.where((element) {
+                                                //   return element
+                                                //       .get("servicetype")
+                                                //       .toString()
+                                                //       .toLowerCase()
+                                                //       .contains(
+                                                //         i.avatar.toString().toLowerCase(),
+                                                //       );
+                                                // }).toList();
+                                                list.clear();
+                                                for (var k in initList) {
+                                                  if (k['servicetype']
+                                                          .toString()
+                                                          .toLowerCase() ==
+                                                      i.avatar
+                                                          .toString()
+                                                          .toLowerCase()) {
+                                                    list.add(k);
+                                                  }
+                                                }
+                                                finalList = List.from(finalList)
+                                                  ..addAll(list);
+                                              }
+                                              print("documents: ${documents}");
+                                            }
+
+                                            print("sdijj${snapshot.hasData}");
+                                            try {
+                                              snapshot
+                                                  .data!.docs.first["pincode"];
+                                            } catch (e) {
+                                              return const Padding(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    0, 40, 0, 0),
+                                                child: Center(
+                                                  child: Text(
+                                                      "There is no property available in this city!"),
+                                                ),
+                                              );
+                                            }
+                                            print(
+                                                "we are here ${FFAppState().lat} ${FFAppState().lon}");
+                                            // ignore: unnecessary_new
+                                            if (FFAppState().lat != 0.0 &&
+                                                FFAppState().lon != 0.0) {
+                                              // case when location permission is enabled
+                                              if (selectedUserList!
+                                                  .isNotEmpty) {
+                                                print("ijoiwej");
+                                                // case when filter is enabled
+                                                return ListView(
+                                                  children: getExpenseItemsdocs(
+                                                      finalList),
+                                                );
+                                              } else {
+                                                print('iwejfiowje');
+                                                // case when filter is disabled
+                                                finalList.clear();
+                                                citylist.clear();
+                                                // print("initList${initList}");
+                                                if (initList.isEmpty) {
+                                                  print('iwoeifweofwef');
+                                                  return Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(0, 180, 0, 0),
+                                                    child: Container(
+                                                      child: Column(children: [
+                                                        Padding(
+                                                          padding: EdgeInsets
+                                                              .fromLTRB(
+                                                                  0, 0, 0, 18),
+                                                          child: Text(
+                                                              "There is no property available near you"),
+                                                        ),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            openCityDialog();
+                                                            setState(() {
+                                                              CitySelector =
+                                                                  false;
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            height: 50,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              color:
+                                                                  Colors.blue,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    30),
+                                                              ),
+                                                            ),
+                                                            width: 180.0,
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                          .all(
+                                                                      16.0),
+                                                              child: Center(
+                                                                child: Column(
+                                                                    children: const [
+                                                                      Text(
+                                                                        "View Serviceable Cities",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                16,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight: FontWeight.normal),
+                                                                      ),
+                                                                    ]),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ]),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  print('iwjioejognwe');
+                                                  return ListView(
+                                                    children:
+                                                        getExpenseItemsdocs(
+                                                            initList),
+                                                  );
+                                                }
+                                              }
+                                            } else {
+                                              print("gjwoiejiowie");
+                                              // case for handling list when filter is enabled
+                                              if (selectedUserList!
+                                                  .isNotEmpty) {
+                                                print('iegjwoiejow');
+                                                return ListView(
+                                                  children: getExpenseItemsdocs(
+                                                      finalList),
+                                                );
+                                              } else {
+                                                print("ijoejwe");
+                                                print(
+                                                    "hjjhhjjjjjkkk${snapshot} $initListWithoutLocation");
+                                                // case for handling list when location permission is not given
+                                                return ListView(
+                                                  children: getExpenseItemsdocs(
+                                                      initListWithoutLocation),
+                                                );
+                                              }
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1147,7 +1171,14 @@ class _SearchState extends river.ConsumerState<Search> {
   getExpenseItemsdocs(docs) {
     try {
       print("type of doc from Docs");
-      return docs.map<Widget>((doc) => CardsWidget(doc)).toList();
+      try {
+        docs.map<Widget>((doc) => CardsWidget(doc)).toList();
+        return docs.map<Widget>((doc) => CardsWidget(doc)).toList();
+      } catch (e) {
+        print("wijefoiwj: $e");
+        return null;
+      }
+      ;
     } catch (e) {
       print("thisis the error--${e}");
     }

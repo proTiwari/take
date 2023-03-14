@@ -1,7 +1,7 @@
 name: take
 description: A new Flutter project.
 publish_to: 'none'
-version: 1.1.0+16
+version: 1.1.1+21
 
 environment:
   sdk: ">=2.17.6 <3.0.0"
@@ -64,6 +64,7 @@ dependencies:
   flutter_share: ^2.0.0
   firebase_dynamic_links: ^5.0.15
   cached_network_image: ^3.2.3
+  package_info_plus: ^3.0.3
 
 dev_dependencies:
   flutter_test:
@@ -78,23 +79,23 @@ flutter:
   
 flutter_icons:
   #  image_path: "assets/images/icon-128x128.png"
-  image_path_android: "assets/splashscreen.png"
-  image_path_ios: "assets/splashscreen.png"
+  image_path_android: "assets/rfr5.png"
+  image_path_ios: "assets/rfr5.png"
   android: "ic_launcher" # can specify file name here e.g. "ic_launcher"
   ios: true # can specify file name here e.g. "My-Launcher-Icon"
-  adaptive_icon_background: "assets/splashscreen.png" # only available for Android 8.0 devices and above
-  adaptive_icon_foreground: "assets/splashscreen.png" # only available for Android 8.0 devices and above
+  adaptive_icon_background: "assets/rfr5.png" # only available for Android 8.0 devices and above
+  adaptive_icon_foreground: "assets/rfr5.png" # only available for Android 8.0 devices and above
   min_sdk_android: 21 # android min sdk min:16, default 21
   remove_alpha_ios: true
   web:
     generate: true
-    image_path: "assets/splashscreen.png"
+    image_path: "assets/rfr5.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"
   windows:
     generate: true
-    image_path: "assets/splashscreen.png"
+    image_path: "assets/rfr5.png"
     icon_size: 48 # min:48, max:256, default: 48
   macos:
     generate: true
-    image_path: "assets/splashscreen.png"
+    image_path: "assets/rfr5.png"

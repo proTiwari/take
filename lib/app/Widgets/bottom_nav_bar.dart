@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 // import 'package:flutter_autoupdate/flutter_autoupdate.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geocoding/geocoding.dart';
@@ -13,6 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 // import 'package:version/version.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:take/app/Widgets/update.dart';
 import 'package:take/app/globar_variables/globals.dart';
 import 'package:take/app/pages/chat/group_list.dart';
 import 'package:take/app/pages/list_property/list_property.dart';
@@ -70,6 +72,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   @override
   void initState() {
     super.initState();
+    updatefun();
     getuser();
     locationcheck();
     // initPlatformState();
@@ -91,6 +94,39 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         pageIndex = 3;
       });
     }
+  }
+
+  bool update = false;
+  updatefun() {
+    try {
+      PackageInfo.fromPlatform().then((PackageInfo packageInfo) async {
+        String appName = packageInfo.appName;
+        String packageName = packageInfo.packageName;
+        String version = packageInfo.version;
+        String buildNumber = packageInfo.buildNumber;
+        print("version: ${version}");
+        String presentversion = "";
+        await FirebaseFirestore.instance
+            .collection("Controllers")
+            .doc('variables')
+            .get()
+            .then((value) {
+          presentversion = value.data()!['updateversion'].toString();
+        });
+        if (presentversion != "") {
+          if (version.toString() != presentversion) {
+            print("presentversion: ${presentversion}");
+            setState(() {
+              update = true;
+            });
+          }
+        }
+      });
+    } catch (e) {
+      print("update fun error: ${e.toString()}");
+    }
+
+    // FirebaseFirestore.instance.collection("Users").
   }
 
   var referralCode;
@@ -287,9 +323,11 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   }
 
   navigatefun(BuildContext context) => Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => CustomBottomNavigation(globals.city, "", "")));
+        context,
+        MaterialPageRoute(
+          builder: (context) => CustomBottomNavigation(globals.city, "", ""),
+        ),
+      );
 
   // onWillPop: () async {
   //   _moveToScreen2(
@@ -309,9 +347,13 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
       },
       child: Scaffold(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        body: pages[pageIndex],
+        body: update
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                child: SizedBox(height: 230, child: Update()),
+              )
+            : pages[pageIndex],
         bottomNavigationBar: Container(
-          
           margin: EdgeInsets.symmetric(
               vertical: 0, horizontal: width < 800 ? 8 : width * 0.24),
           height: 70,

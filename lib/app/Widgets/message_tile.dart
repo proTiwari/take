@@ -117,7 +117,7 @@ class _MessageTileState extends State<MessageTile> {
                                   )),
                             widget.propertydata != ''
                                 ? TextSpan(
-                                    text: " ${widget.propertydata}",
+                                    text: " \n${widget.propertydata}",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16,
@@ -175,7 +175,7 @@ class _MessageTileState extends State<MessageTile> {
                                         // Image radius
 
                                         child: Image.network(widget.imageurl,
-                                            fit: BoxFit.fill),
+                                            fit: BoxFit.fitWidth),
                                       ),
                                     ),
                                   )
@@ -191,7 +191,7 @@ class _MessageTileState extends State<MessageTile> {
                                   )),
                             widget.propertydata != ''
                                 ? TextSpan(
-                                    text: " ${widget.propertydata}",
+                                    text: " \n${widget.propertydata}",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16,
