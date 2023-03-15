@@ -170,14 +170,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 255, 255),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: SizedBox(
-              height: 150.0,
-              width: 150.0,
-              child: Image.asset('assets/RFR.png')),
+              height: 230.0,
+              width: 230.0,
+              child: Image.asset('assets/rfr15.png')),
         ),
       ),
     );

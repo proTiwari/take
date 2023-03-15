@@ -117,14 +117,14 @@ class _MessageTileState extends State<MessageTile> {
                                   )),
                             widget.propertydata != ''
                                 ? TextSpan(
-                                    text: " \n${widget.propertydata}",
+                                    text: " \n${widget.propertydata}\n\n",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16,
                                         color: Color.fromARGB(255, 0, 0, 0)))
                                 : TextSpan(),
                             TextSpan(
-                              text: " ${widget.message}",
+                              text: "${widget.message}",
                               style: const TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 16,
@@ -191,7 +191,7 @@ class _MessageTileState extends State<MessageTile> {
                                   )),
                             widget.propertydata != ''
                                 ? TextSpan(
-                                    text: " \n${widget.propertydata}",
+                                    text: " \n${widget.propertydata}\n\n",
                                     style: const TextStyle(
                                         fontWeight: FontWeight.normal,
                                         fontSize: 16,
@@ -199,7 +199,7 @@ class _MessageTileState extends State<MessageTile> {
                                             Color.fromARGB(255, 255, 255, 255)))
                                 : TextSpan(),
                             TextSpan(
-                              text: " ${widget.message}",
+                              text: "${widget.message}",
                               style: const TextStyle(
                                 fontWeight: FontWeight.normal,
                                 fontSize: 16,

@@ -549,7 +549,7 @@ class _SearchState extends river.ConsumerState<Search> {
                                                         : Colors.black45,
                                                 fontSize: 13),
                                             text: FFAppState().cityname == ""
-                                                ? "Select City"
+                                                ? "City"
                                                 : FFAppState().cityname,
                                           ),
                                         ],
@@ -690,7 +690,7 @@ class _SearchState extends river.ConsumerState<Search> {
                                                                         width:
                                                                             550.0,
                                                                         height:
-                                                                            270.0,
+                                                                            290.0,
                                                                         color: Colors
                                                                             .white,
                                                                       ),

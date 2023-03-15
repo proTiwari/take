@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_version_checker/flutter_app_version_checker.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 // import 'package:flutter_autoupdate/flutter_autoupdate.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -21,6 +24,7 @@ import 'package:take/app/pages/list_property/list_property.dart';
 import 'package:take/app/pages/explore_page/search.dart';
 import 'package:take/app/pages/signin_page/phone_login.dart';
 import 'package:take/app/providers/base_providers.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../firebase_functions/firebase_fun.dart';
 import '../notificationservice/local_notification_service.dart';
 import '../pages/chat/chat_page.dart';
@@ -72,7 +76,9 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   @override
   void initState() {
     super.initState();
-    updatefun();
+    // updatefun();
+    checkVersion();
+    checkinternet();
     getuser();
     locationcheck();
     // initPlatformState();
@@ -97,6 +103,48 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   }
 
   bool update = false;
+  bool result = true;
+  checkinternet() async {
+    result = await InternetConnectionChecker().hasConnection;
+    setState(() {
+      result;
+    });
+    if (result == true) {
+      // print('YAY! Free cute dog pics!');
+    } else {
+      showToast("No internet connection");
+      print('No internet :( Reason:');
+      print(InternetConnectionChecker().onStatusChange);
+      setState(() {
+        result;
+      });
+    }
+  }
+
+  final _checker = AppVersionChecker();
+  void checkVersion() async {
+    if (result) {
+      _checker.checkUpdate().then((value) {
+        print("version on play store starts from here");
+        print(value.canUpdate); //return true if update is available
+        print(value.currentVersion); //return current app version
+        if (value.errorMessage == null) {
+          if (value.currentVersion.toString() != value.newVersion.toString()) {
+            setState(() {
+              update = true;
+            });
+          }
+        }
+
+        print(value.newVersion); //return the new app version
+        print(value.appURL); //return the app url
+        print("error: ${value.errorMessage}");
+        print("error: ${value.errorMessage.runtimeType}");
+        //return error message if found else it will return null
+      });
+    }
+  }
+
   updatefun() {
     try {
       PackageInfo.fromPlatform().then((PackageInfo packageInfo) async {
@@ -337,6 +385,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   // },
   @override
   Widget build(BuildContext context) {
+    // checkinternet();
     final width = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
@@ -345,251 +394,290 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
         );
         return false;
       },
-      child: Scaffold(
-        backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
-        body: update
-            ? Padding(
-                padding: const EdgeInsets.fromLTRB(0, 200, 0, 0),
-                child: SizedBox(height: 230, child: Update()),
-              )
-            : pages[pageIndex],
-        bottomNavigationBar: Container(
-          margin: EdgeInsets.symmetric(
-              vertical: 0, horizontal: width < 800 ? 8 : width * 0.24),
-          height: 70,
-          // decoration: BoxDecoration(
-          //   boxShadow: const [
-          //     BoxShadow(
-          //         color: Color.fromARGB(255, 248, 243, 243),
-          //         offset: Offset(9, 8),
-          //         blurRadius: 2,
-          //         spreadRadius: 2),
-          //     BoxShadow(
-          //         color: Color.fromARGB(255, 205, 202, 202),
-          //         offset: Offset(5, 15),
-          //         blurRadius: 5,
-          //         spreadRadius: 3)
-          //   ],
-          //   color: const Color.fromARGB(255, 255, 255, 255),
-          //   // color: Theme.of(context).primaryColor,
-          //   borderRadius: BorderRadius.circular(22),
-          // ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: pageIndex == 0
-                      ? FlutterFlowTheme.of(context).alternate
-                      : Colors.white,
-                ),
-                child: IconButton(
-                  enableFeedback: false,
-                  onPressed: () async {
-                    final deepLinkRepo = await DeepLinkService.instance;
-                    referralCode = await deepLinkRepo?.referrerCode.value;
-                    setState(() {
-                      print(referralCode);
-                      print(
-                          "hello there: ${FirebaseAuth.instance.currentUser}");
-                      if (FirebaseAuth.instance.currentUser != null) {
-                        pageIndex = 0;
-                      }
-                      pageIndex = 0;
-                    });
-                  },
-                  icon: Column(
-                    children: [
-                      Image.asset(
-                        "assets/search.png",
+      child: result
+          ? Scaffold(
+              backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+              body: update
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                      child: SizedBox(height: 230, child: Update()),
+                    )
+                  : pages[pageIndex],
+              bottomNavigationBar: Container(
+                margin: EdgeInsets.symmetric(
+                    vertical: 0, horizontal: width < 800 ? 8 : width * 0.24),
+                height: 70,
+                // decoration: BoxDecoration(
+                //   boxShadow: const [
+                //     BoxShadow(
+                //         color: Color.fromARGB(255, 248, 243, 243),
+                //         offset: Offset(9, 8),
+                //         blurRadius: 2,
+                //         spreadRadius: 2),
+                //     BoxShadow(
+                //         color: Color.fromARGB(255, 205, 202, 202),
+                //         offset: Offset(5, 15),
+                //         blurRadius: 5,
+                //         spreadRadius: 3)
+                //   ],
+                //   color: const Color.fromARGB(255, 255, 255, 255),
+                //   // color: Theme.of(context).primaryColor,
+                //   borderRadius: BorderRadius.circular(22),
+                // ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
                         color: pageIndex == 0
-                            ? Colors.white
-                            : const Color(0xfff24086a),
-                        height: 30,
+                            ? FlutterFlowTheme.of(context).alternate
+                            : Colors.white,
                       ),
-                      Text(
-                        "Search",
-                        style: GoogleFonts.poppins(
-                            color: pageIndex == 0
-                                ? Colors.white
-                                : const Color(0xfff24086a),
-                            fontSize: 8),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Stack(children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 6.9, 0, 0),
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: pageIndex == 1
-                          ? FlutterFlowTheme.of(context).alternate
-                          : Colors.white,
+                      child: IconButton(
+                        enableFeedback: false,
+                        onPressed: () async {
+                          final deepLinkRepo = await DeepLinkService.instance;
+                          referralCode = await deepLinkRepo?.referrerCode.value;
+                          setState(() {
+                            print(referralCode);
+                            print(
+                                "hello there: ${FirebaseAuth.instance.currentUser}");
+                            if (FirebaseAuth.instance.currentUser != null) {
+                              pageIndex = 0;
+                            }
+                            pageIndex = 0;
+                          });
+                        },
+                        icon: Column(
+                          children: [
+                            Image.asset(
+                              "assets/search.png",
+                              color: pageIndex == 0
+                                  ? Colors.white
+                                  : const Color(0xfff24086a),
+                              height: 30,
+                            ),
+                            Text(
+                              "Search",
+                              style: GoogleFonts.poppins(
+                                  color: pageIndex == 0
+                                      ? Colors.white
+                                      : const Color(0xfff24086a),
+                                  fontSize: 8),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
-                    child: IconButton(
-                      enableFeedback: false,
-                      onPressed: () {
-                        setState(() {
-                          if (FirebaseAuth.instance.currentUser == null) {
-                            pageIndex = 4;
-                          } else {
-                            pageIndex = 1;
-                          }
-                          totalchatcount = 0;
-                        });
-                      },
-                      icon: Column(
-                        children: [
-                          Image.asset(
-                            "assets/chatpp.png",
+                    Stack(children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 6.9, 0, 0),
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
                             color: pageIndex == 1
-                                ? Colors.white
-                                : const Color(0xfff24086a),
-                            height: 30,
+                                ? FlutterFlowTheme.of(context).alternate
+                                : Colors.white,
                           ),
-                          Text(
-                            "Chat",
-                            style: GoogleFonts.poppins(
-                                color: pageIndex == 1
-                                    ? Colors.white
-                                    : const Color(0xfff24086a),
-                                fontSize: 8),
-                          )
-                        ],
+                          child: IconButton(
+                            enableFeedback: false,
+                            onPressed: () {
+                              setState(() {
+                                if (FirebaseAuth.instance.currentUser == null) {
+                                  pageIndex = 4;
+                                } else {
+                                  pageIndex = 1;
+                                }
+                                totalchatcount = 0;
+                              });
+                            },
+                            icon: Column(
+                              children: [
+                                Image.asset(
+                                  "assets/chatpp.png",
+                                  color: pageIndex == 1
+                                      ? Colors.white
+                                      : const Color(0xfff24086a),
+                                  height: 30,
+                                ),
+                                Text(
+                                  "Chat",
+                                  style: GoogleFonts.poppins(
+                                      color: pageIndex == 1
+                                          ? Colors.white
+                                          : const Color(0xfff24086a),
+                                      fontSize: 8),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      pageIndex != 1
+                          ? totalchatcount == 0
+                              ? SizedBox()
+                              : Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(35, 0, 0, 0),
+                                  child: Align(
+                                      alignment:
+                                          AlignmentDirectional(-10, -0.7),
+                                      child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  0, 0, 0, 0),
+                                          child: Container(
+                                            width: 16,
+                                            height: 16,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .alternate,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            alignment:
+                                                AlignmentDirectional(0, 0),
+                                            child: Align(
+                                              alignment:
+                                                  AlignmentDirectional(0, 0),
+                                              child: Text(
+                                                '$totalchatcount',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                          fontSize: 11,
+                                                        ),
+                                              ),
+                                            ),
+                                          ))),
+                                )
+                          : Container()
+                    ]),
+                    Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: pageIndex == 2
+                            ? FlutterFlowTheme.of(context).alternate
+                            : Colors.white,
+                      ),
+                      child: IconButton(
+                        enableFeedback: false,
+                        onPressed: () {
+                          setState(() {
+                            if (FirebaseAuth.instance.currentUser == null) {
+                              pageIndex = 4;
+                            } else {
+                              pageIndex = 2;
+                            }
+                          });
+                        },
+                        icon: Column(
+                          children: [
+                            Image.asset(
+                              "assets/list.png",
+                              color: pageIndex == 2
+                                  ? Colors.white
+                                  : const Color(0xfff24086a),
+                              height: 30,
+                            ),
+                            Text(
+                              "Add",
+                              style: GoogleFonts.poppins(
+                                  color: pageIndex == 2
+                                      ? Colors.white
+                                      : const Color(0xfff24086a),
+                                  fontSize: 8),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                pageIndex != 1
-                    ? totalchatcount == 0
-                        ? SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.fromLTRB(35, 0, 0, 0),
-                            child: Align(
-                                alignment: AlignmentDirectional(-10, -0.7),
-                                child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 0),
-                                    child: Container(
-                                      width: 16,
-                                      height: 16,
-                                      decoration: BoxDecoration(
-                                        color: FlutterFlowTheme.of(context)
-                                            .alternate,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      alignment: AlignmentDirectional(0, 0),
-                                      child: Align(
-                                        alignment: AlignmentDirectional(0, 0),
-                                        child: Text(
-                                          '$totalchatcount',
-                                          style: FlutterFlowTheme.of(context)
-                                              .bodyText1
-                                              .override(
-                                                fontFamily: 'Poppins',
-                                                color: Color.fromARGB(
-                                                    255, 255, 255, 255),
-                                                fontSize: 11,
-                                              ),
-                                        ),
-                                      ),
-                                    ))),
-                          )
-                    : Container()
-              ]),
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: pageIndex == 2
-                      ? FlutterFlowTheme.of(context).alternate
-                      : Colors.white,
-                ),
-                child: IconButton(
-                  enableFeedback: false,
-                  onPressed: () {
-                    setState(() {
-                      if (FirebaseAuth.instance.currentUser == null) {
-                        pageIndex = 4;
-                      } else {
-                        pageIndex = 2;
-                      }
-                    });
-                  },
-                  icon: Column(
-                    children: [
-                      Image.asset(
-                        "assets/list.png",
-                        color: pageIndex == 2
-                            ? Colors.white
-                            : const Color(0xfff24086a),
-                        height: 30,
+                    Container(
+                      height: 60,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: pageIndex == 3
+                              ? FlutterFlowTheme.of(context).alternate
+                              : Colors.white),
+                      child: IconButton(
+                        enableFeedback: false,
+                        onPressed: () {
+                          setState(() {
+                            if (FirebaseAuth.instance.currentUser == null) {
+                              pageIndex = 4;
+                            } else {
+                              pageIndex = 3;
+                            }
+                          });
+                        },
+                        icon: Column(
+                          children: [
+                            Image.asset(
+                              "assets/me.png",
+                              color: pageIndex == 3
+                                  ? Colors.white
+                                  : const Color(0xfff24086a),
+                              height: 30,
+                            ),
+                            Text(
+                              "Me",
+                              style: GoogleFonts.poppins(
+                                  color: pageIndex == 3
+                                      ? Colors.white
+                                      : const Color(0xfff24086a),
+                                  fontSize: 8),
+                            )
+                          ],
+                        ),
                       ),
-                      Text(
-                        "Add",
-                        style: GoogleFonts.poppins(
-                            color: pageIndex == 2
-                                ? Colors.white
-                                : const Color(0xfff24086a),
-                            fontSize: 8),
-                      )
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Scaffold(
+              backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
+              body: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 200, 0, 0),
+                child: Container(
+                  height: 250,
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  child: AlertDialog(
+                    title: const Text('Please check your internet connection!'),
+                    content: Column(
+                      children: const [
+                        // Text('- update now to enjoy new features'),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          textStyle: Theme.of(context).textTheme.labelLarge,
+                        ),
+                        child: const Text('Retry'),
+                        onPressed: () {
+                          checkinternet();
+                        },
+                      ),
                     ],
                   ),
                 ),
-              ),
-              Container(
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: pageIndex == 3
-                        ? FlutterFlowTheme.of(context).alternate
-                        : Colors.white),
-                child: IconButton(
-                  enableFeedback: false,
-                  onPressed: () {
-                    setState(() {
-                      if (FirebaseAuth.instance.currentUser == null) {
-                        pageIndex = 4;
-                      } else {
-                        pageIndex = 3;
-                      }
-                    });
-                  },
-                  icon: Column(
-                    children: [
-                      Image.asset(
-                        "assets/me.png",
-                        color: pageIndex == 3
-                            ? Colors.white
-                            : const Color(0xfff24086a),
-                        height: 30,
-                      ),
-                      Text(
-                        "Me",
-                        style: GoogleFonts.poppins(
-                            color: pageIndex == 3
-                                ? Colors.white
-                                : const Color(0xfff24086a),
-                            fontSize: 8),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+              )),
     );
   }
 }

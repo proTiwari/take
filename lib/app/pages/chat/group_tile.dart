@@ -34,7 +34,7 @@ class _GroupTileState extends State<GroupTile> {
   void initState() {
     super.initState();
     widget.groupId;
-    getprofile(widget.groupId);
+    // getprofile(widget.groupId);
   }
 
   getprofile(groupId) async {

@@ -22,7 +22,7 @@ class _SearchCityState extends State<SearchCity> {
     if (query.isNotEmpty) {
       List<String> dummyListData = [];
       dummySearchList.forEach((item) {
-        if (item.contains(query)) {
+        if (item.toLowerCase().contains(query.toLowerCase())) {
           dummyListData.add(item);
         }
       });
@@ -43,6 +43,7 @@ class _SearchCityState extends State<SearchCity> {
   void initState() {
     items.addAll(Consts().cityList);
     super.initState();
+    FFAppState().cityname = '';
   }
 
   @override
@@ -139,7 +140,7 @@ class _SearchCityState extends State<SearchCity> {
                       GestureDetector(
                         onTap: () {
                           FFAppState().cityname = "";
-                        widget.changeboolfun();
+                          widget.changeboolfun();
                         },
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(4, 0, 4, 0),

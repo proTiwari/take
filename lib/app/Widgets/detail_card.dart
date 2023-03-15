@@ -245,7 +245,7 @@ class DetailCard extends StatelessWidget {
                           width: 10,
                         ),
                         RichText(
-                          text: detail["foodservice"] == 'true'
+                          text: detail["foodservice"] == 'true' || detail["foodservice"] == 'Yes'
                               ? TextSpan(
                                   style: const TextStyle(
                                     color: Colors.black,

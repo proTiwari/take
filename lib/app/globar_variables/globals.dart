@@ -13,7 +13,7 @@ var recentmessagetemp;
 var logintoken;
 var list;
 var dynamiclink = '';
-var city = 'Allahabad';
+var city = '';
 var secondcall;
 List imageList = [];
 List uploadingimageList = [];

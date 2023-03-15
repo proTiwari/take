@@ -678,9 +678,9 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                   ),
                                                   autofocus: false,
                                                   obscureText: false,
-                                                  keyboardType: TextInputType.number,
+                                                  keyboardType:
+                                                      TextInputType.number,
                                                   decoration: InputDecoration(
-                                                    
                                                     hintText:
                                                         'Area of land (optional)',
                                                     hintStyle: FlutterFlowTheme
@@ -930,9 +930,13 @@ class _ListPropertyPageState extends State<ListPropertyPage>
 
                                   if (FFAppState().lat != 0.0 &&
                                       FFAppState().lon != 0.0) {
-                                    if (FFAppState().cityname == '' || FFAppState().cityname == null) {
+                                        print('FFAppState().cityname');
+                                        print(FFAppState().cityname.runtimeType);
+                                    if (FFAppState().cityname == '' ||
+                                        FFAppState().cityname == null) {
                                       FFAppState().cityname = 'Prayagraj';
                                     }
+                                    print(FFAppState().cityname);
                                     context.pushNamed(
                                       'userdetailpage',
                                       extra: <String, dynamic>{
@@ -944,6 +948,9 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                         ),
                                       },
                                     );
+                                    if (FFAppState().cityname == '') {
+                                      FFAppState().cityname = 'Prayagraj';
+                                    }
                                   } else {
                                     showToast(
                                         context: context,

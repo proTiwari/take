@@ -467,7 +467,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: name,
                         keyboardType: TextInputType.name,
                         onChanged: (value) {
-                          name.text = value;
+                          // name.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none, hintText: "  Name"),
@@ -531,7 +531,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: email,
                         keyboardType: TextInputType.emailAddress,
                         onChanged: (value) {
-                          email.text = value;
+                          // email.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none, hintText: "  Email"),
@@ -569,7 +569,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: phone,
                         keyboardType: TextInputType.phone,
                         onChanged: (value) {
-                          phone.text = value;
+                          // phone.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none, hintText: "  Phone"),
@@ -606,7 +606,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: whatsapp,
                         keyboardType: TextInputType.phone,
                         onChanged: (value) {
-                          whatsapp.text = value;
+                          // whatsapp.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none, hintText: "  Whatsapp"),
@@ -666,7 +666,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               controller: advanvemoney,
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
-                                advanvemoney.text = value;
+                                // advanvemoney.text = value;
                               },
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -725,7 +725,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: amount,
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          amount.text = value;
+                          // amount.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none, hintText: "  Amount"),
@@ -770,7 +770,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     controller: areaofland,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      areaofland.text = value;
+                                      // areaofland.text = value;
                                     },
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
@@ -832,7 +832,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     controller: areaoflandunit,
                                     keyboardType: TextInputType.number,
                                     onChanged: (value) {
-                                      areaoflandunit.text = value;
+                                      // areaoflandunit.text = value;
                                     },
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
@@ -876,7 +876,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: discription,
                         keyboardType: TextInputType.text,
                         onChanged: (value) {
-                          discription.text = value;
+                          // discription.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none,
@@ -936,7 +936,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               enabled: false,
                               controller: foodservice,
                               onChanged: (value) {
-                                foodservice.text = value;
+                                // foodservice.text = value;
                               },
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -979,7 +979,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               enabled: false,
                               controller: numberoffloors,
                               onChanged: (value) {
-                                numberoffloors.text = value;
+                                // numberoffloors.text = value;
                               },
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -1038,7 +1038,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: numberofrooms,
                         keyboardType: TextInputType.phone,
                         onChanged: (value) {
-                          numberofrooms.text = value;
+                          // numberofrooms.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none,
@@ -1099,7 +1099,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               controller: paymentduration,
                               keyboardType: TextInputType.phone,
                               onChanged: (value) {
-                                paymentduration.text = value;
+                                // paymentduration.text = value;
                               },
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -1138,7 +1138,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: pincode,
                         keyboardType: TextInputType.phone,
                         onChanged: (value) {
-                          pincode.text = value;
+                          // pincode.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none, hintText: "  Pincode"),
@@ -1885,6 +1885,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                               whatsapp.text,
                                                         }).whenComplete(() => {
                                                                   // showToast("")
+                                                                  if (listImage
+                                                                      .isEmpty)
+                                                                    {
+                                                                      showToast(
+                                                                          context:
+                                                                              context,
+                                                                          "sucessfully uploaded"),
+                                                                      Navigator.pop(
+                                                                          context)
+                                                                    }
                                                                 });
                                                         print('7');
                                                         print('8');

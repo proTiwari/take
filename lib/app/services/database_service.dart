@@ -8,6 +8,8 @@ import 'package:take/app/globar_variables/globals.dart' as globals;
 import '../pages/chat/chat_page.dart';
 import 'package:http/http.dart' as http;
 
+import '../providers/base_providers.dart';
+
 class DatabaseService extends ChangeNotifier {
   final String? uid;
   var detail;
@@ -49,10 +51,11 @@ class DatabaseService extends ChangeNotifier {
   // creating a group
   Future createGroup(String userName, String id, String groupName,
       BuildContext context, properyId) async {
+    var myname;
+    var profileImage1;
     try {
       print("1${groupid}");
       DocumentReference groupDocumentReference = await groupCollection.add({
-        "groupName": groupName,
         "groupIcon": "",
         "admin": "${id}_$userName",
         "members": [],
@@ -64,21 +67,51 @@ class DatabaseService extends ChangeNotifier {
       // update the members
       print("2${groupid}");
       try {
+        var profileImage2;
+
+        try {
+          await userCollection.doc(detail["uid"]).get().then((value) {
+            profileImage1 = value.get("profileImage");
+          });
+        } catch (e) {
+          print(e.toString());
+        }
+        print("1swgvew");
+        try {
+          await userCollection
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .get()
+              .then((value) {
+            profileImage2 = value.get("profileImage");
+            myname = value.get("name");
+          });
+          print("asa");
+        } catch (e) {
+          print(e.toString());
+        }
+
         await groupDocumentReference.update({
+          "profileImage1": "${profileImage1}(*/*/*)${detail["uid"]}",
+          "profileImage2": "${profileImage2}(*/*/*)$uid",
+          "groupName": detail["ownername"],
           "members": FieldValue.arrayUnion(
-              ["${uid}_$userName", "${detail["uid"]}_userName"]),
+              ["${uid}_$myname", "${detail["uid"]}_${detail["ownername"]}"]),
+          "membersuid": FieldValue.arrayUnion(["$uid", "${detail["uid"]}"]),
           "groupId": groupDocumentReference.id,
         });
+
+        print("wegwe");
         await FirebaseFirestore.instance
             .collection("City")
             .doc(detail['propertyId'])
             .update({
           'groupid': FieldValue.arrayUnion(["${groupDocumentReference.id}"])
         });
+        print("wefwe");
       } catch (e) {
         print(e.toString());
       }
-
+      print("efwefss");
       Map<String, dynamic> chatMessageMap = {
         "message": "Hello, I'm Interested, can we chat?",
         "imageurl": detail['propertyimage'][0],
@@ -87,19 +120,19 @@ class DatabaseService extends ChangeNotifier {
         "time": DateTime.now(),
         "status": false
       };
-
+      print("vsve");
       Map<String, dynamic> payload = {
         "ownerId": detail["uid"],
         "groupName": detail["ownername"],
-        "userName": globals.userdata['name'],
-        "profileImage": detail["profileImage"],
+        "userName": myname,
+        "profileImage": profileImage1,
         "navigator": "",
         "groupId": groupid
       };
-
+      print("weweewe");
       await DatabaseService("sdf")
           .sendMessage(groupDocumentReference.id, chatMessageMap, payload);
-
+      print("wefwee");
       print("3${groupid}");
       groupid = groupDocumentReference.id;
       DocumentReference userDocumentReference = userCollection.doc(uid);
@@ -107,17 +140,20 @@ class DatabaseService extends ChangeNotifier {
         "groups": FieldValue.arrayUnion(
             ["${groupDocumentReference.id}_${detail["ownername"]}"])
       });
+      print("efwev");
       try {
         DocumentReference ownerDocumentReference =
             userCollection.doc(detail["uid"]);
+        print("wgijeolmw");
         await ownerDocumentReference.update({
-          "groups": FieldValue.arrayUnion(
-              ["${groupDocumentReference.id}_${globals.userdata['name']}"])
+          "groups":
+              FieldValue.arrayUnion(["${groupDocumentReference.id}_$myname"])
         });
+        print("kllelwk");
       } catch (e) {
         print("4$e");
       }
-
+      print("ojioi");
       print("6${groupid}");
       Navigator.pushReplacement(
         context,
@@ -125,8 +161,8 @@ class DatabaseService extends ChangeNotifier {
           builder: (context) => ChatPage(
             groupId: groupid,
             groupName: "${detail["ownername"]}",
-            userName: "${globals.userdata['name']}",
-            profileImage: detail["profileImage"],
+            userName: "${myname}",
+            profileImage: profileImage1,
             owneruid: detail["uid"],
           ),
         ),
@@ -222,7 +258,7 @@ class DatabaseService extends ChangeNotifier {
     });
     //send notification
     print('send notification');
-
+    print("newjfnk");
     await groupCollection.doc(groupId).get().then((value) async {
       await FirebaseFirestore.instance
           .collection("Users")
@@ -232,20 +268,35 @@ class DatabaseService extends ChangeNotifier {
         profile = value.get("profileImage");
         username = value.get('name');
       });
-      var user1 = value.get("members")[0].toString().split("_")[0];
-      var user2 = value.get("members")[1].toString().split("_")[0];
+      print("wfnwjke");
+      var user1;
+      var user2;
+      try {
+        print(value.get("members"));
+        user1 = value.get("members")[0].toString().split("_")[0];
+        user2 = value.get("members")[1].toString().split("_")[0];
+      } catch (e) {
+        print(e.toString());
+      }
+
+      print("jnmnm");
       if (user1 != FirebaseAuth.instance.currentUser!.uid) {
         await FirebaseFirestore.instance
             .collection("Users")
             .doc(value.get("members")[0].toString().split("_")[0])
             .get()
             .then((value) {
+          print("nmmnnmnm");
           devicetoken = value.get("devicetoken");
+          print("jnfkejnkwe");
           username = value.get('name');
+          print("wnkjfwe");
           sendchatnotification(devicetoken, username, message, payload);
+          print("kiewfkw");
         });
+        print("wjefjwjhbfw");
       }
-
+      print("wjnfwefw");
       print("user1 ${user1}");
       if (user2 != FirebaseAuth.instance.currentUser!.uid) {
         await FirebaseFirestore.instance
@@ -253,17 +304,23 @@ class DatabaseService extends ChangeNotifier {
             .doc(user2)
             .get()
             .then((value) {
+          print("wewe");
           devicetoken = value.get("devicetoken");
+          print("jknkewjn");
           username = value.get('name');
+          print("trtrt");
           sendchatnotification(devicetoken, username, message, payload);
+          print("jnjewj");
         });
       }
 
       print('user2 $user2');
+      print("uhkuherj");
     });
     print("user3");
 
     print("sfoeiendendendend");
+    print("yweuwyeg");
   }
 
   sendchatnotification(token, username, message, payload) async {
