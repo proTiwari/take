@@ -61,6 +61,12 @@ class FFAppState extends ChangeNotifier {
     _numberofrooms = _value;
   }
 
+  String _preference = 'ALL';
+  String get preference => _preference;
+  set preference(String _value) {
+    _preference = _value;
+  }
+
   String _numberoffloors = '1';
   String get numberoffloors => _numberoffloors;
   set numberoffloors(String _value) {

@@ -52,6 +52,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController pincode = TextEditingController();
   TextEditingController propertyname = TextEditingController();
   TextEditingController sharing = TextEditingController();
+  TextEditingController preference = TextEditingController();
   TextEditingController floor = TextEditingController();
   TextEditingController streetaddress = TextEditingController();
   TextEditingController servicetype = TextEditingController();
@@ -82,6 +83,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       streetaddress.text = widget.valuedata['streetaddress'];
       propertyname.text = widget.valuedata['propertyname'];
       sharing.text = widget.valuedata['sharing'];
+
       pincode.text = widget.valuedata['pincode'];
       paymentduration.text = widget.valuedata['paymentduration'];
       numberoffloors.text = widget.valuedata['numberoffloors'];
@@ -97,6 +99,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       globals.initlistimages = widget.valuedata['propertyimage'];
 
       floor.text = widget.valuedata['numberoffloors'];
+      preference.text = widget.valuedata['preference'];
     } catch (e) {
       print("ttttttttttttt");
       print(e.toString());
@@ -104,6 +107,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var imagrprovi = Provider.of<ListProvider>(context, listen: false);
       imagrprovi.changeimagelist();
+      
     });
   }
 
@@ -355,6 +359,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
     "Hath"
   ];
 
+  var preferencedropdown = [
+    "only girls",
+    "only boys",
+    "family",
+    "couples",
+    "ALL"
+  ];
+
   var amountList = [
     '0-2,000',
     '2,000-5,000',
@@ -413,6 +425,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     streetaddress;
     propertyname;
     sharing;
+    preference;
     pincode;
     paymentduration;
     numberoffloors;
@@ -1038,7 +1051,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         controller: numberofrooms,
                         keyboardType: TextInputType.phone,
                         onChanged: (value) {
-                          // numberofrooms.text = value;
+                          numberofrooms.text = value;
                         },
                         decoration: const InputDecoration(
                             border: InputBorder.none,
@@ -1099,7 +1112,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               controller: paymentduration,
                               keyboardType: TextInputType.phone,
                               onChanged: (value) {
-                                // paymentduration.text = value;
+                                paymentduration.text = value;
                               },
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
@@ -1299,6 +1312,66 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               decoration: const InputDecoration(
                                   border: InputBorder.none,
                                   hintText: "  Sharing"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : const SizedBox(),
+
+              propertyon == "Rent property"
+                  ? SizedBox(
+                      height: 20,
+                    )
+                  : SizedBox(),
+              propertyon == "Rent property"
+                  ? Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: Colors.grey),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 140,
+                            child: DropdownButton(
+                              hint: const Text("  Preference"),
+                              icon: const Padding(
+                                padding: EdgeInsets.fromLTRB(0, 0, 8, 0),
+                                child: Icon(Icons.keyboard_arrow_down),
+                              ),
+                              isExpanded: true,
+                              underline: Container(),
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.black),
+                              dropdownColor: Colors.white,
+                              iconEnabledColor: Colors.black,
+                              items: preferencedropdown.map((String items) {
+                                return DropdownMenuItem(
+                                  value: items,
+                                  child: Text(items),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  preference.text = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            "|",
+                            style: TextStyle(fontSize: 30),
+                          ),
+                          Expanded(
+                            child: TextField(
+                              enabled: false,
+                              controller: preference,
+                              keyboardType: TextInputType.phone,
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "  Preference"),
                             ),
                           ),
                         ],
@@ -1854,6 +1927,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                                     .valuedata[
                                                                 'propertyId'])
                                                             .update({
+                                                          "preference":
+                                                              preference.text,
                                                           "advancemoney":
                                                               advanvemoney.text,
                                                           "amount": amount.text,

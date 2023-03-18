@@ -1,5 +1,4 @@
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
-
 import '../../app_state.dart';
 import '../flutter_flow/flutter_flow_animations.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -347,7 +346,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                             BoxDecoration(
                                                           color: FlutterFlowTheme
                                                                   .of(context)
-                                                              .secondaryBackground,
+                                                              .greenColor,
                                                           boxShadow: [
                                                             BoxShadow(
                                                               blurRadius: 4,
@@ -473,7 +472,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                                                   BoxDecoration(
                                                                 color: FlutterFlowTheme.of(
                                                                         context)
-                                                                    .secondaryBackground,
+                                                                    .greenColor,
                                                                 boxShadow: [
                                                                   BoxShadow(
                                                                     blurRadius:
@@ -610,7 +609,7 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                   0, 10, 0, 0),
                               child: Container(
                                 width: MediaQuery.of(context).size.width * 0.9,
-                                height: FFAppState().sellerform ? 360.0 : 450.0,
+                                height: FFAppState().sellerform ? 360.0 : 540.0,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
@@ -917,6 +916,25 @@ class _ListPropertyPageState extends State<ListPropertyPage>
                                           ),
                                         ),
                                       ),
+                                    if (!FFAppState().sellerform)
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            0, 10, 0, 10),
+                                        child: Container(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.86,
+                                          height: 70,
+                                          child: custom_widgets.Preferance(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.86,
+                                            height: 50,
+                                          ),
+                                        ),
+                                      ),
                                   ],
                                 ),
                               ),
@@ -930,8 +948,8 @@ class _ListPropertyPageState extends State<ListPropertyPage>
 
                                   if (FFAppState().lat != 0.0 &&
                                       FFAppState().lon != 0.0) {
-                                        print('FFAppState().cityname');
-                                        print(FFAppState().cityname.runtimeType);
+                                    print('FFAppState().cityname');
+                                    print(FFAppState().cityname.runtimeType);
                                     if (FFAppState().cityname == '' ||
                                         FFAppState().cityname == null) {
                                       FFAppState().cityname = 'Prayagraj';

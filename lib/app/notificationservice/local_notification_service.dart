@@ -9,7 +9,7 @@ class LocalNotificationService {
     // initializationSettings  for Android
     const InitializationSettings initializationSettings =
         InitializationSettings(
-      android: AndroidInitializationSettings("assets/white_back_black_front.png"),
+      android: AndroidInitializationSettings("assets/rfr14.png"),
     );
 
     _notificationsPlugin.initialize(

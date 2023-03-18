@@ -23,6 +23,7 @@ import 'package:take/app/firebase_functions/firebase_fun.dart';
 import 'app/models/user_model.dart';
 import 'app/notificationservice/local_notification_service.dart';
 import 'app/pages/app_state.dart';
+import 'app/pages/chat/chat_page.dart';
 import 'app/pages/list_property/flutter_flow/flutter_flow_theme.dart';
 import 'app/pages/list_property/flutter_flow/internationalization.dart';
 import 'app/pages/nav/nav.dart';
@@ -55,9 +56,11 @@ void main() async {
     print("onMessageOpenedApp: $message");
   });
 
-  FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
-    print("onBackgroundMessage: $message");
-  });
+  
+
+  // FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async {
+  //   print("onBackgroundMessage: $message");
+  // });
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -104,10 +107,10 @@ void main() async {
     }
   });
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: Color(0xFFFFFFFF),
-    systemNavigationBarIconBrightness: Brightness.dark,
-  ));
+  // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+  //   systemNavigationBarColor: Color(0xFFFFFFFF),
+  //   systemNavigationBarIconBrightness: Brightness.dark,
+  // ));
 
   runApp(const riverpod.ProviderScope(child: MyApp()));
 
@@ -139,6 +142,33 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _appStateNotifier = AppStateNotifier();
     _router = createRouter(_appStateNotifier);
+    // FirebaseMessaging.instance.getInitialMessage().then(
+    //   (message) {
+    //     try {
+    //       print("FirebaseMessaging.instance.getInitialMessage");
+    //       if (message != null) {
+    //         print("New Notification");
+    //         if (message.data['navigator'] == '') {
+    //           Navigator.push(
+    //             context,
+    //             MaterialPageRoute(
+    //               builder: (context) => ChatPage(
+    //                 groupId: message.data['groupId'],
+    //                 groupName: message.data['groupName'],
+    //                 userName: message.data['userName'],
+    //                 profileImage: message.data['profileImage'],
+    //                 owneruid: message.data['ownerId'],
+    //               ),
+    //             ),
+    //           );
+              
+    //         }
+    //       }
+    //     } catch (e) {
+    //       print("messaging error: ${e.toString()}");
+    //     }
+    //   },
+    // );
   }
 
   FirebaseAuth auth = FirebaseAuth.instance;

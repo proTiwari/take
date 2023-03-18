@@ -91,6 +91,7 @@ class DatabaseService extends ChangeNotifier {
         }
 
         await groupDocumentReference.update({
+          "count": 0,
           "profileImage1": "${profileImage1}(*/*/*)${detail["uid"]}",
           "profileImage2": "${profileImage2}(*/*/*)$uid",
           "groupName": detail["ownername"],
@@ -289,7 +290,6 @@ class DatabaseService extends ChangeNotifier {
           print("nmmnnmnm");
           devicetoken = value.get("devicetoken");
           print("jnfkejnkwe");
-          username = value.get('name');
           print("wnkjfwe");
           sendchatnotification(devicetoken, username, message, payload);
           print("kiewfkw");
@@ -307,7 +307,6 @@ class DatabaseService extends ChangeNotifier {
           print("wewe");
           devicetoken = value.get("devicetoken");
           print("jknkewjn");
-          username = value.get('name');
           print("trtrt");
           sendchatnotification(devicetoken, username, message, payload);
           print("jnjewj");

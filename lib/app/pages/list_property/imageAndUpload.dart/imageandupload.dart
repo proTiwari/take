@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:take/app/Widgets/bottom_nav_bar.dart';
 
 import '../../app_state.dart';
@@ -312,100 +311,136 @@ class _UploadPropertyState extends State<UploadProperty> {
                         child: InkWell(
                           onTap: () async {
                             try {
-                              if(agreement == true){
+                              if (agreement == true) {
                                 if (imagelist.isNotEmpty) {
-                                setState(() {
-                                  loading = true;
-                                });
-                                var propertyid = generateRandomString(24);
-                                setState(() {
-                                  _progress = 0;
-                                });
-
-                                await uploadImage();
-
-                                if (verify == true) {
-                                  final cityCreateData = createCityRecordData(
-                                    advancemoney:
-                                        FFAppState().advanceMoney.toString(),
-                                    amount: FFAppState().sellerform
-                                        ? FFAppState().selleramount
-                                        : FFAppState().amountrange,
-                                    areaofland: FFAppState().areaofland,
-                                    city: FFAppState().cityname,
-                                    description: FFAppState().description,
-                                    email: FFAppState().email,
-                                    foodservice:
-                                        FFAppState().foodService.toString(),
-                                    mobilenumber: FFAppState().phone,
-                                    numberoffloors: FFAppState().numberoffloors,
-                                    numberofrooms: FFAppState().numberofrooms,
-                                    pincode: FFAppState().pincode,
-                                    propertyname: FFAppState().propertyname,
-                                    servicetype: FFAppState().serviceType,
-                                    sharing: FFAppState().sharingcount,
-                                    state: '',
-                                    streetaddress: FFAppState().streetaddress,
-                                    wantto: FFAppState().sellerform
-                                        ? 'Sell property'
-                                        : 'Rent property',
-                                    ownername: FFAppState().name,
-                                    paymentduration:
-                                        FFAppState().payingduration,
-                                    profileImage: '',
-                                    propertyId: propertyid,
-                                    whatsappnumber: FFAppState().phone,
-                                    uid: FirebaseAuth.instance.currentUser!.uid,
-                                    lat: FFAppState().lat,
-                                    lon: FFAppState().lon,
-                                    areaoflandunit: FFAppState().areaoflandunit,
-                                  );
-
-                                  await CityRecord.collection
-                                      .doc(propertyid)
-                                      .set(cityCreateData)
-                                      .onError((error, stackTrace) {
-                                    loading = false;
-                                    print(error);
-                                    print(stackTrace);
-                                    showToast(error.toString(),
-                                        context: context);
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  var propertyid = generateRandomString(24);
+                                  setState(() {
+                                    _progress = 0;
                                   });
 
-                                  try {
-                                    await FirebaseFirestore.instance
-                                        .collection("State")
-                                        .doc("City")
-                                        .update({
-                                      "city": FieldValue.arrayUnion(
-                                          [FFAppState().cityname])
-                                    });
-                                  } catch (e) {
-                                    print("gsdsdds${e}");
-                                    await FirebaseFirestore.instance
-                                        .collection("State")
-                                        .doc("City")
-                                        .set({
-                                      "city": FieldValue.arrayUnion(
-                                          [FFAppState().cityname])
-                                    });
-                                  }
+                                  await uploadImage();
 
-                                  await FirebaseFirestore.instance
-                                      .collection("City")
-                                      .doc(propertyid)
-                                      .update({
-                                    "propertyimage": downloadUrl,
-                                    "date": DateTime.now()
-                                  }).whenComplete(() async {
-                                    setState(() {
+                                  if (verify == true) {
+                                    final cityCreateData = createCityRecordData(
+                                      advancemoney:
+                                          FFAppState().advanceMoney.toString(),
+                                      amount: FFAppState().sellerform
+                                          ? FFAppState().selleramount
+                                          : FFAppState().amountrange,
+                                      areaofland: FFAppState().areaofland,
+                                      city: FFAppState().cityname,
+                                      description: FFAppState().description,
+                                      email: FFAppState().email,
+                                      foodservice:
+                                          FFAppState().foodService.toString(),
+                                      mobilenumber: FFAppState().phone,
+                                      numberoffloors:
+                                          FFAppState().numberoffloors,
+                                      numberofrooms: FFAppState().numberofrooms,
+                                      pincode: FFAppState().pincode,
+                                      propertyname: FFAppState().propertyname,
+                                      servicetype: FFAppState().serviceType,
+                                      sharing: FFAppState().sharingcount,
+                                      state: '',
+                                      streetaddress: FFAppState().streetaddress,
+                                      wantto: FFAppState().sellerform
+                                          ? 'Sell property'
+                                          : 'Rent property',
+                                      ownername: FFAppState().name,
+                                      paymentduration:
+                                          FFAppState().payingduration,
+                                      profileImage: '',
+                                      propertyId: propertyid,
+                                      whatsappnumber: FFAppState().phone,
+                                      uid: FirebaseAuth
+                                          .instance.currentUser!.uid,
+                                      lat: FFAppState().lat,
+                                      lon: FFAppState().lon,
+                                      areaoflandunit:
+                                          FFAppState().areaoflandunit,
+                                    );
+
+                                    await CityRecord.collection
+                                        .doc(propertyid)
+                                        .set(cityCreateData)
+                                        .onError((error, stackTrace) {
                                       loading = false;
-                                      showToast("Successfully uploaded",
+                                      print(error);
+                                      print(stackTrace);
+                                      showToast(error.toString(),
                                           context: context);
                                     });
-                                    // context.pushNamed(
-                                    //   '_initialize',
-                                    // );
+
+                                    try {
+                                      await FirebaseFirestore.instance
+                                          .collection("State")
+                                          .doc("City")
+                                          .update({
+                                        "city": FieldValue.arrayUnion(
+                                            [FFAppState().cityname])
+                                      });
+                                    } catch (e) {
+                                      print("gsdsdds${e}");
+                                      await FirebaseFirestore.instance
+                                          .collection("State")
+                                          .doc("City")
+                                          .set({
+                                        "city": FieldValue.arrayUnion(
+                                            [FFAppState().cityname])
+                                      });
+                                    }
+
+                                    await FirebaseFirestore.instance
+                                        .collection("City")
+                                        .doc(propertyid)
+                                        .update({
+                                      "propertyimage": downloadUrl,
+                                      "preference": FFAppState().preference,
+                                      "date": DateTime.now()
+                                    }).whenComplete(() async {
+                                      setState(() {
+                                        loading = false;
+                                        showToast("Successfully uploaded",
+                                            context: context);
+                                      });
+                                      // context.pushNamed(
+                                      //   '_initialize',
+                                      // );
+                                      context.pushNamed(
+                                        'customnav',
+                                        queryParams: {
+                                          'city': serializeParam(
+                                            '',
+                                            ParamType.String,
+                                          ),
+                                          'secondcall': serializeParam(
+                                            'Prayagraj',
+                                            ParamType.String,
+                                          ),
+                                          'profile': serializeParam(
+                                            'profile',
+                                            ParamType.String,
+                                          )
+                                        }.withoutNulls,
+                                        extra: <String, dynamic>{
+                                          kTransitionInfoKey:
+                                              const TransitionInfo(
+                                            hasTransition: true,
+                                            transitionType:
+                                                PageTransitionType.rightToLeft,
+                                            duration:
+                                                Duration(milliseconds: 600),
+                                          ),
+                                        },
+                                      );
+                                    });
+                                  } else {
+                                    showToast(
+                                        context: context,
+                                        "something went wrong");
                                     context.pushNamed(
                                       'customnav',
                                       queryParams: {
@@ -432,45 +467,16 @@ class _UploadPropertyState extends State<UploadProperty> {
                                         ),
                                       },
                                     );
-                                  });
+                                  }
                                 } else {
-                                  showToast(
-                                      context: context, "something went wrong");
-                                  context.pushNamed(
-                                    'customnav',
-                                    queryParams: {
-                                      'city': serializeParam(
-                                        '',
-                                        ParamType.String,
-                                      ),
-                                      'secondcall': serializeParam(
-                                        'Prayagraj',
-                                        ParamType.String,
-                                      ),
-                                      'profile': serializeParam(
-                                        'profile',
-                                        ParamType.String,
-                                      )
-                                    }.withoutNulls,
-                                    extra: <String, dynamic>{
-                                      kTransitionInfoKey: const TransitionInfo(
-                                        hasTransition: true,
-                                        transitionType:
-                                            PageTransitionType.rightToLeft,
-                                        duration: Duration(milliseconds: 600),
-                                      ),
-                                    },
-                                  );
+                                  showToast("Atleast one image is necessary",
+                                      context: context);
                                 }
                               } else {
-                                showToast("Atleast one image is necessary",
+                                showToast(
+                                    "Please agree to the terms and conditions.",
                                     context: context);
                               }
-                              }else {
-                                showToast("Please agree to the terms and conditions.",
-                                    context: context);
-                              }
-                              
                             } catch (e) {
                               print(e.toString());
                             }

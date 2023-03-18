@@ -31,21 +31,25 @@ class _CardsWidgetState extends State<CardsWidget> {
   String? referLink = '';
 
   void deeplink() async {
-    final deepLinkRepo = await DeepLinkService.instance;
-    var referralCode = await deepLinkRepo?.referrerCode.value;
-    print(
-        "sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${referralCode}");
-    var id = widget.property['propertyId'];
+    try {
+      final deepLinkRepo = await DeepLinkService.instance;
+      var referralCode = await deepLinkRepo?.referrerCode.value;
+      print(
+          "sddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd ${referralCode}");
+      var id = widget.property['propertyId'];
 
-    final referCode =
-        await CodeGenerator().generateCode('refer', id.toString());
+      final referCode =
+          await CodeGenerator().generateCode('refer', id.toString());
 
-    referLink = await DeepLinkService.instance
-        ?.createReferLink(referCode, widget.property);
+      referLink = await DeepLinkService.instance
+          ?.createReferLink(referCode, widget.property);
 
-    setState(() {
-      referLink;
-    });
+      setState(() {
+        referLink;
+      });
+    } catch (e) {
+      print("$e");
+    }
   }
 
   var firstpropertyimage;

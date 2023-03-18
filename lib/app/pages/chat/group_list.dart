@@ -215,32 +215,6 @@ class _GroupListPageState extends State<GroupListPage> {
     }
   }
 
-  countfun(groupId) {
-    try {
-      FirebaseFirestore.instance
-          .collection("groups")
-          .doc(groupId)
-          .collection("messages")
-          .get()
-          .then((value) {
-        for (var i in value.docs) {
-          if (i['sender'] != FirebaseAuth.instance.currentUser!.uid) {
-            print("yyyyyyyyy: ${i['status']}");
-            if (i['status'] != true) {
-              setState(() {
-                count += 1;
-              });
-            }
-          }
-        }
-        return count;
-      });
-    } catch (e) {
-      return 0;
-      print("ggggggggg ${e.toString()}");
-    }
-  }
-
   groupList() {
     //FirebaseFirestore.instance.collection("Users").doc(FirebaseAuth.instance.currentUser!.uid).snapshots()
     try {
@@ -260,9 +234,13 @@ class _GroupListPageState extends State<GroupListPage> {
 
             // var dat = snapshot.data.documents.map((e) => Customers_items.fromJson(e.data)).toList();
             try {
+              int reverseIndex;
               // print("sdfsdfsddewreww${snapshot.data["groups"]}");
               // make some checks
               print("snapshot: ${snapshot.hasData}");
+              if (snapshot.data.docs.length == 0) {
+                return noGroupWidget();
+              }
 
               if (snapshot.hasData) {
                 try {
@@ -270,93 +248,57 @@ class _GroupListPageState extends State<GroupListPage> {
                   return ListView.builder(
                     itemCount: snapshot.data.docs.length,
                     itemBuilder: (context, index) {
+                      reverseIndex = snapshot.data.docs.length - index - 1;
                       print("fowekfw");
                       var recentmessage =
-                          snapshot.data.docs[index]["recentMessage"];
+                          snapshot.data.docs[reverseIndex]["recentMessage"];
                       print("fowekfw");
-                      var recentmessagesendby =
-                          snapshot.data.docs[index]["recentMessageSender"];
+                      var recentmessagesendby = snapshot.data.docs[reverseIndex]
+                          ["recentMessageSender"];
                       print("fowekfw");
                       var owneruid;
                       print("fowekfw");
 
                       var profileimage =
                           'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
-                      if (snapshot.data.docs[index]['profileImage1']
+                      if (snapshot.data.docs[reverseIndex]['profileImage1']
                               .toString()
                               .split("(*/*/*)")[1] ==
                           FirebaseAuth.instance.currentUser!.uid) {
-                            profileimage = snapshot
-                            .data.docs[index]['profileImage2']
+                        profileimage = snapshot
+                            .data.docs[reverseIndex]['profileImage2']
                             .toString()
                             .split("(*/*/*)")[0];
                       } else {
                         profileimage = snapshot
-                            .data.docs[index]['profileImage1']
+                            .data.docs[reverseIndex]['profileImage1']
                             .toString()
                             .split("(*/*/*)")[0];
                       }
                       var userName = FirebaseAuth.instance.currentUser!.uid;
-                      var groupName = snapshot.data.docs[index]['groupName'];
-                      var groupId = snapshot.data.docs[index]['groupId'];
-                      for (var i in snapshot.data.docs[index]['members']) {
+                      var groupName =
+                          snapshot.data.docs[reverseIndex]['groupName'];
+                      var groupId = snapshot.data.docs[reverseIndex]['groupId'];
+                      for (var i in snapshot.data.docs[reverseIndex]
+                          ['members']) {
                         if (i != FirebaseAuth.instance.currentUser!.uid) {
                           owneruid = i;
                         }
                       }
                       ;
-                      // FirebaseFirestore.instance
-                      //     .collection("Users")
-                      //     .doc(owneruid.toString().split('_')[0])
-                      //     .get()
-                      //     .then((value) {
-                      //   setState(() {
-                      //     try {
-                      //       print(owneruid.toString().split('_')[0]);
-                      //       profileimage = value.get("profileImage");
-                      //       print(
-                      //           "fwjeijwoeowjofjwoefjoiweofjw: ${profileimage}");
-                      //     } catch (e) {
-                      //       print("iweofjwioe$e");
-                      //       profileimage =
-                      //           "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
-                      //     }
-                      //   });
-                      // });
-                      // try {
-                      //   print(
-                      //       "wieowiewrwejw: ${snapshot.data.docs[index].collection('messages')}");
-                      // } catch (e) {
-                      //   print(e.toString());
-                      // }
                       var countnumber = 0;
-                      // countfun(groupId);
-                      print("countnumber: ${countnumber}");
-                      // if (snapshot.data.docs[index]['messages']['sender'] !=
-                      //     FirebaseAuth.instance.currentUser!.uid) {
-                      //   print(
-                      //       "yyyyyyyyy: ${snapshot.data.docs[index]['messages']['status']}");
-                      //   if (snapshot.data.docs[index]['status'] != true) {
-                      //     setState(() {
-                      //       count += 1;
-                      //     });
-                      //   }
-                      // }
-                      // print("7777777777777: ${snapshot.data['groups'][index]}");
-                      // return Text(getId(snapshot.data['groups'][reverseIndex]));}
-                      // var profileimage =
-                      //     getprofile(snapshot.data['groups'][reverseIndex]);
+                      try {
+                        countnumber = snapshot.data.docs[reverseIndex]['count'];
+                      } catch (e) {
+                        countnumber = 0;
+                        print("count feild does not exist: ${e.toString()}");
+                      }
 
                       return Container(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                         margin: EdgeInsets.symmetric(
                             vertical: 0,
                             horizontal: width < 800 ? 10 : width * 0.24),
-                        // child: GroupTile(
-                        //     profileimage: 'profileimage',
-                        //     groupId: getId(snapshot.data['groups'][index]),
-                        //     groupName: getName(snapshot.data['groups'][index]),
-                        //     userName: snapshot.data['id']),
                         child: GestureDetector(
                           onTap: () async {
                             try {
@@ -375,7 +317,7 @@ class _GroupListPageState extends State<GroupListPage> {
                                 );
 
                                 setState(() {
-                                  count = bcount;
+                                  countnumber = bcount;
                                 });
                               });
                             } catch (e) {
@@ -456,50 +398,34 @@ class _GroupListPageState extends State<GroupListPage> {
                                         ],
                                       ),
                                     ),
-                                    count != 0
+                                    countnumber != 0
                                         ? Expanded(
-                                            flex: 1,
-                                            child: Align(
-                                              alignment:
-                                                  AlignmentDirectional(0, 0),
-                                              child: Padding(
-                                                padding: EdgeInsetsDirectional
-                                                    .fromSTEB(0, 0, 0, 0),
-                                                child: Container(
-                                                  width: 50,
-                                                  height: 50,
-                                                  decoration: BoxDecoration(
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .primaryBtnText,
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          0, 0),
-                                                  child: Align(
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                            0, 0),
-                                                    child: Text(
-                                                      '$countnumber',
-                                                      style: FlutterFlowTheme
-                                                              .of(context)
-                                                          .bodyText1
-                                                          .override(
-                                                            fontFamily:
-                                                                'Poppins',
-                                                            color: Colors.green,
-                                                            fontSize: 14,
-                                                          ),
-                                                    ),
-                                                  ),
-                                                ),
+                                            child: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryBtnText,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: Colors.green,
                                               ),
-                                            ))
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "$countnumber",
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyText1
+                                                        .override(
+                                                          fontFamily: 'Poppins',
+                                                          color: Colors.green,
+                                                          fontSize: 12,
+                                                        ),
+                                              ),
+                                            ),
+                                          ))
                                         : Container()
                                   ],
                                 ),
@@ -556,7 +482,7 @@ class _GroupListPageState extends State<GroupListPage> {
           ),
           Center(
             child: Text(
-              "There is no chat with property owners",
+              "There is no chat with the property owner!",
               textAlign: TextAlign.center,
             ),
           )

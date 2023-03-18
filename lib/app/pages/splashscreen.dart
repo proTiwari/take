@@ -27,36 +27,11 @@ class _SplashScreenState extends State<SplashScreen> {
     // 1. This method call when app in terminated state and you get a notification
     // when you click on notification app open from terminated state and you can get notification data in this method
 
-    FirebaseMessaging.instance.getInitialMessage().then(
-      (message) {
-        try {
-          print("FirebaseMessaging.instance.getInitialMessage");
-          if (message != null) {
-            print("New Notification");
-            if (message.data['navigator'] == '') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ChatPage(
-                    groupId: message.data['groupId'],
-                    groupName: message.data['groupName'],
-                    userName: message.data['userName'],
-                    profileImage: message.data['profileImage'],
-                    owneruid: message.data['ownerId'],
-                  ),
-                ),
-              );
-            }
-          }
-        } catch (e) {
-          print("messaging error: ${e.toString()}");
-        }
-      },
-    );
-
+   
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
       (RemoteMessage message) {
+        print("huihiuhiu");
         // try {
         //   print("FirebaseMessaging.onMessage.listen${message.data}");
         //   if (message.notification != null) {
@@ -114,11 +89,10 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
     );
-    
+
     Timer(
         Duration(seconds: 2),
         () => {
-
               context.pushNamed(
                 'customnav',
                 queryParams: {

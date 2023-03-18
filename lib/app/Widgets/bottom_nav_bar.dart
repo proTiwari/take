@@ -77,6 +77,35 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   void initState() {
     super.initState();
     // updatefun();
+     FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        try {
+          print("FirebaseMessaging.instance.getInitialMessage");
+          if (message != null) {
+            print("New Notification");
+            if (message.data['navigator'] == '') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(
+                    groupId: message.data['groupId'],
+                    groupName: message.data['groupName'],
+                    userName: message.data['userName'],
+                    profileImage: message.data['profileImage'],
+                    owneruid: message.data['ownerId'],
+                  ),
+                ),
+              );
+            }
+          }
+        } catch (e) {
+          print("messaging error: ${e.toString()}");
+        }
+      },
+    );
+
+    getgroups();
+    countfeature();
     checkVersion();
     checkinternet();
     getuser();
@@ -99,6 +128,68 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
       setState(() {
         pageIndex = 3;
       });
+    }
+  }
+
+  var groups = [];
+  getgroups() async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      groups = value.data()!['groups'];
+    });
+  }
+
+  countfeature() async {
+    print("groups: ${groups}");
+    try {
+      List sd = [];
+      for (var i in groups) {
+        try {
+          i = i.toString().split("_")[0];
+          print("groups id: ${i}");
+          var snapshot = await FirebaseFirestore.instance
+              .collection("groups")
+              .doc(i)
+              .collection("messages")
+              .snapshots();
+          snapshot.forEach((element) async {
+            try {
+              print("iwjeofiwj: 1");
+              print("elementsnn: ${element.docs}");
+              count = 0;
+              for (var j in element.docs) {
+                try {
+                  if (j['sender'] != FirebaseAuth.instance.currentUser!.uid) {
+                    print("yyyyyyyyy: ${j['status']}");
+                    if (j['status'] != true) {
+                      setState(() {
+                        count += 1;
+                      });
+                    }
+                  }
+                } catch (e) {
+                  print("wjoefjw: $e");
+                }
+              }
+              sd.add(count);
+              print("yusyuwyue: ${sd}");
+              await FirebaseFirestore.instance
+                  .collection("groups")
+                  .doc(i)
+                  .update({"count": count});
+            } catch (e) {
+              print("iwjef: $e");
+            }
+          });
+        } catch (e) {
+          print('ijfow: $e');
+        }
+      }
+    } catch (e) {
+      print("jiuhh: ${e.toString()}");
     }
   }
 
@@ -385,6 +476,7 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   // },
   @override
   Widget build(BuildContext context) {
+    // countfeature();
     // checkinternet();
     final width = MediaQuery.of(context).size.width;
     return WillPopScope(
@@ -439,6 +531,8 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                       child: IconButton(
                         enableFeedback: false,
                         onPressed: () async {
+                          getgroups();
+                          countfeature();
                           final deepLinkRepo = await DeepLinkService.instance;
                           referralCode = await deepLinkRepo?.referrerCode.value;
                           setState(() {
@@ -487,6 +581,8 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
                           child: IconButton(
                             enableFeedback: false,
                             onPressed: () {
+                              getgroups();
+                              countfeature();
                               setState(() {
                                 if (FirebaseAuth.instance.currentUser == null) {
                                   pageIndex = 4;

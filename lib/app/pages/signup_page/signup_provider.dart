@@ -163,6 +163,7 @@ class SignupProvider extends BaseProvider implements LoaderState {
           "email": email,
           "phone": phone,
           "groups": [],
+          "address": '',
           'devicetoken': globals.devicetoken,
           "id": uid
         });
@@ -176,8 +177,7 @@ class SignupProvider extends BaseProvider implements LoaderState {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) =>
-                    SplashScreen()),
+                builder: (BuildContext context) => SplashScreen()),
             ModalRoute.withName('/'));
       } else {
         print("Error");

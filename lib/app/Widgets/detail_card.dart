@@ -8,8 +8,15 @@ class DetailCard extends StatelessWidget {
   bool rent = false;
   @override
   Widget build(BuildContext context) {
+    var preference = '';
     if (detail["wantto"] == "Rent property") {
       rent = true;
+    }
+
+    try {
+      preference = detail['preference'];
+    } catch (e) {
+      print("preference error: $e");
     }
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
@@ -245,7 +252,8 @@ class DetailCard extends StatelessWidget {
                           width: 10,
                         ),
                         RichText(
-                          text: detail["foodservice"] == 'true' || detail["foodservice"] == 'Yes'
+                          text: detail["foodservice"] == 'true' ||
+                                  detail["foodservice"] == 'Yes'
                               ? TextSpan(
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -267,6 +275,40 @@ class DetailCard extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
+
+              //preferance
+              rent
+                  ? Row(
+                      children: [
+                        RichText(
+                          text: const TextSpan(
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            text: "Preference",
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        RichText(
+                            text: TextSpan(
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                          text:
+                              preference == "ALL" ? "Girls & Boys" : preference,
+                        )),
+                      ],
+                    )
+                  : const SizedBox(),
+              const SizedBox(
+                height: 10,
+              ),
+
               rent
                   ? SizedBox()
                   : Row(

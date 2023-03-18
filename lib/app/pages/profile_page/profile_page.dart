@@ -48,7 +48,7 @@ class _ProfilePageState extends State<ProfilePage>
   TabController? tabController;
   int selectedIndex = 0;
   bool saveloading = false;
-  UserModel? usermodel;
+  // UserModel? usermodel;
   bool loading = false;
   bool isEdit = false;
   ValueNotifier? valuepropertydata;
@@ -62,24 +62,24 @@ class _ProfilePageState extends State<ProfilePage>
   void initState() {
     // TODO: implement initState
     super.initState();
-    addData();
-    usermodel = Provider.of<UserModel?>(context, listen: false);
+    // addData();
+    // usermodel = Provider.of<UserModel?>(context, listen: false);
     try {
       tabController = TabController(length: 2, vsync: this);
       // print(globals.userdata['name']);
-      name.text = userProvider.getUser.name!;
-      emailfield.text = userProvider.getUser.email!;
+      // name.text = userProvider.getUser.name!;
+      // emailfield.text = userProvider.getUser.email!;
     } catch (e) {
       print(e.toString());
     }
   }
 
-  late BaseProvider userProvider;
+  // late BaseProvider userProvider;
 
-  addData() async {
-    userProvider = Provider.of<BaseProvider>(context, listen: false);
-    await userProvider.refreshUser();
-  }
+  // addData() async {
+  //   userProvider = Provider.of<BaseProvider>(context, listen: false);
+  //   await userProvider.refreshUser();
+  // }
 
   void valuedatafun() async {
     valuepropertydata = await FirebaseServices().valuepropertydata;
@@ -156,15 +156,6 @@ class _ProfilePageState extends State<ProfilePage>
 
   @override
   Widget build(BuildContext context) {
-    try {
-      // globals.userdata['address'];
-      print("sddijfsowew");
-      print("sdijwew${userProvider.getUser.name}");
-      userProvider.getUser.address;
-    } catch (e) {
-      addressnotexist = true;
-    }
-
     List dataproperty = [];
     TextStyle defaultStyle =
         const TextStyle(color: Color.fromARGB(255, 0, 0, 0), fontSize: 14.0);
@@ -180,7 +171,6 @@ class _ProfilePageState extends State<ProfilePage>
         flexibleSpace: const FlexibleSpaceBar(),
         elevation: 0,
         actions: [
-          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -203,45 +193,44 @@ class _ProfilePageState extends State<ProfilePage>
                 ),
               ),
               IconButton(
-            onPressed: () {
-              showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Logout'),
-                  content: const Text('Are you sure you want to logout?'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => Navigator.pop(context, 'No'),
-                      child: const Text('No'),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        await FirebaseAuth.instance.signOut();
+                onPressed: () {
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Logout'),
+                      content: const Text('Are you sure you want to logout?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'No'),
+                          child: const Text('No'),
+                        ),
+                        TextButton(
+                          onPressed: () async {
+                            await FirebaseAuth.instance.signOut();
 
-                        // ignore: use_build_context_synchronously
-                        Navigator.pop(context, 'Yes');
-                        // ignore: use_build_context_synchronously
-                        context.pushNamed(
-                          'splashscreen',
-                        );
-                      },
-                      child: const Text('Yes'),
+                            // ignore: use_build_context_synchronously
+                            Navigator.pop(context, 'Yes');
+                            // ignore: use_build_context_synchronously
+                            context.pushNamed(
+                              'splashscreen',
+                            );
+                          },
+                          child: const Text('Yes'),
+                        ),
+                      ],
                     ),
-                  ],
+                  );
+                },
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.black,
                 ),
-              );
-            },
-            icon: const Icon(
-              Icons.logout,
-              color: Colors.black,
-            ),
-          ),
+              ),
             ],
           ),
           // SizedBox(
           //   width: width < 800 ? width * 0.74 : width * 0.90,
           // ),
-          
         ],
         automaticallyImplyLeading: false,
       ),
@@ -291,422 +280,470 @@ class _ProfilePageState extends State<ProfilePage>
                             return TabBarView(
                               controller: tabController,
                               children: [
-                                Column(
-                                  children: [
-                                    const SizedBox(height: 10.0),
-                                    // EditImagePage(),
-                                    InkWell(
-                                      onTap: () {
-                                        takePhoto(ImageSource.gallery);
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          SizedBox(
-                                            height: 70,
-                                            width: 70,
-                                            child: Imageloading
-                                                ? const CircularProgressIndicator(
-                                                    color: Colors.blueAccent,
-                                                    backgroundColor:
-                                                        Colors.white12,
-                                                  )
-                                                : Container(),
-                                          ),
-                                          Positioned(
-                                            bottom: 2,
-                                            top: 1.9,
-                                            right: 2,
-                                            left: 2,
-                                            child: buildImage(userProvider
-                                                .getUser.profileImage),
-                                          ),
-                                          Positioned(
-                                            bottom: 0,
-                                            right: 4,
-                                            child: buildEditIcon(color),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Center(
-                                      child: Form(
-                                        key: _formKey,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(
-                                              height: 50,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      13.0, 0, 13, 0),
-                                              child: TextFormField(
-                                                enabled: edit,
-                                                controller: name,
-                                                validator: (value) {
-                                                  if (value
-                                                      .toString()
-                                                      .isEmpty) {
-                                                    return 'Please enter Name';
-                                                  }
+                                StreamBuilder(
+                                  stream: FirebaseFirestore.instance
+                                      .collection("Users")
+                                      .doc(FirebaseAuth
+                                          .instance.currentUser!.uid)
+                                      .snapshots(),
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<dynamic> snapshot) {
+                                    var profileimage =
+                                        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+                                    try {
+                                      profileimage =
+                                          snapshot.data['profileImage'];
+                                    } catch (e) {
+                                      print("no profile image $e");
+                                    }
+                                    
+                                    name.text = snapshot.data['name'];
+                                    emailfield.text = snapshot.data['email'];
+                                    try {
+                                      address.text = snapshot.data['address'];
+                                    } catch (e) {
+                                      address.text = "";
+                                      print(e.toString());
+                                    }
 
-                                                  if (value.toString().length <
-                                                      3) {
-                                                    return 'name cannot be less than 3 character';
-                                                  }
-                                                },
-                                                keyboardType:
-                                                    TextInputType.name,
-                                                decoration: InputDecoration(
-                                                  // hintText: "Name",
-                                                  hintText: globals.name == ""
-                                                      ? "${userProvider.getUser.name}"
-                                                      : globals.name,
-                                                  border:
-                                                      const OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(50),
-                                                    ),
-                                                  ),
-                                                ),
+                                    // _phoneController.text =
+                                    //     snapshot.data['phone'];
+                                    if (snapshot.hasData == false) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    return Column(
+                                      children: [
+                                        const SizedBox(height: 10.0),
+                                        // EditImagePage(),
+                                        InkWell(
+                                          onTap: () {
+                                            takePhoto(ImageSource.gallery);
+                                          },
+                                          child: Stack(
+                                            children: [
+                                              SizedBox(
+                                                height: 70,
+                                                width: 70,
+                                                child: Imageloading
+                                                    ? const CircularProgressIndicator(
+                                                        color:
+                                                            Colors.blueAccent,
+                                                        backgroundColor:
+                                                            Colors.white12,
+                                                      )
+                                                    : Container(),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      13.0, 0, 13, 0),
-                                              child: TextFormField(
-                                                enabled: edit,
-                                                controller: emailfield,
-                                                validator: (value) {
-                                                  if (value
-                                                      .toString()
-                                                      .isEmpty) {
-                                                    return 'Please enter Email';
-                                                  }
-                                                  if (!email.hasMatch(value!)) {
-                                                    return 'Please enter a valid Email';
-                                                  }
-                                                },
-                                                keyboardType:
-                                                    TextInputType.emailAddress,
-                                                decoration: InputDecoration(
-                                                    hintText: globals.email ==
-                                                            ""
-                                                        ? "${userProvider.getUser.email}"
-                                                        : globals.email,
-                                                    border:
-                                                        const OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  50)),
-                                                    )),
+                                              Positioned(
+                                                bottom: 2,
+                                                top: 1.9,
+                                                right: 2,
+                                                left: 2,
+                                                child: buildImage(profileimage),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            addressnotexist
-                                                ? Padding(
-                                                    padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                        13.0, 0, 13, 0),
-                                                    child: TextFormField(
-                                                      enabled: edit,
-                                                      controller: address,
-                                                      validator: (value) {
-                                                        return null;
-                                                      },
-                                                      keyboardType:
-                                                          TextInputType.text,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              suffix:
-                                                                  const Icon(
-                                                                FontAwesomeIcons
-                                                                    .solidAddressCard,
-                                                                color:
-                                                                    Colors.red,
-                                                              ),
-                                                              hintText: globals
-                                                                          .address ==
-                                                                      ""
-                                                                  ? "Complete Address"
-                                                                  : globals
-                                                                      .address,
-                                                              border:
-                                                                  const OutlineInputBorder(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            50)),
-                                                              )),
-                                                    ),
-                                                  )
-                                                : Padding(
-                                                    padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                        13.0, 0, 13, 0),
-                                                    child: TextFormField(
-                                                      enabled: edit,
-                                                      controller: address,
-                                                      validator: (value) {
-                                                        return null;
-                                                      },
-                                                      keyboardType:
-                                                          TextInputType.text,
-                                                      decoration:
-                                                          InputDecoration(
-                                                              hintText: globals
-                                                                          .address ==
-                                                                      ""
-                                                                  ? userProvider.getUser.address ==
-                                                                              "" ||
-                                                                          userProvider.getUser.address ==
-                                                                              null
-                                                                      ? "Complete Address"
-                                                                      : "${userProvider.getUser.address}"
-                                                                  : globals
-                                                                      .address,
-                                                              border:
-                                                                  const OutlineInputBorder(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            50)),
-                                                              )),
-                                                    ),
-                                                  ),
-                                            const SizedBox(
-                                              height: 12,
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      27.0, 0, 0, 0),
-                                              child: TextFormField(
-                                                readOnly: true,
-                                                controller: _phoneController,
-                                                validator: (value) {
-                                                  return null;
-                                                  // if (value.toString().isEmpty) {
-                                                  //   return 'Please enter phone number';
-                                                  // }
-                                                  //
-                                                  // if (value.toString().length < 10) {
-                                                  //   return 'Please enter a valid phone number';
-                                                  // }
-                                                },
-                                                keyboardType:
-                                                    TextInputType.number,
-                                                // ignore: prefer_const_constructors
-                                                decoration: InputDecoration(
-                                                  enabled: false,
-                                                  suffix: const Icon(
-                                                    FontAwesomeIcons.phone,
-                                                    color: Colors.red,
-                                                  ),
-                                                  labelText:
-                                                      "${userProvider.getUser.phone}",
-                                                  // border: const OutlineInputBorder(
-                                                  //   borderRadius: BorderRadius.all(
-                                                  //       Radius.circular(50)),
-                                                  // ),
-                                                ),
+                                              Positioned(
+                                                bottom: 0,
+                                                right: 4,
+                                                child: buildEditIcon(color),
                                               ),
-                                            ),
-                                            const SizedBox(
-                                              height: 30,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
+                                            ],
+                                          ),
+                                        ),
+                                        Center(
+                                          child: Form(
+                                            key: _formKey,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
                                               children: [
-                                                InkWell(
-                                                  onTap: () async {
-                                                    setState(() {
-                                                      edit = !edit;
-                                                    });
-                                                  },
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    width: width < 800
-                                                        ? width * 0.3
-                                                        : width * 0.2,
-                                                    // width: MediaQuery.of(context)
-                                                    //         .size
-                                                    //         .width *
-                                                    //     0.3,
-                                                    height: 50,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius
-                                                                        .circular(
-                                                                            50)),
-                                                            gradient: LinearGradient(
-                                                                begin: Alignment
-                                                                    .centerLeft,
-                                                                end: Alignment
-                                                                    .centerRight,
-                                                                colors: [
-                                                                  // Color(0xFF8A2387),
-                                                                  Color(
-                                                                      0xFFFF5963),
-                                                                  Color(
-                                                                      0xFFFF5963),
-                                                                ])),
-                                                    child: const Padding(
-                                                      padding:
-                                                          EdgeInsets.all(12.0),
-                                                      child: Text(
-                                                        'Edit',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 20,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
+                                                const SizedBox(
+                                                  height: 50,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          13.0, 0, 13, 0),
+                                                  child: TextFormField(
+                                                    enabled: edit,
+                                                    controller: name,
+                                                    validator: (value) {
+                                                      if (value
+                                                          .toString()
+                                                          .isEmpty) {
+                                                        return 'Please enter Name';
+                                                      }
+
+                                                      if (value
+                                                              .toString()
+                                                              .length <
+                                                          3) {
+                                                        return 'name cannot be less than 3 character';
+                                                      }
+                                                    },
+                                                    keyboardType:
+                                                        TextInputType.name,
+                                                    decoration: InputDecoration(
+                                                      // hintText: "Name",
+                                                      hintText: globals.name ==
+                                                              ""
+                                                          ? "${snapshot.data['name']}"
+                                                          : globals.name,
+                                                      border:
+                                                          const OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                                InkWell(
-                                                  onTap: () async {
-                                                    print('1');
-                                                    setState(() {
-                                                      loading = true;
-                                                    });
-                                                    print('2');
-                                                    try {
-                                                      if (_formKey.currentState!
-                                                          .validate()) {
-                                                        print('3');
-                                                        var uid = _auth
-                                                            .currentUser!.uid;
-                                                        print('4');
-                                                        await FirebaseFirestore
-                                                            .instance
-                                                            .collection('Users')
-                                                            .doc(uid)
-                                                            .update({
-                                                          "name": name.text
-                                                              .toString(),
-                                                          "email": emailfield
-                                                              .text
-                                                              .toString(),
-                                                          "address": address
-                                                              .text
-                                                              .toString(),
-                                                        }).whenComplete(() => {
-                                                                  showToast(
-                                                                      context:
-                                                                          context,
-                                                                      "sucessfully updated"),
-                                                                  setState(() {
-                                                                    edit =
-                                                                        false;
-                                                                    globals.name = name
-                                                                        .text
-                                                                        .toString();
-                                                                    globals.email =
-                                                                        emailfield
-                                                                            .text
-                                                                            .toString();
-                                                                    globals.address =
-                                                                        address
-                                                                            .text
-                                                                            .toString();
-                                                                  }),
-                                                                  setState(() {
-                                                                    print('6');
-                                                                    loading =
-                                                                        false;
-                                                                  }),
-                                                                });
-                                                        print('7');
-                                                      } else {
-                                                        setState(() {
-                                                          loading = false;
-                                                        });
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          13.0, 0, 13, 0),
+                                                  child: TextFormField(
+                                                    enabled: edit,
+                                                    controller: emailfield,
+                                                    validator: (value) {
+                                                      if (value
+                                                          .toString()
+                                                          .isEmpty) {
+                                                        return 'Please enter Email';
                                                       }
-                                                      print('8');
-                                                    } catch (e) {
-                                                      print('9');
-                                                      setState(() {
-                                                        loading = false;
-                                                      });
-                                                      print(e.toString());
-                                                      showToast(e.toString(),
-                                                          context: context);
-                                                    }
-                                                  },
-                                                  child: Container(
-                                                    alignment: Alignment.center,
-                                                    width: width < 800
-                                                        ? width * 0.3
-                                                        : width * 0.2,
-                                                    height: 50,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius.all(
-                                                                    Radius
+                                                      if (!email
+                                                          .hasMatch(value!)) {
+                                                        return 'Please enter a valid Email';
+                                                      }
+                                                    },
+                                                    onChanged: (value) {
+                                                      emailfield.text = snapshot
+                                                          .data['email'];
+                                                    },
+                                                    keyboardType: TextInputType
+                                                        .emailAddress,
+                                                    decoration: InputDecoration(
+                                                        hintText: globals
+                                                                    .email ==
+                                                                ""
+                                                            ? "${snapshot.data['email']}"
+                                                            : globals.email,
+                                                        border:
+                                                            const OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          50)),
+                                                        )),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                addressnotexist
+                                                    ? Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                13.0, 0, 13, 0),
+                                                        child: TextFormField(
+                                                          enabled: edit,
+                                                          controller: address,
+                                                          validator: (value) {
+                                                            return null;
+                                                          },
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          decoration:
+                                                              InputDecoration(
+                                                                  suffix:
+                                                                      const Icon(
+                                                                    FontAwesomeIcons
+                                                                        .solidAddressCard,
+                                                                    color: Colors
+                                                                        .red,
+                                                                  ),
+                                                                  hintText: globals
+                                                                              .address ==
+                                                                          ""
+                                                                      ? "Complete Address"
+                                                                      : globals
+                                                                          .address,
+                                                                  border:
+                                                                      const OutlineInputBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.all(
+                                                                            Radius.circular(50)),
+                                                                  )),
+                                                        ),
+                                                      )
+                                                    : Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .fromLTRB(
+                                                                13.0, 0, 13, 0),
+                                                        child: TextFormField(
+                                                          enabled: edit,
+                                                          controller: address,
+                                                          validator: (value) {
+                                                            return null;
+                                                          },
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .text,
+                                                          decoration: InputDecoration(
+                                                              hintText: globals.address == ""
+                                                                  ? address.text == "" || address.text == null
+                                                                      ? "Complete Address"
+                                                                      : "${address.text}"
+                                                                  : globals.address,
+                                                              border: const OutlineInputBorder(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
                                                                         .circular(
                                                                             50)),
-                                                            gradient: LinearGradient(
-                                                                begin: Alignment
-                                                                    .centerLeft,
-                                                                end: Alignment
-                                                                    .centerRight,
-                                                                colors: [
-                                                                  // Color(0xFF8A2387),
-                                                                  Color(
-                                                                      0xFFFF5963),
-                                                                  Color(
-                                                                      0xFFFF5963),
-                                                                ])),
-                                                    child: loading
-                                                        ? const SizedBox(
-                                                            height: 20,
-                                                            width: 20,
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              color:
-                                                                  Colors.white,
-                                                            ))
-                                                        : Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(12.0),
-                                                            child: const Text(
-                                                              'Save',
-                                                              style: TextStyle(
+                                                              )),
+                                                        ),
+                                                      ),
+                                                const SizedBox(
+                                                  height: 12,
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          27.0, 0, 0, 0),
+                                                  child: TextFormField(
+                                                    readOnly: true,
+                                                    controller:
+                                                        _phoneController,
+                                                    validator: (value) {
+                                                      return null;
+                                                      // if (value.toString().isEmpty) {
+                                                      //   return 'Please enter phone number';
+                                                      // }
+                                                      //
+                                                      // if (value.toString().length < 10) {
+                                                      //   return 'Please enter a valid phone number';
+                                                      // }
+                                                    },
+                                                    keyboardType:
+                                                        TextInputType.number,
+                                                    // ignore: prefer_const_constructors
+                                                    decoration: InputDecoration(
+                                                      enabled: false,
+                                                      suffix: const Icon(
+                                                        FontAwesomeIcons.phone,
+                                                        color: Colors.red,
+                                                      ),
+                                                      labelText:
+                                                          "${snapshot.data['phone']}",
+                                                      // border: const OutlineInputBorder(
+                                                      //   borderRadius: BorderRadius.all(
+                                                      //       Radius.circular(50)),
+                                                      // ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 30,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        setState(() {
+                                                          edit = !edit;
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        width: width < 800
+                                                            ? width * 0.3
+                                                            : width * 0.2,
+                                                        // width: MediaQuery.of(context)
+                                                        //         .size
+                                                        //         .width *
+                                                        //     0.3,
+                                                        height: 50,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            50)),
+                                                                gradient: LinearGradient(
+                                                                    begin: Alignment
+                                                                        .centerLeft,
+                                                                    end: Alignment
+                                                                        .centerRight,
+                                                                    colors: [
+                                                                      // Color(0xFF8A2387),
+                                                                      Color(
+                                                                          0xFFFF5963),
+                                                                      Color(
+                                                                          0xFFFF5963),
+                                                                    ])),
+                                                        child: const Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  12.0),
+                                                          child: Text(
+                                                            'Edit',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        print('1');
+                                                        setState(() {
+                                                          loading = true;
+                                                        });
+                                                        print('2');
+                                                        try {
+                                                          if (_formKey
+                                                              .currentState!
+                                                              .validate()) {
+                                                            print('3');
+                                                            var uid = _auth
+                                                                .currentUser!
+                                                                .uid;
+                                                            print('4');
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'Users')
+                                                                .doc(uid)
+                                                                .update({
+                                                              "name": name.text
+                                                                  .toString(),
+                                                              "email": emailfield
+                                                                  .text
+                                                                  .toString(),
+                                                              "address": address
+                                                                  .text
+                                                                  .toString(),
+                                                            }).whenComplete(
+                                                                    () => {
+                                                                          showToast(
+                                                                              context: context,
+                                                                              "sucessfully updated"),
+                                                                          setState(
+                                                                              () {
+                                                                            edit =
+                                                                                false;
+                                                                            globals.name =
+                                                                                name.text.toString();
+                                                                            globals.email =
+                                                                                emailfield.text.toString();
+                                                                            globals.address =
+                                                                                address.text.toString();
+                                                                          }),
+                                                                          setState(
+                                                                              () {
+                                                                            print('6');
+                                                                            loading =
+                                                                                false;
+                                                                          }),
+                                                                        });
+                                                            print('7');
+                                                          } else {
+                                                            setState(() {
+                                                              loading = false;
+                                                            });
+                                                          }
+                                                          print('8');
+                                                        } catch (e) {
+                                                          print('9');
+                                                          setState(() {
+                                                            loading = false;
+                                                          });
+                                                          print(e.toString());
+                                                          showToast(
+                                                              e.toString(),
+                                                              context: context);
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        width: width < 800
+                                                            ? width * 0.3
+                                                            : width * 0.2,
+                                                        height: 50,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            50)),
+                                                                gradient: LinearGradient(
+                                                                    begin: Alignment
+                                                                        .centerLeft,
+                                                                    end: Alignment
+                                                                        .centerRight,
+                                                                    colors: [
+                                                                      // Color(0xFF8A2387),
+                                                                      Color(
+                                                                          0xFFFF5963),
+                                                                      Color(
+                                                                          0xFFFF5963),
+                                                                    ])),
+                                                        child: loading
+                                                            ? const SizedBox(
+                                                                height: 20,
+                                                                width: 20,
+                                                                child:
+                                                                    CircularProgressIndicator(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                          ),
-                                                  ),
+                                                                ))
+                                                            : Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        12.0),
+                                                                child:
+                                                                    const Text(
+                                                                  'Save',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                              ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
+                                      ],
+                                    );
+                                  },
                                 ),
                                 StreamBuilder(
                                     stream: FirebaseFirestore.instance
