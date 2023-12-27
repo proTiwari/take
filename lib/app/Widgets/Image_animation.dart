@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:full_screen_image/full_screen_image.dart';
+// import 'package:full_screen_image/full_screen_image.dart';
 
 class ImageAnimation extends StatefulWidget {
   var detail;
@@ -44,14 +44,15 @@ class _ImageAnimationState extends State<ImageAnimation> {
               },
               itemBuilder: (context, pagePosition) {
                 bool active = pagePosition == activePage;
-                return FullScreenWidget(
-                    child: Container(
-                  margin: EdgeInsets.all(10),
-                  child: Image.network(
-                    widget.detail["propertyimage"][pagePosition],
-                    fit: BoxFit.cover,
-                  ),
-                ));
+                return Container();
+                // return FullScreenWidget(
+                //     child: Container(
+                //   margin: EdgeInsets.all(10),
+                //   child: Image.network(
+                //     widget.detail["propertyimage"][pagePosition],
+                //     fit: BoxFit.cover,
+                //   ),
+                // ));
               }),
         ),
         Row(
